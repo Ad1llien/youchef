@@ -1,0 +1,230 @@
+body {
+  margin: 0;           /* убираем стандартные отступы */
+  padding: 0;
+  background-color: #FFFEEB; /* твой цвет */
+  font-family: Arial, sans-serif; /* можно добавить шрифт */
+  overflow-x: hidden;
+}
+
+.app-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding: 0 20px;   
+  max-width: 1148px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logo {
+  height: 50px;       
+  display: block;       
+}
+
+.nav-buttons{
+  gap: 32px;
+  display: flex;
+  color: #242D96;
+  font-family: Teachers;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+}
+.nav-buttons div{
+  cursor: pointer;
+}
+.nav-buttons button{
+  display: flex;                    /* включаем flex, чтобы содержимое внутри центрировалось */
+  width: 121px;                     /* ширина кнопки */
+  padding: 10px 12px;               /* верх/низ = 10px, лево/право = 12px */
+  justify-content: center;           /* центрируем содержимое по горизонтали */
+  align-items: center;               /* центрируем содержимое по вертикали */
+  gap: 4px;                          /* расстояние между внутренними элементами (например, текст + иконка) */
+  border: none;                      /* убираем стандартную рамку */
+  cursor: pointer;                   /* курсор при наведении */
+  background-color: #f0f0f0;        /* цвет фона кнопки */
+  border-radius: 6px;
+  border-radius: 30px;
+  background: #242D96;
+}
+
+.loginBtn{
+  color: #FFF;
+  text-align: center;
+  font-family: Teachers;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.recipeEmpty{
+  min-width: 116px;
+  color: #242D96;
+  font-family: Taviraj;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+}
+.main1stChild{
+  margin-top: 120px;
+}
+.mainNavBtns{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  color: #242D96;
+  font-family: Teachers;
+  font-size: 22px;font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  
+}
+.container-search {
+  display: flex;
+  justify-content: center; /* горизонтальное центрирование */
+  margin-top: 24px;
+  cursor: pointer;
+}
+
+
+.search-wrapper {
+  position: relative;
+  width: 320px;                  /* стартовая ширина больше */
+  transition: width 0.3s ease;
+  
+}
+
+.search-wrapper:hover,
+.search-wrapper:focus-within {
+  width: 400px;                  /* расширение при фокусе */
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 46px 8px 12px;   /* правый padding = место для иконки */
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;        /* чтобы padding учитывался в ширине */
+}
+
+.search-btn {
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-45%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-btn img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+  padding: 4px;
+  background: #242D96;
+  border-radius: 14px;
+}
+
+.search-btn:hover img {
+  transform: scale(1.2);         /* немного увеличиваем при наведении */
+}
+
+.popularMeal{
+  cursor: pointer;
+}
+.mainRecipeBtn{
+  cursor: pointer;
+}
+.createOwnMeal{
+  cursor: pointer;
+}
+
+.mainNavBtns {
+  display: flex;
+  gap: 32px;
+  position: relative; /* важно для абсолютной линии */
+}
+
+.mainNavBtns div {
+  cursor: pointer;
+  padding-bottom: 6px; /* отступ для линии */
+  position: relative;
+  font-weight: 500;
+  font-size: 18px;
+  color: #242D96;
+}
+
+/* Линия под активной вкладкой */
+.mainNavBtns div.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;          /* толщина линии */
+  background-color:  #242D96;; /* цвет линии */
+  border-radius: 2px;
+}
+
+.lines {
+  width: 100%;                    /* вся ширина экрана */
+}
+
+
+.line5{
+  width: 1600px;
+}
+.footerText{
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.tasteIn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  color: #242D96;
+text-align: right;
+font-family: Taviraj;
+font-size: 20px;
+font-style: normal;
+font-weight: 500;
+line-height: 130%;
+}
+
+.makeUs{
+  color: #242D96;
+
+font-family: Taviraj;
+font-size: 20px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+
+.socialLogos{
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateX(18%);
+}
+
+footer{
+  margin-top: 100px;
+  margin-bottom: 50px;
+}

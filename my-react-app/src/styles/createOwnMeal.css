@@ -1,0 +1,224 @@
+.categoriesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* центрирует КАЖДУЮ строку */
+  gap: 36px;
+
+  max-width: 706px; /* 7 карточек */
+  margin: 0 auto;
+}
+
+.categoriesWrapper{
+  margin-top: 118px;
+}
+
+
+
+.categoryCard {
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ⭕ КРУГ ВОКРУГ ИКОНКИ */
+.iconCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid #242D96; /* ← ВОТ ОНА */
+  stroke-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🥩 ИКОНКА */
+.iconCircle img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;justify-content: center;
+  position:static;
+}
+
+/* 📝 ТЕКСТ */
+.cardTitle {
+  color: #242D96;
+  text-align: center;
+  font-family: Teachers;
+  font-size: 18px;
+  font-weight: 500;
+
+  height: 54px;              /* ← КЛЮЧЕВО */
+  display: flex;
+  align-items: center;       /* вертикальное центрирование текста */
+  justify-content: center;   /* горизонтальное */
+  line-height: 1.1;
+}
+.iconCircle:hover{
+  border-radius: 30px;
+  border: 1px solid #0060B9;
+  background: rgba(0, 96, 185, 0.15);
+  color:#0060B9;
+}
+
+.iconCircle:focus{
+  fill: rgba(200, 214, 155, 0.29);
+  stroke-width: 1px;
+  stroke: #C8D69B;
+}
+
+.ingredientsWrapper {
+  margin-top: 64px;
+  text-align: center;
+}
+
+.ingredientsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.ingredientCard {
+  padding: 12px 18px;
+  border: 1px solid #242D96;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #242D96;
+  cursor: pointer;
+}
+.createOwnMealContent{
+  margin-top: 118px;
+}
+
+.ingredientsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.ingredientCard {
+  width: 120px;              /* 5 карточек в строку */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 8px;
+  border: 1px solid #242D96;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ingredientCard:hover {
+  background: rgba(36, 45, 150, 0.08);
+}
+
+/* 🖼 картинка ингредиента */
+.ingredientImage {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+/* 📝 название */
+.ingredientTitle {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: #242D96;
+}
+
+.fivePerRow {
+  display: grid;
+  grid-template-columns: repeat(5, 120px); /* 5 карточек, каждая 120px */
+  gap: 24px; /* расстояние между карточками */
+  justify-content: center; /* центрирует весь ряд */
+  max-width: calc(120px * 5 + 24px * 4); /* ограничение ширины */
+  margin: 0 auto;
+}
+
+.line{
+  width: 100%;
+  margin-top: 50px;
+}
+.line img{
+  width: 100%;      /* растягиваем на всю ширину контейнера */
+height: 2px;      /* или auto, если нужна пропорция */
+object-fit: cover;
+}
+
+.iconCircle.active {
+  border-radius: 30px;
+  border: 1px solid #C8D69B;
+  background: rgba(200, 214, 155, 0.29);
+}
+
+
+.ingredientCard.active {
+  border: 1px solid #C8D69B;
+  background: rgba(200, 214, 155, 0.29);
+}
+
+.potIcon {
+  position: fixed;      /* 🔑 фиксируем относительно окна */
+  right: 140px;          /* отступ справа */
+  top: 500px;           /* отступ сверху (чуть ниже) */
+
+  width: 120px;
+  height: 120px;
+
+  cursor: pointer;
+  z-index: 1000;        /* чтобы была поверх всего */
+}
+
+.potIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* 🔹 Летающая картинка */
+.fly-cart {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+  width: 72px;
+  height: 72px;
+  opacity: 0;
+}
+.fly-cart img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 🔹 Иконка кастрюли */
+.potIcon {
+  position: fixed;
+  right: 40px;
+  top: 500px;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  z-index: 1000;
+}
+.potIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

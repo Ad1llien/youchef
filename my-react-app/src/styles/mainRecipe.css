@@ -1,0 +1,209 @@
+.mainRecipeWrapper{
+    display: flex;
+}
+.sideRecipeFilter{
+    display: flex;
+    flex-direction: column;
+    width: 278px;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.types{
+    display: flex;
+    flex-direction: column;
+    width: 278px;
+    align-items: flex-start;
+    gap: 20px;
+}
+.dishType{
+    display: flex;
+    flex-direction: column;
+}
+.q1st{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.q2st{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.dishType img{
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.religions{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.dishType hr{
+    width: 100%;
+    height: 1px;
+    border: none;
+    background-color: black;
+    margin-top: 10px;
+}
+
+.religions hr{
+    width: 100%;
+    height: 1px;
+    border: none;
+    background-color: black;
+    margin-top: 10px;
+}
+.divider {
+    width: 272px;
+    height: 2px;
+    background: #000;
+    transform: translateZ(0);
+    background: #BBC8D8;
+}
+.q2st, .q1st{
+    margin-bottom: 20px;
+}
+.q1st div{
+    color: #343B1B;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    height: normal;
+}
+.q2st div{
+    color: #343B1B;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    height: normal;
+}
+
+.specialFilterBox{
+    display: flex;
+    width: auto;
+    height: auto;
+    padding: 24px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    justify-content: center;
+    border-radius: 5px;
+    border: 1px solid #242D96;
+}
+
+.halal{
+    color: #242D96;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;justify-content: center;
+    align-items: center;
+    text-align: left;
+    gap: 20px;
+
+}
+.halal img{
+    width: 34px;
+    height: 34px;
+    aspect-ratio: 1/1;
+}
+
+.popularMealList{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.mainRecipeWrapper {
+    display: flex;
+    gap: 40px; /* расстояние между фильтрами и карточками */
+}
+
+
+.sideRecipeFilter{
+    display: flex;
+    flex-direction: column;
+    width: 278px;          /* фикс */
+    flex-shrink: 0;        /* ❗ не сжиматься */
+    gap: 80px;
+}
+.recipeFilter{
+    display: flex;
+    justify-content: flex-end
+}
+
+
+.popularMealList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 🔥 ровно 3 карточки */
+    gap: 48px;
+}
+
+
+@media (max-width: 1024px) {
+    .popularMealList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .popularMealList {
+        grid-template-columns: 1fr;
+    }
+}
+.popularMealList{
+    margin-top: 48px;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+  }
+  
+  .arrow.open {
+    transform: rotate(180deg);
+  }
+  
+  .filterList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0 20px 0;
+  }
+  
+  .filterItem {
+    font-family: Teachers;
+    font-size: 16px;
+    cursor: pointer;
+    color: #343B1B;
+  }
+  
+  .filterItem:hover {
+    color: #242D96;
+  }
+  
+
+  .loadMoreWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+  }
+  
+  .loadMoreBtn {
+    padding: 12px 32px;
+    border-radius: 24px;
+    border: 1px solid #222;
+    background: none;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  

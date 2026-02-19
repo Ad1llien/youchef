@@ -1,0 +1,197 @@
+.popularMealFilter button{
+    border-radius: 30px;
+    border: 1px solid #788CA5;
+    width: 168px;
+    height: 40px;
+    padding: 10px var(--Spacing-spacing-lg, 12px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Spacing-spacing-xs, 4px);
+    flex-shrink: 0;
+    background:transparent;
+    color:#788CA5;
+    cursor: pointer;
+    font-family: Teachers;
+}
+
+.popularMealFilter button:hover{
+    border-radius: 30px;
+    border: 1px solid #0060B9;
+    background: rgba(0, 96, 185, 0.15);
+    color:#0060B9;
+}
+
+.popularMealFilter button:focus{
+    border-radius: 30px;
+    border: 1px solid #C8D69B;
+    background: rgba(200, 214, 155, 0.29);
+    color:black;
+}
+.popularMealContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* выравнивание по верхнему краю */
+    gap: 20px;
+    flex: 1;
+    margin-top: 48px;
+}
+
+.photoContainer {
+    /* убрали margin-top */
+    width: 563px;
+    height: 578px;
+    border-radius: 5px;
+    border: 1px solid #242D96;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popularMealFilter{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    
+}
+
+.popularMealMainContainer {
+    display: flex;
+    flex-direction: column; /* колонки: фильтры сверху, список блюд снизу */
+    align-items: center;    /* центрируем все дочерние элементы по горизонтали */
+    gap: 20px;              /* расстояние между фильтрами и списком блюд */
+    flex: 1;                /* занимает всё оставшееся пространство слева */
+}
+
+.mealCard{
+    display: flex;
+    width: 196px;
+    height: 209px;
+    padding: 15px;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    border: 1px solid #242D96;
+    border-radius: 5px;
+}
+.mealcard:hover{
+    border-radius: 5px;
+    border: 1px solid #0060B9;
+    border-width: 5px;
+}
+
+.mealCard img{
+    border-radius: 2px;
+    width: 166px;
+    height: 146px;
+    flex-shrink: 0;
+}
+.cardTitle{
+    color: #242D96;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    justify-content: center;
+    margin-top: 5px;
+    text-align: center;
+}
+
+
+.popularMealList{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    justify-content: center;
+}
+.lines {
+    width: 100%;
+}
+.line-img {
+width: 100%;      /* растягиваем на всю ширину контейнера */
+height: 2px;      /* или auto, если нужна пропорция */
+object-fit: cover; /* чтобы картинка заполняла контейнер без искажений */
+}
+.lines:nth-child(0){
+    width: 1440.001px;
+    height: 0;
+    stroke-width: 2px;
+    stroke: #242D96;
+}
+.lines:nth-child(1){
+    width: 1440.001px;
+    height: 0;
+    stroke-width: 2px;
+    stroke: #242D96;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.line1{
+    width: 1440.001px;
+    height: 2px;
+    stroke-width: 2px;
+    stroke: #242D96;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* LOADER */
+.loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 20px;
+    color: #242D96; /* твой основной цвет */
+    border: 2px solid;
+    position: relative;
+    margin: 40px auto; /* центрируем */
+  }
+  
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    inset: 0 100% 0 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l6 0.6s infinite;
+  }
+  
+  @keyframes l6 {
+    100% {
+      inset: 0;
+    }
+  }
+  
+.mainRecipeWrapper{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 48px;
+}
+
+.fromChef{
+    display: flex;
+    width: 130px;
+    height: 40px;
+    padding: 10px var(--Spacing-spacing-lg, 12px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Spacing-spacing-xs, 4px);
+    border-radius: 30px;
+    border: 1px solid #788CA5;
+    background:transparent;
+    color: #788CA5;
+    text-align: center;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.recipeFilter{
+    display: flex;
+    gap: 40px;
+    text-align:right;
+
+}
