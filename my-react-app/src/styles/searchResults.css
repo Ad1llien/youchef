@@ -1,0 +1,38 @@
+.searchResultsWrapper {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .resultsTitle {
+    font-size: 28px;
+    color: #242D96;
+    margin-bottom: 30px;
+  }
+  
+  .recipesList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .recipeCard {
+    background: #FFFEEB;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .backBtn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: #242D96;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }

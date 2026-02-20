@@ -2,6 +2,7 @@ import '../styles/createOwnMeal.css';
 import { useState, useRef } from 'react';
 import ingredientsData from '../../classified_ingredients.json';
 import stroke from '../icons/stroke.svg';
+import { useNavigate } from "react-router-dom";
 
 // icons
 import meatIcon from '../icons/meat2.svg';
@@ -33,10 +34,10 @@ const CATEGORIES = [
   { key: 'Baking & Sweets', icon: bakingIcon },
 ];
 
-function CreateOwnMealContent() {
+function CreateOwnMealContent({ checkPot, setCheckPot }) {
+  const navigate = useNavigate(); // ✔ внутри компонента
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [checkPot, setToPot] = useState([]);
   const flyRef = useRef(null);
   const potRef = useRef(null);
 
@@ -55,14 +56,12 @@ function CreateOwnMealContent() {
   };
 
   // Добавление / удаление ингредиента
-  const checkIngregient = (str, e) => {
-
-    if (checkPot.includes(str)) {
-      
-      setToPot(checkPot.filter((item) => item !== str));
+  const checkIngredient = (item, e) => {
+    if (checkPot.includes(item)) {
+      setCheckPot(checkPot.filter((i) => i !== item));
     } else {
-      flyToPot(e, str);
-      setToPot([...checkPot, str]);
+      flyToPot(e, item);
+      setCheckPot([...checkPot, item]);
     }
   };
 
@@ -78,7 +77,7 @@ function CreateOwnMealContent() {
     fly.style.display = 'block';
     fly.style.transition = 'none';
 
-    const startX = e.clientX - 36; // центрируем
+    const startX = e.clientX - 36;
     const startY = e.clientY - 36;
     fly.style.left = `${startX}px`;
     fly.style.top = `${startY}px`;
@@ -86,7 +85,6 @@ function CreateOwnMealContent() {
     fly.style.height = `72px`;
     fly.style.opacity = 1;
 
-    // получаем координаты кастрюли
     const potRect = pot.getBoundingClientRect();
     const targetX = potRect.left + potRect.width / 2 - 36;
     const targetY = potRect.top + potRect.height / 2 - 36;
@@ -99,9 +97,9 @@ function CreateOwnMealContent() {
       fly.style.height = `30px`;
     }, 10);
 
-    // скрываем после анимации
     setTimeout(() => {
       fly.style.opacity = 0;
+      fly.style.display = 'none';
     }, 900);
   };
 
@@ -131,7 +129,7 @@ function CreateOwnMealContent() {
       </div>
 
       {/* 🔹 Иконка кастрюли */}
-      <div className="potIcon" ref={potRef}>
+      <div className="potIcon" ref={potRef} onClick={() => navigate("/pot")}>
         <img src={potIcon} alt="pot" />
       </div>
 
@@ -154,7 +152,7 @@ function CreateOwnMealContent() {
                 <div
                   key={item}
                   className={`ingredientCard ${checkPot.includes(item) ? 'active' : ''}`}
-                  onClick={(e) => checkIngregient(item, e)}
+                  onClick={(e) => checkIngredient(item, e)}
                 >
                   <img
                     className="ingredientImage Ingrs"
