@@ -1,12 +1,16 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/searchResults.css";
+import lineSVG from "../icons/line36.svg";
 
 function SearchResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const selectedIngredients = location.state?.checkPot || [];
-
+  const clearAllIngredients = () => {
+    localStorage.removeItem("checkPot");
+    navigate(-1); // или navigate("/") если хочешь на главную
+  };
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +23,9 @@ function SearchResultsPage() {
 
     const fetchMeals = async () => {
       try {
-        const res = await fetch("https://www.themealdb.com/api/json/v2/65232507/search.php?s=");
+        const res = await fetch(
+          "https://www.themealdb.com/api/json/v2/65232507/search.php?s="
+        );
         const data = await res.json();
 
         if (!data.meals) {
@@ -28,7 +34,6 @@ function SearchResultsPage() {
           return;
         }
 
-        // Формируем массив ингредиентов для каждого блюда
         const allMeals = data.meals.map((meal) => {
           const ingredients = [];
           for (let i = 1; i <= 20; i++) {
@@ -38,7 +43,6 @@ function SearchResultsPage() {
           return { ...meal, ingredients };
         });
 
-        // Считаем совпадения (нестрого)
         const matchedMeals = allMeals
           .map((meal) => {
             const matches = meal.ingredients.filter((ing) =>
@@ -46,10 +50,12 @@ function SearchResultsPage() {
                 ing.toLowerCase().includes(sel.toLowerCase())
               )
             );
-            const matchPercent = Math.round((matches.length / meal.ingredients.length) * 100);
+            const matchPercent = Math.round(
+              (matches.length / meal.ingredients.length) * 100
+            );
             return { ...meal, matchPercent };
           })
-          .filter((meal) => meal.matchPercent >= 20) // минимальное совпадение 20%
+          .filter((meal) => meal.matchPercent >= 20)
           .sort((a, b) => b.matchPercent - a.matchPercent);
 
         setMeals(matchedMeals);
@@ -67,33 +73,68 @@ function SearchResultsPage() {
   if (loading) return <p style={{ textAlign: "center" }}>Loading meals...</p>;
 
   return (
-    <div className="searchResultsWrapper">
-      <button className="backBtn" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+    <div className="searchResultsPageWrapper">
+      {/* Back button слева */}
+      <div className="backBtnWrapper">
+        <button className="backBtn" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+        <button className="backBtn clearBtn" onClick={clearAllIngredients}>
+          Clear all
+        </button>
+      </div>
 
-      <h2 className="resultsTitle">
-        Recipes you can make with your selected ingredients
-      </h2>
+      {/* Заголовок по центру */}
+      <h2 className="resultsTitle">Result</h2>
 
-      {meals.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No matching recipes found 😔</p>
-      ) : (
-        <div className="recipesList">
-          {meals.map((meal) => (
-            <div
-              key={meal.idMeal}
-              className="recipeCard"
-              onClick={() => navigate(`/meal/${meal.idMeal}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <h3>{meal.strMeal}</h3>
-              <p>Match: {meal.matchPercent}%</p>
-              <p>Ingredients: {meal.ingredients.join(", ")}</p>
-            </div>
-          ))}
+      {/* Линия на всю ширину */}
+      <div className="lineFull">
+        <img src={lineSVG} alt="" />
+      </div>
+
+      {/* Большой контейнер */}
+      <div className="mealsContainer">
+        {/* Шапка */}
+        <div className="mealsHeader">
+          <span className="mealIndex">ID</span>
+          <span className="mealName">Name</span>
+          <span className="mealMatch">Matching %</span>
         </div>
-      )}
+
+        {/* Список с прокруткой */}
+        <div className="mealsList">
+          {meals.length === 0 ? (
+            <p style={{ textAlign: "center", marginTop: "20px" }}>
+              No matching recipes 😔
+            </p>
+          ) : (
+            meals.map((meal, idx) => (
+              <div
+                key={meal.idMeal}
+                className="mealRow"
+                onClick={() => navigate(`/meal/${meal.idMeal}`)}
+              >
+                <span className="mealIndex">{idx + 1}</span>
+                <span className="mealName">{meal.strMeal}</span>
+                <span className="mealMatch">{meal.matchPercent}%</span>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="lineWrapper">
+            <div className="centerLine"></div>
+          </div>
+
+          <div className="searchingQuestion">
+            Don’t see what you’re looking for?
+          </div>
+
+          <div className="expandTitle">
+            YouChef is always looking to expand their recipes catalogue. Request a recipe and we’ll do our best to help
+          </div>
+
+          <button className="requestRecipe">Request Recipe</button>
+      </div>
     </div>
   );
 }

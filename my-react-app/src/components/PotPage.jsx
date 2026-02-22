@@ -1,11 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/inYourPot.css";
-import Line from "../icons/line36.svg";
+import Line from "../icons/Line36.svg";
 import pot from "../icons/closedPot.svg";
 
 function PotPage({ checkPot, setCheckPot }) {
   const navigate = useNavigate();
-
+  const clearAllIngredients = () => {
+    if(checkPot.length === 0) return
+    const permission = window.confirm(
+      "Are you sure you want to remove all ingredients?"
+    );
+  
+    if (!permission) return;
+  
+    setCheckPot([]);                 // очищаем state
+    localStorage.removeItem("checkPot");
+    navigate(-1); // или navigate("/")
+  };
   const handleDelete = (item) => {
     setCheckPot((prev) => prev.filter((i) => i !== item));
   };
@@ -18,9 +29,12 @@ function PotPage({ checkPot, setCheckPot }) {
         <img src={Line} alt="" />
       </div>
 
+      <div className="btnsWrapper">
       <button className="backBtn" onClick={() => navigate("/")}>
         ← Back
       </button>
+      <button className="backBtn clearBtn" onClick={clearAllIngredients}>Clear all</button>
+      </div>
 
       <div className="PotImage">
         <img src={pot} alt="pot" />

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import youChefLogo from "./logos/logo.png";
 import searchIcon from "./icons/search-2-line.png";
 import "./App.css";
+
 import MealPage from "./components/MealPage";
 import PotPage from "./components/PotPage";
 import PopularMealContent from "./components/PopularMealContent";
@@ -17,64 +18,76 @@ import tiktokIcon from "./icons/filled.png";
 import footlines from "./icons/footerlines.svg";
 
 function App() {
-  // 🔑 Инициализация с localStorage
+  /* 🔹 состояние кастрюли */
   const [checkPot, setCheckPot] = useState(() => {
     const saved = localStorage.getItem("checkPot");
     return saved ? JSON.parse(saved) : [];
   });
 
-  // 🔑 Сохраняем в localStorage при изменении
+  /* 🔹 сохраняем в localStorage */
   useEffect(() => {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
   }, [checkPot]);
 
+  /* 🔹 активная вкладка */
   const [activeTab, setActiveTab] = useState("popular");
 
   return (
     <BrowserRouter>
       <div className="App">
-        {/* HEADER */}
+        {/* ================= HEADER ================= */}
         <header className="app-header">
-          <img src={youChefLogo} alt="Logo" className="logo" />
+          <img src={youChefLogo} alt="YouChef Logo" className="logo" />
+
           <nav className="nav-buttons">
-            <div className="recipeBtn">Recipe</div>
-            <div className="premiumBtn">Premium</div>
-            <div className="contactBtn">Contact</div>
+            <div>Recipe</div>
+            <div>Premium</div>
+            <div>Contact</div>
             <button className="loginBtn">Log In</button>
           </nav>
         </header>
 
+        {/* ================= MAIN ================= */}
         <main>
           <Routes>
+            {/* HOME */}
             <Route
               path="/"
               element={
                 <div className="main1stChild">
                   <div className="recipeEmpty">Recipes</div>
 
-                  {/* Кнопки переключения */}
+                  {/* Tabs */}
                   <div className="mainNavBtns">
-  <div
-    className={`mainRecipeBtn ${activeTab === "main" ? "active" : ""}`}
-    onClick={() => setActiveTab("main")}
-  >
-    Main Recipe
-  </div>
-  <div
-    className={`popularMeal ${activeTab === "popular" ? "active" : ""}`}
-    onClick={() => setActiveTab("popular")}
-  >
-    Popular Meals
-  </div>
-  <div
-    className={`createOwnMeal ${activeTab === "create" ? "active" : ""}`}
-    onClick={() => setActiveTab("create")}
-  >
-    Create Own Meal
-  </div>
-</div>
+                    <div
+                      className={`mainRecipeBtn ${
+                        activeTab === "main" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("main")}
+                    >
+                      Main Recipe
+                    </div>
 
-                  {/* SEARCH */}
+                    <div
+                      className={`popularMeal ${
+                        activeTab === "popular" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("popular")}
+                    >
+                      Popular Meals
+                    </div>
+
+                    <div
+                      className={`createOwnMeal ${
+                        activeTab === "create" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("create")}
+                    >
+                      Create Own Meal
+                    </div>
+                  </div>
+
+                  {/* Search */}
                   <div className="container-search">
                     <div className="search-wrapper">
                       <input
@@ -88,7 +101,7 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Контент */}
+                  {/* Content */}
                   {activeTab === "popular" && <PopularMealContent />}
                   {activeTab === "main" && <MainRecipeContent />}
                   {activeTab === "create" && (
@@ -101,18 +114,29 @@ function App() {
               }
             />
 
+            {/* POT */}
             <Route
               path="/pot"
               element={
-                <PotPage checkPot={checkPot} setCheckPot={setCheckPot} />
+                <PotPage
+                  checkPot={checkPot}
+                  setCheckPot={setCheckPot}
+                />
               }
             />
+
+            {/* MEAL PAGE */}
             <Route path="/meal/:id" element={<MealPage />} />
-            <Route path="/search-results" element={<SearchResultsPage />} />
+
+            {/* SEARCH RESULTS */}
+            <Route
+              path="/search-results"
+              element={<SearchResultsPage />}
+            />
           </Routes>
         </main>
 
-        {/* FOOTER */}
+        {/* ================= FOOTER ================= */}
         <footer>
           <div className="lines">
             <img className="line5" src={footlines} alt="" />
@@ -126,9 +150,9 @@ function App() {
           </div>
 
           <div className="socialLogos">
-            <img src={instagramIcon} alt="" />
-            <img src={telegramIcon} alt="" />
-            <img src={tiktokIcon} alt="" />
+            <img src={instagramIcon} alt="Instagram" />
+            <img src={telegramIcon} alt="Telegram" />
+            <img src={tiktokIcon} alt="TikTok" />
           </div>
         </footer>
       </div>

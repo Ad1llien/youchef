@@ -234,4 +234,18 @@ font-size: 18px;
 font-style: normal;
 font-weight: 500;
 line-height: normal;
+cursor: pointer;
+  }
+
+  .requestRecipe:hover{
+    background-color: #242D96;
+    color: #FFFEEB;
+  }
+
+  .btnsWrapper{
+    display: flex;
+    justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  margin-bottom: 12px
   }

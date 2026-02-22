@@ -1,38 +1,169 @@
-.searchResultsWrapper {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-    padding: 40px 0;
-  }
+.searchResultsPageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.backBtnWrapper {
+  width: 80%;
+  display: flex;
+  justify-content: flex-start; /* кнопка слева */
+  margin-bottom: 20px;
+}
+
+.backBtn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: #242D96;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.resultsTitle {
+  color: #242D96;
+  font-family: Taviraj;
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.lineFull{
+  width: 100%;
+}
+.lineFull img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 40px;
+}
+
+/* Большой контейнер */
+.mealsContainer {
+  width: 1138px;
+  height: 2296px;
+  border-radius: 15px 15px 0 0;
+background: rgba(243, 243, 243, 0.60);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #FFFEEB;
+  margin-top: 30px;
+}
+
+/* Шапка таблицы */
+.mealsHeader {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr; /* №, Name, Matching % */
+  padding: 16px 24px;
+  background-color: rgba(243, 243, 243, 0.60);
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.40);
+
+text-align: center;
+font-family: Teachers;
+font-size: 22px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+padding-top: 50px;
+}
+
+/* Список с прокруткой */
+.mealsList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Каждая строка блюда */
+.mealRow {
+  height: 46px;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  padding: 12px 24px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+}
+
+.mealRow:hover {
+  border: 1px solid rgba(52, 59, 27, 0.18);
+  border-radius: 10px;
+  background: #EFF2D4;}
+
+/* Элементы строки */
+.mealIndex,
+.mealName,
+.mealMatch {
+  display: flex;
+  align-items: center;
+}
+
+.mealName,.mealMatch{
+  font-family: Teachers;
+font-size: 22px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+color: #242D96;
+
+
+}
+.mealIndex{
+color: #343B1B;  
+}
+
+.lineWrapper{
+  margin-top: 200px;
+}
+
+.requestRecipe {
+  width: 204px;
+  height: 40px;
+  border-radius: 30px;
+  border: 2px solid #242D96;
+  background-color: #FFFEEB;
+  margin: 25px auto 0 auto; /* сверху 25px, слева/справа авто для центрирования */
+  color: #242D96;
+  text-align: center;
+  font-family: Teachers;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: block; /* чтобы margin: auto сработал корректно */
+  cursor: pointer;
+}
+.requestRecipe:hover{
+  background-color: #242D96;
+  color: #FFFEEB;
+}
+
+.mealsList {
+  flex: 1;
+  overflow-y: auto;
   
-  .resultsTitle {
-    font-size: 28px;
-    color: #242D96;
-    margin-bottom: 30px;
-  }
-  
-  .recipesList {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .recipeCard {
-    background: #FFFEEB;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .backBtn {
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    border-radius: 30px;
-    background: #242D96;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+  /* Для Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(170, 170, 170, 0.58) transparent;
+}
+
+/* Для Chrome, Edge, Safari */
+.mealsList::-webkit-scrollbar {
+  width: 12px; /* ширина скролла */
+}
+
+.mealsList::-webkit-scrollbar-track {
+  background: transparent; /* фон дорожки */
+}
+
+.mealsList::-webkit-scrollbar-thumb {
+  background: rgba(170, 170, 170, 0.58); /* цвет ползунка */
+  border-radius: 10px; /* закругление */
+  border: 3px solid transparent; /* пространство вокруг ползунка, чтобы не прилегал к краю */
+}

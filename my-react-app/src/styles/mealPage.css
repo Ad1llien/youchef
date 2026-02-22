@@ -1,0 +1,244 @@
+.headerBegin {
+    display: flex;
+    align-items: center;        /* вертикальное выравнивание всех элементов */
+    justify-content: space-between; /* кнопка слева, иконка справа, текст по центру */
+    margin: 130px 100px 16px 100px; /* сверху, справа, снизу, слева */
+}
+
+/* Убираем display:flex у текста и центровку внутри */
+.nameFoodTitle {
+    color: #242D96;
+    font-family: Taviraj;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: normal;
+    text-align: center;         /* текст по центру внутри блока */
+    flex: 1;                    /* чтобы занять всё пространство между кнопкой и иконкой */
+}
+
+.favoriteIcon img {
+    display: block;
+    width: 49px;
+height: 49px;
+}
+
+.backBtn {
+    height: 40px;                /* одинаковая высота */
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+.youtubeLink{
+    display: flex;
+    gap:70px;
+    color: #242D96;
+
+font-family: Teachers;
+font-size: 22px;
+font-style: normal;
+font-weight: 400;
+line-height: 40px;
+}
+
+.youtubeText{
+    width: 348px;
+}
+span{
+    font-weight: 500;
+}
+
+.infoWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 80px;
+}
+
+.topCalc{
+    display: flex;
+    height: 80px;
+    gap: 57px;
+}
+.digits{
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+.digits div{
+    border-right: 1px solid black;
+    width: 81px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #788CA5;
+
+text-align: center;
+font-family: Teachers;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 40px;
+
+}
+.digits div:nth-child(4){
+    border: none;
+}
+.categories{
+    padding-left: 1px;
+    display: flex;
+}
+.categories div{
+    text-align: center;
+font-family: Teachers;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 40px;
+width: 81px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #788CA5;
+
+}
+.categories div:nth-child(4){
+    border: none;
+}
+
+.limitWrapper {
+    display: inline-flex;        /* ВАЖНО */
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 23px;
+    width: fit-content;          /* ширина по контенту */
+    padding: 12px 16px;
+    border-radius: 5px;
+background: rgba(255, 237, 203, 0.50);
+  }
+.limitWrapper div:nth-child(2){
+    color: #FF786D;
+}
+
+.limitWrapper{
+    gap: 8px;
+    margin-left: 58%;
+}
+.limitWrapper div:nth-child(3){
+    gap: 12px;
+}
+
+.upgrade{
+    color: #FF786D;
+
+text-align: center;
+font-family: Teachers;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: var(--Line-height-xs, 16px); /* 114.286% */
+text-decoration-line: underline;
+text-decoration-style: solid;
+text-decoration-skip-ink: none;
+text-decoration-thickness: auto;
+text-underline-offset: auto;
+text-underline-position: from-font;
+}
+
+.limitWrapper div:last-child{
+    display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
+
+}
+
+.img img{
+    width: 16px;
+height: 16px;
+flex-shrink: 0
+}
+.limitText{
+    color: #323745;
+font-family: Teachers;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: var(--Line-height-xs, 16px); /* 114.286% */
+}
+.limitWrapper div:nth-child(2){
+    color: #FF786D;
+font-family: Teachers;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: var(--Line-height-xs, 16px); /* 114.286% */
+}
+
+.image img{
+    border-radius: 5px;
+background: #D9D9D9;
+width: 371px;
+height: 300px;
+}
+
+.ingredientTitle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mainContent{
+    display: flex;
+    align-items: center;justify-content:space-around;
+}
+
+.secondRow{
+    text-align: left;
+    max-width: 727px;
+    color: #343B1B;
+font-family: Teachers;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 40px;
+}
+.ingredientsList{
+    flex-direction: row;
+    align-items: center;justify-content: center;
+    background: #F8F8F0;
+    margin-top: 50px;
+}
+.ingredients{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.ingredientsContainer{
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.ingredientTitle{
+    color: #343B1B;
+    margin-top: 50px;
+font-family: Taviraj;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 83.333% */
+letter-spacing: -0.24px;
+}
+
+.ingredientRow{
+    color: #242D96;
+    display: flex;
+    align-items: center;
+font-family: Teachers;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 83.333% */
+letter-spacing: -0.24px;
+align-self: stretch;
+text-align: left;
+margin-left: 20%;
+}
