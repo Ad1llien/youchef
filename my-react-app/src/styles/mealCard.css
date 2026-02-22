@@ -19,6 +19,7 @@
     cursor: pointer;
     transition: 0.2s ease;
     box-sizing: border-box;
+    
 }
 
 .mealCard:hover {
@@ -54,4 +55,12 @@
 }
 .circle{
     
+}
+
+.true{
+    color:black;
+
+}
+.true:hover{
+    color:blue;
 }
