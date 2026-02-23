@@ -40,6 +40,21 @@ function MainRecipeContent() {
         setLoading(false);
       });
   };
+  // 🔹 Загрузка блюд по стране
+const loadMealsByCountry = (country) => {
+  setLoading(true);
+  setActiveFilter(country);
+  setVisibleCount(24);
+
+  fetch(
+    `https://www.themealdb.com/api/json/v2/65232507/filter.php?a=${country}`
+  )
+    .then(res => res.json())
+    .then(data => {
+      setAllMeals(data.meals || []);
+      setLoading(false);
+    });
+};
 
   // 🔹 Загрузка блюд по категориям
   const loadFilteredMeals = (category) => {
@@ -84,7 +99,7 @@ function MainRecipeContent() {
 
           {/* DISH TYPE */}
           <div className="dishType">
-            <div className="q1st" onClick={() => setDishOpen(!dishOpen)}>
+            <div className="q1st"   onClick={() => setDishOpen(!dishOpen)}>
               <div>Dish Type</div>
               <img
                 src={arrowDown}
@@ -98,7 +113,9 @@ function MainRecipeContent() {
                 {categories.map(item => (
                   <div
                     key={item.strCategory}
-                    className="filterItem"
+                    className={`filterItem ${
+                      activeFilter === item.strCategory ? "active" : ""
+                    }`}
                     onClick={() => loadFilteredMeals(item.strCategory)}
                   >
                     {item.strCategory}
@@ -123,10 +140,16 @@ function MainRecipeContent() {
             {countryOpen && (
               <div className="filterList">
                 {countries.map(item => (
-                  <div key={item.strArea} className="filterItem">
-                    {item.strArea}
-                  </div>
-                ))}
+  <div
+    key={item.strArea}
+    className={`filterItem ${
+      activeFilter === item.strArea ? "active" : ""
+    }`}
+    onClick={() => loadMealsByCountry(item.strArea)}
+  >
+    {item.strArea}
+  </div>
+))}
               </div>
             )}
             <div className="divider" />

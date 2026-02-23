@@ -237,3 +237,44 @@ footer{
   margin-top: 100px;
   margin-bottom: 50px;
 }
+
+.searchDropdown {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background: #FFFEEB;
+  border-radius: 12px;
+  margin-top: 8px;
+  z-index: 999;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.searchItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.searchItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.searchItem img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.searchItem span {
+  color: black;
+  font-size: 14px;
+}
+
+.filterItem.active {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}

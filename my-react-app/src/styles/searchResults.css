@@ -148,6 +148,7 @@ color: #343B1B;
   flex: 1;
   overflow-y: auto;
   
+
   /* Для Firefox */
   scrollbar-width: thin;
   scrollbar-color: rgba(170, 170, 170, 0.58) transparent;
@@ -167,3 +168,36 @@ color: #343B1B;
   border-radius: 10px; /* закругление */
   border: 3px solid transparent; /* пространство вокруг ползунка, чтобы не прилегал к краю */
 }
+
+  .resultsTitle {
+    font-size: 28px;
+    color: #242D96;
+    margin-bottom: 30px;
+    
+  }
+  
+  .recipesList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .recipeCard {
+    background: #FFFEEB;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .backBtn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: #242D96;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }

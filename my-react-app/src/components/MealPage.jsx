@@ -165,9 +165,19 @@ for (let i = 1; i <= 20; i++) {
       </div>
       
 
-      
+          <div className="lineWrapper">
+            <div className="centerLine"></div>
+          </div>
 
-      
+          <div className="searchingQuestion">
+            Don’t see what you’re looking for?
+          </div>
+
+          <div className="expandTitle">
+            YouChef is always looking to expand their recipes catalogue. Request a recipe and we’ll do our best to help
+          </div>
+
+          <button className="requestRecipe">Request Recipe</button>
     </div>
   );
 }
