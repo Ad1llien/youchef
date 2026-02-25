@@ -125,10 +125,13 @@ function App() {
 
       {/* MOBILE SLIDE MENU */}
       {mobileMenuOpen && (
-        <div className="mobile-slide-menu">
-          <div onClick={() => setMobileMenuOpen(false)}>Recipe</div>
-          <div onClick={() => setMobileMenuOpen(false)}>Premium</div>
-          <div onClick={() => setMobileMenuOpen(false)}>Contact</div>
+        <div
+          className="mobile-slide-menu"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div>Recipe</div>
+          <div>Premium</div>
+          <div>Contact</div>
         </div>
       )}
 
@@ -214,7 +217,16 @@ function App() {
             }
           />
 
-          <Route path="/pot" element={<PotPage />} />
+          <Route
+            path="/pot"
+            element={
+              <PotPage
+                checkPot={checkPot}
+                setCheckPot={setCheckPot}
+              />
+            }
+          />
+
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
 

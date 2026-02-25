@@ -312,6 +312,24 @@ body.dark-theme header.app-header {
     text-align: center;
   }
 
+  .line5{
+    width: 100%;
+  max-width: 1148px;   /* 🔥 ровно как header */
+  display: block;
+  margin: 0 auto;
+  }
+
+  footer{
+    margin-top: 100px;
+  margin-bottom: 50px;
+
+  max-width: 1148px;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 0 20px;
+  }
+
   .mainNavBtns div:nth-child(3) {
     grid-column: 1 / -1;
     justify-self: center;

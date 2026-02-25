@@ -24,13 +24,17 @@ line-height: normal;
     color:white;
     margin-top: 20px;
 }
-.Line36{
-    width: 100%;                    /* вся ширина экрана */
-}
-.Line36 img{
-    width: 1600px;
+.Line36 {
+  width: 100%;          /* растягиваем на всю ширину родителя */
+  max-width: 1600px;    /* опционально — чтобы не становилась больше оригинала */
+  margin: 0 auto;       /* центрируем */
 }
 
+.Line36 img {
+  width: 100%;          /* изображение растягивается по контейнеру */
+  height: 2px;          /* фиксированная высота линии */
+  object-fit: cover;    /* корректное заполнение */
+}
 .PotImage img{
     width: 93px;
     height: 92px;
@@ -248,4 +252,7 @@ cursor: pointer;
   align-items: center;
   width: 95%;
   margin-bottom: 12px
+  }
+
+  @media (max-width: 390px) {
   }

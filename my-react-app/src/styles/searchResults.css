@@ -201,3 +201,40 @@ color: #343B1B;
     border: none;
     cursor: pointer;
   }
+
+
+
+  /* Большой контейнер */
+.mealsContainer {
+  width: 90%;                  /* адаптивно под экран */
+  max-width: 1138px;           /* не больше оригинала на больших экранах */
+  border-radius: 15px 15px 0 0;
+  background: #FFFEEB;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 30px;
+  padding: 16px;               /* немного внутреннего отступа */
+}
+
+/* Адаптивка для мобильных */
+@media (max-width: 768px) {
+  .mealsContainer {
+    width: 95%;               /* почти весь экран */
+    padding: 12px;
+  }
+
+  .mealsHeader, .mealRow {
+    grid-template-columns: 1fr 3fr 1fr; /* подстраиваем колонки под меньший экран */
+    padding: 8px 12px;
+    font-size: 18px;
+  }
+
+  .mealName, .mealMatch {
+    font-size: 18px;
+  }
+
+  .resultsTitle {
+    font-size: 24px;
+  }
+}
