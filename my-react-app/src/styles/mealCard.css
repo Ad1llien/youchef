@@ -1,36 +1,39 @@
 /* GRID ДЛЯ КАРТОЧЕК */
 .mealGrid {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
     flex-wrap: wrap;
-    gap: 48px;
+    row-gap: 30px;
+    column-gap: 48px;
     justify-content: flex-start;
 }
+
 
 /* КАРТОЧКА */
 .mealCard {
     display: flex;
-    width: 196px;
-    height: 209px;
-    padding: 15px;
+    /* width: 195px;
+    height: 195px; */
     flex-direction: column;
     align-items: center;
-    border: 1px solid #242D96;
-    border-radius: 5px;
+    /* border: 1px solid #242D96; */
+    border-radius: 15px;
     cursor: pointer;
     transition: 0.2s ease;
     box-sizing: border-box;
 }
 
 .mealCard:hover {
-    border: 2px solid #0060B9;
-    transform: translateY(-3px);
+    border-image: 2px solid #0060B9;
+    /* transform: translateY(-3px); */
 }
 
 .mealCard img {
-    width: 166px;
-    height: 146px;
-    border-radius: 2px;
+    width: 195px;
+    height: 195px;
+    border-radius: 15px;
     object-fit: cover;
+    border: 1px solid #242D96;
 }
 
 .cardTitle {
