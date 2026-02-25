@@ -3,7 +3,8 @@ body {
   padding: 0;
   background-color: #FFFEEB; /* твой цвет */
   font-family: Arial, sans-serif; /* можно добавить шрифт */
-  overflow-x: hidden;
+    color: #343B1B; /* текст тёмный для контраста */
+
 }
 
 .app-header{
@@ -277,4 +278,215 @@ footer{
 .filterItem.active {
   background: rgba(255, 255, 255, 0.1);
   font-weight: 600;
+}
+header.app-header {
+  background-color: #FFFEEB;
+}
+
+/* тёмная тема */
+body.dark-theme {
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+}
+
+body.dark-theme header.app-header {
+  background-color: #2c2c3c;
+}
+
+/* кнопки темы */
+.theme-btn {
+  margin-left: 12px;
+  padding: 6px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+@media (max-width: 393px) {
+  .mainNavBtns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .mainNavBtns div:nth-child(3) {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+  body{
+    overflow-x: hidden;
+  }
+}
+
+.categories {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 393px) {
+  .mealGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 0 12px;
+  }
+
+  .mealCard {
+    width: 100%;
+  }
+}
+@media (max-width: 393px) {
+  .desktop-nav {
+    display: none;
+  }
+
+@media (max-width: 393px) {
+  .footerText {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .socialLogos {
+    transform: none;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+}
+
+.desktop-nav {
+  display: flex;
+}
+
+.mobile-header {
+  display: none;
+}
+
+
+  .mobile-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .burger {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-menu {
+    display: flex;
+    justify-content: space-around;
+    background: #FFFEEB;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+@media (max-width: 393px) {
+
+  .mealGrid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  .mealCard {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .mealCard img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+}
+
+
+
+
+
+/* ================= MOBILE HEADER ================= */
+
+.mobile-header {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.burger {
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #242D96;
+}
+
+/* ================= MOBILE SLIDE MENU ================= */
+
+.mobile-slide-menu {
+  display: none;
+}
+
+/* ================= ADAPTIVE ================= */
+
+@media (max-width: 393px) {
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .mobile-slide-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    background: #FFFEEB;
+    border-bottom: 1px solid #ddd;
+
+    padding: 12px 0;
+    animation: slideDown 0.25s ease-out;
+  }
+
+  .mobile-slide-menu div {
+    font-family: Teachers;
+    font-size: 16px;
+    color: #242D96;
+    cursor: pointer;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

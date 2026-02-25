@@ -32,8 +32,8 @@
     
 }
 .dishType img{
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
     aspect-ratio: 1/1;
 }
@@ -110,7 +110,7 @@
     align-items: center;
     text-align: left;
     gap: 20px;
-
+    cursor: pointer;
 }
 .halal img{
     width: 34px;
@@ -118,24 +118,21 @@
     aspect-ratio: 1/1;
 }
 
-.popularMealList{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
 .mainRecipeWrapper {
     display: flex;
-    gap: 40px; /* расстояние между фильтрами и карточками */
+    justify-content: center;              /* центрируем весь блок по ширине */
+    gap: 40px;                            /* расстояние между фильтрами и карточками */
+    margin-top: 48px;                     /* отступ сверху как у popular meals */
 }
 
 
 .sideRecipeFilter{
     display: flex;
     flex-direction: column;
-    width: 278px;          /* фикс */
+    width: 278px;
     flex-shrink: 0;        /* ❗ не сжиматься */
     gap: 80px;
+    margin-left: 50px;
 }
 .recipeFilter{
     display: flex;
@@ -143,26 +140,25 @@
 }
 
 
-.popularMealList {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 🔥 ровно 3 карточки */
-    gap: 48px;
-}
-
-
-@media (max-width: 1024px) {
-    .popularMealList {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .popularMealList {
-        grid-template-columns: 1fr;
-    }
-}
+/* сетка карточек управляется через .mealGrid / mealCard.css */
 .popularMealList{
     margin-top: 48px;
+}
+
+/* сетка карточек в Main Recipe на ПК: максимум 3 в ряд и по центру */
+.mainRecipeCardsGrid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    justify-content: center;                        /* ряды по центру */
+    max-width: calc(3 * 196px + 2 * 48px);         /* максимум 3 карточки в строке */
+    margin: 0 auto;
+}
+
+/* контейнер с карточками занимает всё оставшееся пространство справа */
+.cardsWrapper{
+    flex: 1;
+    min-width: 0;
 }
 
 .arrow {
@@ -210,3 +206,114 @@
     background: rgba(255, 255, 255, 0.1);
     font-weight: 600;
   }
+
+/* Горизонтальный скролл только для верхних категорий main recipe на мобильных */
+@media (max-width: 393px) {
+    /* ✅ ТОЛЬКО НА СМАРТФОНАХ МЕНЯЕМ ВИД ЛЕВОГО ФИЛЬТРА И КАРТОЧЕК */
+    .mainRecipeWrapper{
+        justify-content: flex-start;   /* фильтры и блюда начинаются слева */
+        width: 100%;
+    }
+
+    .sideRecipeFilter{
+        width: 100px;
+        height:auto;;                 /* фильтры уже и компактнее */
+        gap: 24px;
+    }
+    .dishType{
+        width: 80;
+        height: auto;
+        display: flex;
+    }
+
+    .types{
+        width: 140px;
+    }
+
+    .q1st div,
+    .q2st div{
+        font-size: 14px;
+    }
+
+    /* стрелка и линии в Dish Type / Countries меньше */
+    .dishType img{
+        width: 16px;
+        height: 16px;
+    }
+
+    .divider{
+        width: 100px;
+    }
+
+    .dishType hr,
+    .religions hr{
+        width: 100px;
+    }
+
+    /* уменьшить контент внутри types (список фильтров) */
+    .filterList{
+        max-height: 150px;      /* список не растягивает всю страницу */
+        overflow-y: auto;
+        gap: 6px;
+        padding: 6px 0 12px 0;
+    }
+
+    .filterItem{
+        font-size: 12px;        /* текст категорий компактнее */
+        line-height: 1.2;
+    }
+
+    .specialFilterBox{
+        padding: 10px 10px;           /* коробка с Halal/Vegan/From Chef меньше */
+    }
+
+    .halal{
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .halal img{
+        width: 18px;
+        height: 18px;
+    }
+
+    .mainRecipeCardsGrid{
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;                    /* 2 блюда в строку, плотнее друг к другу */
+    }
+
+    .mainRecipeCardsGrid .mealCard img{
+        width: 100%;
+        height: auto;
+        max-height: 110px;            /* как в popular meals на мобайле */
+    }
+
+    .cardsWrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .mainRecipeCategories {
+        width: 100%;
+    }
+
+    .mainRecipeCategories .categories {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 12px 16px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .mainRecipeCategories .categories::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mainRecipeCategories button {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+}

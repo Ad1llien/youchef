@@ -3,20 +3,22 @@ import "../styles/inYourPot.css";
 import Line from "../icons/Line36.svg";
 import pot from "../icons/closedPot.svg";
 
-function PotPage({ checkPot, setCheckPot }) {
+function PotPage({ checkPot = [], setCheckPot = () => {} }) {
   const navigate = useNavigate();
+
   const clearAllIngredients = () => {
-    if(checkPot.length === 0) return
+    if (!checkPot || checkPot.length === 0) return;
+
     const permission = window.confirm(
       "Are you sure you want to remove all ingredients?"
     );
-  
     if (!permission) return;
-  
-    setCheckPot([]);                 // очищаем state
+
+    setCheckPot([]);
     localStorage.removeItem("checkPot");
-    navigate(-1); // или navigate("/")
+    navigate(-1); // можно заменить на navigate("/") если нужно
   };
+
   const handleDelete = (item) => {
     setCheckPot((prev) => prev.filter((i) => i !== item));
   };
@@ -30,17 +32,19 @@ function PotPage({ checkPot, setCheckPot }) {
       </div>
 
       <div className="btnsWrapper">
-      <button className="backBtn" onClick={() => navigate("/")}>
-        ← Back
-      </button>
-      <button className="backBtn clearBtn" onClick={clearAllIngredients}>Clear all</button>
+        <button className="backBtn" onClick={() => navigate("/")}>
+          ← Back
+        </button>
+        <button className="backBtn clearBtn" onClick={clearAllIngredients}>
+          Clear all
+        </button>
       </div>
 
       <div className="PotImage">
         <img src={pot} alt="pot" />
       </div>
 
-      {checkPot.length === 0 ? (
+      {!checkPot || checkPot.length === 0 ? (
         <p className="emptyText">No ingredients selected</p>
       ) : (
         <>
@@ -69,9 +73,7 @@ function PotPage({ checkPot, setCheckPot }) {
           <div className="searchWrapper">
             <button
               className="searchBtn"
-              onClick={() =>
-                navigate("/search-results", { state: { checkPot } })
-              }
+              onClick={() => navigate("/search-results", { state: { checkPot } })}
             >
               Search
             </button>

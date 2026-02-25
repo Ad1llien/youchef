@@ -41,6 +41,27 @@
     text-align: center;
 }
 
+/* 🟦 Мобильная адаптация: уменьшаем карточки и картинки */
+@media (max-width: 393px) {
+    .mealCard {
+        width: 100%;
+        padding: 10px;
+        height: auto;              /* высота по контенту */
+    }
+
+    .mealCard img {
+        width: 100%;
+        max-height: 110px;         /* ограничиваем высоту, чтобы не были огромные */
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .cardTitle {
+        font-size: 14px;
+        margin-top: 6px;
+    }
+}
+
 
 .categoryCard{
     display: flex;

@@ -176,28 +176,30 @@ const loadMealsByCountry = (country) => {
       {/* MAIN CONTENT */}
       <div className="cardsWrapper">
 
-        {/* TOP FILTER BUTTONS */}
-        <div className="popularMealFilter">
-          <button
-            className={activeFilter === "Vegan" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Vegan")}
-          >
-            Vegan
-          </button>
+        {/* TOP FILTER BUTTONS — только этот ряд скроллится по X */}
+        <div className="popularMealFilter mainRecipeCategories">
+          <div className="categories">
+            <button
+              className={activeFilter === "Vegan" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Vegan")}
+            >
+              Vegan
+            </button>
 
-          <button
-            className={activeFilter === "Seafood" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Seafood")}
-          >
-            Halal
-          </button>
+            <button
+              className={activeFilter === "Seafood" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Seafood")}
+            >
+              Halal
+            </button>
 
-          <button
-            className={activeFilter === "Beef" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Beef")}
-          >
-            From Chef
-          </button>
+            <button
+              className={activeFilter === "Beef" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Beef")}
+            >
+              From Chef
+            </button>
+          </div>
         </div>
 
         {/* MEALS */}
@@ -205,7 +207,7 @@ const loadMealsByCountry = (country) => {
           <div className="loader"></div>
         ) : (
           <>
-            <div className="popularMealList">
+            <div className="popularMealList mainRecipeCardsGrid">
               {visibleMeals.map(meal => (
                 <div
                   key={meal.idMeal}

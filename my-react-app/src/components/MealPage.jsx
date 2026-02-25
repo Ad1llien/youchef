@@ -13,6 +13,10 @@ function MealPage() {
 
   const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [checkPot, setCheckPot] = useState(() => {
+    const saved = localStorage.getItem("checkPot");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     const loadMeal = async () => {
@@ -142,7 +146,7 @@ for (let i = 1; i <= 20; i++) {
             <img src={meal.strMealThumb} alt="meal.strMeal" />
           </div>
           <div className="ingredientsList">
-            <div className="ingredientTitle">Ingredients</div>
+            <div className="ingredientsTitle">Ingredients</div>
             <div className="ingredientsContainer">
               {Array.from({ length: 20 }, (_, i) => i + 1)
               .map(i => ({
@@ -152,8 +156,8 @@ for (let i = 1; i <= 20; i++) {
               .filter(item => item.ingredient && item.ingredient.trim() !== "")
               .map((item, index) => (
               <div key={index} className="ingredientRow">
-                <span className="ingredientName">{item.ingredient}</span>
-                <span className="ingredientMeasure">{item.measure}</span>
+                <li className="ingredientName">{item.ingredient + " "}</li>
+                <span className="ingredientMeasure">{" "+item.measure}</span>
               </div>
               ))}
             </div>

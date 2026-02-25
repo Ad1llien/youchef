@@ -35,6 +35,9 @@ function AppWrapper() {
 function App() {
   const navigate = useNavigate();
 
+  /* 🍔 mobile menu */
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   /* 🫕 кастрюля */
   const [checkPot, setCheckPot] = useState(() => {
     const saved = localStorage.getItem("checkPot");
@@ -53,7 +56,6 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
 
-  /* 📌 ref для dropdown */
   const searchRef = useRef(null);
 
   /* 🔄 debounce search */
@@ -81,7 +83,7 @@ function App() {
     return () => clearTimeout(timeout);
   }, [searchQuery]);
 
-  /* ❌ закрытие dropdown при клике вне */
+  /* ❌ закрытие dropdown */
   useEffect(() => {
     function handleClickOutside(e) {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -96,71 +98,79 @@ function App() {
 
   return (
     <div className="App">
+
       {/* ================= HEADER ================= */}
       <header className="app-header">
         <img src={youChefLogo} alt="YouChef Logo" className="logo" />
 
-        <nav className="nav-buttons">
+        {/* DESKTOP NAV */}
+        <nav className="nav-buttons desktop-nav">
           <div>Recipe</div>
           <div>Premium</div>
           <div>Contact</div>
           <button className="loginBtn">Log In</button>
         </nav>
+
+        {/* MOBILE HEADER */}
+        <div className="mobile-header">
+          <button className="loginBtn">Log In</button>
+          <button
+            className="burger"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+          >
+            ☰
+          </button>
+        </div>
       </header>
+
+      {/* MOBILE SLIDE MENU */}
+      {mobileMenuOpen && (
+        <div className="mobile-slide-menu">
+          <div onClick={() => setMobileMenuOpen(false)}>Recipe</div>
+          <div onClick={() => setMobileMenuOpen(false)}>Premium</div>
+          <div onClick={() => setMobileMenuOpen(false)}>Contact</div>
+        </div>
+      )}
 
       {/* ================= MAIN ================= */}
       <main>
         <Routes>
-          {/* HOME */}
+
           <Route
             path="/"
             element={
               <div className="main1stChild">
+
                 <div className="recipeEmpty">Recipes</div>
 
-                {/* Tabs */}
                 <div className="mainNavBtns">
                   <div
-                    className={`mainRecipeBtn ${activeTab === "main" ? "active" : ""}`}
-                    onClick={() => {
-                      setActiveTab("main");
-                      setSearchResults([]);
-                      setSearchQuery("");
-                    }}
+                    className={activeTab === "main" ? "active" : ""}
+                    onClick={() => setActiveTab("main")}
                   >
                     Main Recipe
                   </div>
 
                   <div
-                    className={`popularMeal ${activeTab === "popular" ? "active" : ""}`}
-                    onClick={() => {
-                      setActiveTab("popular");
-                      setSearchResults([]);
-                      setSearchQuery("");
-                    }}
+                    className={activeTab === "popular" ? "active" : ""}
+                    onClick={() => setActiveTab("popular")}
                   >
                     Popular Meals
                   </div>
 
                   <div
-                    className={`createOwnMeal ${activeTab === "create" ? "active" : ""}`}
-                    onClick={() => {
-                      setActiveTab("create");
-                      setSearchResults([]);
-                      setSearchQuery("");
-                    }}
+                    className={activeTab === "create" ? "active" : ""}
+                    onClick={() => setActiveTab("create")}
                   >
                     Create Own Meal
                   </div>
                 </div>
 
-                {/* Search */}
                 <div className="container-search">
                   <div className="search-wrapper" ref={searchRef}>
                     <input
-                      type="text"
                       className="search-input"
-                      placeholder="Which meal you want? Search it!"
+                      placeholder="Which meal you want?"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -169,10 +179,9 @@ function App() {
                       <img src={searchIcon} alt="Search" />
                     </button>
 
-                    {/* Dropdown */}
                     {searchResults.length > 0 && (
                       <div className="searchDropdown">
-                        {searchResults.map((meal) => (
+                        {searchResults.map(meal => (
                           <div
                             key={meal.idMeal}
                             className="searchItem"
@@ -182,20 +191,17 @@ function App() {
                               navigate(`/meal/${meal.idMeal}`);
                             }}
                           >
-                            <img src={meal.strMealThumb} alt={meal.strMeal} />
+                            <img src={meal.strMealThumb} alt="" />
                             <span>{meal.strMeal}</span>
                           </div>
                         ))}
                       </div>
                     )}
 
-                    {searchLoading && (
-                      <div className="searchLoading">Searching...</div>
-                    )}
+                    {searchLoading && <div>Searching...</div>}
                   </div>
                 </div>
 
-                {/* Content */}
                 {activeTab === "popular" && <PopularMealContent />}
                 {activeTab === "main" && <MainRecipeContent />}
                 {activeTab === "create" && (
@@ -208,33 +214,16 @@ function App() {
             }
           />
 
-          {/* POT */}
-          <Route
-            path="/pot"
-            element={
-              <PotPage
-                checkPot={checkPot}
-                setCheckPot={setCheckPot}
-              />
-            }
-          />
-
-          {/* MEAL PAGE */}
+          <Route path="/pot" element={<PotPage />} />
           <Route path="/meal/:id" element={<MealPage />} />
+          <Route path="/search-results" element={<SearchResultsPage />} />
 
-          {/* SEARCH RESULTS */}
-          <Route
-            path="/search-results"
-            element={<SearchResultsPage />}
-          />
         </Routes>
       </main>
 
       {/* ================= FOOTER ================= */}
       <footer>
-        <div className="lines">
-          <img className="line5" src={footlines} alt="" />
-        </div>
+        <img className="line5" src={footlines} alt="" />
 
         <div className="footerText">
           <div className="makeUs">Make us a part of your lifestyle</div>
@@ -244,11 +233,12 @@ function App() {
         </div>
 
         <div className="socialLogos">
-          <img src={instagramIcon} alt="Instagram" />
-          <img src={telegramIcon} alt="Telegram" />
-          <img src={tiktokIcon} alt="TikTok" />
+          <img src={instagramIcon} alt="" />
+          <img src={telegramIcon} alt="" />
+          <img src={tiktokIcon} alt="" />
         </div>
       </footer>
+
     </div>
   );
 }

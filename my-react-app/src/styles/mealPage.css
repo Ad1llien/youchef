@@ -42,8 +42,12 @@ line-height: 40px;
 .youtubeText{
     width: 348px;
 }
+li{
+    font-weight: 500;
+}
 span{
     font-weight: 500;
+
 }
 
 .infoWrapper{
@@ -181,14 +185,16 @@ width: 371px;
 height: 300px;
 }
 
-.ingredientTitle{
+.ingredientsTitle{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: auto;
+    
 }
 .mainContent{
     display: flex;
-    align-items: center;
+    align-items:flex-start ;
     justify-content:space-around;
 }
 
@@ -196,18 +202,24 @@ height: 300px;
     text-align: left;
     max-width: 727px;
     color: #343B1B;
-font-family: Teachers;
-font-size: 24px;
-font-style: normal;
-font-weight: 400;
-line-height: 40px;
+    font-family: Teachers;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
 }
 .ingredientsList{
     flex-direction: column;
     align-items: center;justify-content: center;
     background: #F8F8F0;
     display: flex;
-    
+    height: auto;
+    width: auto;
+    margin-top: 50px;
+    padding: 30px;
+}
+.firstRow{
+    gap: 50px;
 }
 .ingredients{
     display: flex;
@@ -216,9 +228,30 @@ line-height: 40px;
 }
 .ingredientsContainer{
     gap: 20px;
+    padding-bottom: 20px;
+}
+.ingredientName{
+    color: #242D96;
+
+font-family: Teachers;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 83.333% */
+letter-spacing: -0.24px;
+}
+.ingredientMeasure{
+    color: #242D96;
+
+    font-family: Teachers;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 83.333% */
+    letter-spacing: -0.24px; 
 }
 
-.ingredientTitle{
+.ingredientsTitle{
     color: #343B1B;
 
     font-family: Taviraj;
@@ -245,4 +278,5 @@ align-self: stretch;
 text-align: left;
 margin-left: 5%;
 margin-top: 20px;
+gap: 10px;
 }

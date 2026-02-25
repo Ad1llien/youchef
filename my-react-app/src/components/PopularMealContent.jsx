@@ -60,32 +60,34 @@ function PopularMealContent() {
     <div className="popularMealContent">
       <div className="popularMealMainContainer">
 
-        {/* FILTER BUTTONS */}
+        {/* FILTER BUTTONS (scroll horizontally only this row) */}
         <div className="popularMealFilter">
-          <button
-            className={activeFilter === "Breakfast" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Breakfast")}
-          >
-            Breakfast
-          </button>
+          <div className="categories">
+            <button
+              className={activeFilter === "Breakfast" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Breakfast")}
+            >
+              Breakfast
+            </button>
 
-          <button
-            className={activeFilter === "Seafood" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Seafood")}
-          >
-            Lunch
-          </button>
+            <button
+              className={activeFilter === "Seafood" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Seafood")}
+            >
+              Lunch
+            </button>
 
-          <button
-            className={activeFilter === "Beef" ? "active" : ""}
-            onClick={() => loadFilteredMeals("Beef")}
-          >
-            Dinner
-          </button>
+            <button
+              className={activeFilter === "Beef" ? "active" : ""}
+              onClick={() => loadFilteredMeals("Beef")}
+            >
+              Dinner
+            </button>
 
-          <button onClick={loadDefaultMeals}>
-            From Chef
-          </button>
+            <button onClick={loadDefaultMeals}>
+              From Chef
+            </button>
+          </div>
         </div>
 
         {/* MEALS */}
@@ -93,7 +95,7 @@ function PopularMealContent() {
           <div className="loader"></div>
         ) : (
           <>
-            <div className="popularMealList">
+            <div className="mealGrid">
               {visibleMeals.map((meal) => (
                 <div
                   className="mealCard"
