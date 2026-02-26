@@ -82,7 +82,7 @@
 
 .ingredientsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 в ряд */
+  grid-template-columns: repeat(5, 1fr); /* 3 в ряд */
   gap: 16px;
   justify-items: center;
   max-width: 360px; /* ограничиваем ширину */
@@ -141,13 +141,12 @@
   line-height: 1.1;
   color: #242D96;
 }
-
+/* ===== DESKTOP (по умолчанию) ===== */
 .fivePerRow {
   display: grid;
-  grid-template-columns: repeat(5, 120px); /* 5 карточек, каждая 120px */
-  gap: 24px; /* расстояние между карточками */
-  justify-content: center; /* центрирует весь ряд */
-  max-width: calc(120px * 5 + 24px * 4); /* ограничение ширины */
+  grid-template-columns: repeat(5, 120px);
+  gap: 24px;
+  justify-content: center;
   margin: 0 auto;
 }
 
@@ -241,14 +240,7 @@ object-fit: cover;
   }
 }
 
-.fivePerRow {
-  display: grid;
-  grid-template-columns: repeat(3, 120px); /* 🔥 максимум 3 в строке */
-  gap: 24px;
-  justify-content: center;
-  margin: 0 auto;
 
-}
 
 @media (max-width: 390px) {
   .fivePerRow {

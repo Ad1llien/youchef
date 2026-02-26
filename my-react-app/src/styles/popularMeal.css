@@ -247,7 +247,7 @@ object-fit: cover; /* чтобы картинка заполняла конте�
   
     .mealCard img {
       width: 100%;
-      max-height: 110px;      /* такая же высота, как в main recipe / mealCard.css */
+      max-height: auto;      /* такая же высота, как в main recipe / mealCard.css */
       border-radius: 8px;
     }
   }
