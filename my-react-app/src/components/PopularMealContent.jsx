@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "../styles/mealCard.css";
 
 const STORAGE_KEY = "popularMealFilter";
+const MEALS_PER_PAGE = 6;
 
 function PopularMealContent() {
   const [meals, setMeals] = useState([]);
   const [activeFilter, setActiveFilter] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [visibleCount, setVisibleCount] = useState(24); // 🔹 для Load More
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ function PopularMealContent() {
     setLoading(true);
     localStorage.removeItem(STORAGE_KEY);
     setActiveFilter(null);
-    setVisibleCount(24);
+    setCurrentPage(1);
 
     fetch("https://www.themealdb.com/api/json/v2/65232507/search.php?s=")
       .then((res) => res.json())
@@ -43,7 +44,7 @@ function PopularMealContent() {
   const loadFilteredMeals = (category) => {
     setLoading(true);
     setActiveFilter(category);
-    setVisibleCount(24);
+    setCurrentPage(1);
     localStorage.setItem(STORAGE_KEY, category);
 
     fetch(`https://www.themealdb.com/api/json/v2/65232507/filter.php?c=${category}`)
@@ -54,7 +55,55 @@ function PopularMealContent() {
       });
   };
 
-  const visibleMeals = meals.slice(0, visibleCount); // 🔹 показываем только видимые
+  const totalPages = Math.ceil(meals.length / MEALS_PER_PAGE);
+
+  const currentMeals = meals.slice(
+    (currentPage - 1) * MEALS_PER_PAGE,
+    currentPage * MEALS_PER_PAGE
+  );
+
+  const getPageItems = () => {
+    if (totalPages <= 1) return [];
+
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, idx) => ({
+        type: "page",
+        value: idx + 1,
+      }));
+    }
+
+    const items = [];
+    items.push({ type: "page", value: 1 });
+
+    let left = currentPage - 1;
+    let right = currentPage + 1;
+
+    if (currentPage <= 3) {
+      left = 2;
+      right = 4;
+    } else if (currentPage >= totalPages - 2) {
+      left = totalPages - 3;
+      right = totalPages - 1;
+    }
+
+    if (left > 2) {
+      items.push({ type: "ellipsis", key: "left" });
+    }
+
+    for (let page = left; page <= right; page += 1) {
+      if (page > 1 && page < totalPages) {
+        items.push({ type: "page", value: page });
+      }
+    }
+
+    if (right < totalPages - 1) {
+      items.push({ type: "ellipsis", key: "right" });
+    }
+
+    items.push({ type: "page", value: totalPages });
+
+    return items;
+  };
 
   return (
     <div className="popularMealContent">
@@ -95,8 +144,8 @@ function PopularMealContent() {
           <div className="loader"></div>
         ) : (
           <>
-            <div className="mealGrid">
-              {visibleMeals.map((meal) => (
+            <div className="mealGrid22">
+              {currentMeals.map((meal) => (
                 <div
                   className="mealCard"
                   key={meal.idMeal}
@@ -104,23 +153,58 @@ function PopularMealContent() {
                 >
                   <img src={meal.strMealThumb} alt={meal.strMeal} />
                   <div className="cardTitle">
-                    {meal.strMeal.length > 15
-                      ? meal.strMeal.slice(0, 15) + "..."
+                    {meal.strMeal.length > 6
+                      ? meal.strMeal.slice(0, 6) + "..."
                       : meal.strMeal}
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* LOAD MORE BUTTON */}
-            {visibleCount < meals.length && (
+            {/* PAGINATION */}
+            {totalPages > 1 && (
               <div className="loadMoreWrapper">
-                <button
-                  className="loadMoreBtn"
-                  onClick={() => setVisibleCount(prev => prev + 24)}
-                >
-                  Load more
-                </button>
+                <div className="pagination">
+                  <button
+                    className="pageArrow"
+                    disabled={currentPage === 1}
+                    onClick={() =>
+                      setCurrentPage(prev => (prev > 1 ? prev - 1 : prev))
+                    }
+                  >
+                    «
+                  </button>
+
+                  {getPageItems().map(item =>
+                    item.type === "page" ? (
+                      <button
+                        key={item.value}
+                        className={`pageBtn ${
+                          item.value === currentPage ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(item.value)}
+                      >
+                        {item.value}
+                      </button>
+                    ) : (
+                      <span key={item.key} className="pageDots">
+                        ...
+                      </span>
+                    )
+                  )}
+
+                  <button
+                    className="pageArrow"
+                    disabled={currentPage === totalPages}
+                    onClick={() =>
+                      setCurrentPage(prev =>
+                        prev < totalPages ? prev + 1 : prev
+                      )
+                    }
+                  >
+                    »
+                  </button>
+                </div>
               </div>
             )}
           </>

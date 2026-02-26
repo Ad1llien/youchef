@@ -280,3 +280,176 @@ margin-left: 5%;
 margin-top: 20px;
 gap: 10px;
 }
+
+
+
+@media (max-width: 393px) {
+
+    /* ===== PAGE BASE ===== */
+    .mealPage {
+      padding: 0 16px;
+    }
+  
+    /* ===== HEADER ===== */
+    .headerBegin {
+      margin: 80px 0 16px 0;
+      gap: 12px;
+    }
+  
+    .backBtn {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+  
+    .nameFoodTitle {
+      font-size: 20px;
+    }
+  
+    .favoriteIcon img {
+      width: 32px;
+      height: 32px;
+    }
+  
+    /* ===== INFO TOP (youtube + calories) ===== */
+    .infoWrapper {
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 32px;
+    }
+  
+    .youtubeLink {
+      gap: 16px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  
+    .youtubeText {
+      width: auto;
+    }
+  
+    .topCalc {
+      gap: 16px;
+      height: auto;
+    }
+  
+    .digits div,
+    .categories div {
+      width: 64px;
+      font-size: 14px;
+    }
+  
+    /* ===== LIMIT WARNING ===== */
+    .limitWrapper {
+      margin: 24px auto 0;
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  
+    .limitText {
+      font-size: 12px;
+    }
+  
+    /* ===== MAIN CONTENT ===== */
+    .mainContent {
+      flex-direction: column;
+      gap: 32px;
+      margin-top: 32px;
+    }
+  
+    .firstRow {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+  
+    /* ===== IMAGE ===== */
+    .image img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+  
+    /* ===== INGREDIENTS ===== */
+    .ingredientsList {
+      margin-top: 0;
+      padding: 20px;
+    }
+  
+    .ingredientsTitle {
+      font-size: 20px;
+      margin: 16px 0;
+    }
+  
+    .ingredientRow {
+      margin-left: 0;
+      font-size: 16px;
+    }
+  
+    .ingredientName,
+    .ingredientMeasure {
+      font-size: 16px;
+    }
+  
+    /* ===== INSTRUCTIONS ===== */
+    .secondRow {
+      font-size: 16px;
+      line-height: 26px;
+    }
+  
+    /* ===== FOOTER CTA ===== */
+    .searchingQuestion {
+      margin-top: 40px;
+      font-size: 18px;
+      text-align: center;
+    }
+  
+    .expandTitle {
+      font-size: 14px;
+      text-align: center;
+      padding: 0 8px;
+    }
+  
+    .requestRecipe {
+      width: 100%;
+      margin: 16px auto 40px;
+    }
+  }
+
+  .imgWrapper {
+    width: 100%;
+    overflow: hidden;          /* 🔥 главное */
+    display: flex;
+    justify-content: center;
+  }
+  
+  .imgWrapper img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  @media (max-width: 393px) {
+    .imgWrapper {
+      margin: 0 -16px;   /* линия красиво до краёв экрана */
+    }
+  
+    .imgWrapper img {
+      width: calc(100% + 32px);
+    }
+  }
+
+  @media (max-width: 393px) {
+    .headerBegin {
+      margin: 64px 0 16px 0;   /* ❗ убрали 100px */
+      padding: 0 16px;
+    }
+  
+    .favoriteIcon img {
+      width: 32px;
+      height: 32px;
+    }
+  }

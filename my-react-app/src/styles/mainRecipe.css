@@ -146,13 +146,12 @@
 }
 
 /* сетка карточек в Main Recipe на ПК: максимум 3 в ряд и по центру */
-.mainRecipeCardsGrid{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 48px;
-    justify-content: center;                        /* ряды по центру */
-    max-width: calc(3 * 196px + 2 * 48px);         /* максимум 3 карточки в строке */
-    margin: 0 auto;
+/* ПК ВЕРСИЯ */
+.mainRecipeCardsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 196px); /* фиксированная ширина карточек */
+    gap: 16px;                               /* МЕНЬШЕ расстояние */
+    justify-content: center;                  /* без растягивания */
 }
 
 /* контейнер с карточками занимает всё оставшееся пространство справа */
