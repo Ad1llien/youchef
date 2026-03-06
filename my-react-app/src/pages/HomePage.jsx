@@ -1,5 +1,5 @@
 import { useState } from "react";
-import searchIcon from "../icons/search-2-line.png";
+import searchIcon from "../icons/search-2-line.svg";
 
 import PopularMealContent from "../components/PopularMealContent.jsx";
 import MainRecipeContent from "../components/MainRecipeContent.jsx";

@@ -13,12 +13,17 @@
 }
 
 .backBtn {
-  padding: 10px 20px;
-  border-radius: 30px;
-  background: #242D96;
-  color: white;
+  display: flex;
+  font-family: Teachers;
+  width: 128px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
   border: none;
   cursor: pointer;
+  background-color: #242D96;
+  border-radius: 30px;
+  color: white;
 }
 
 .resultsTitle {
@@ -40,73 +45,88 @@
   margin-bottom: 40px;
 }
 
-/* Большой контейнер */
-.mealsContainer {
-  width: 1138px;
-  height: 2296px;
-  border-radius: 15px 15px 0 0;
-background: rgba(243, 243, 243, 0.60);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #FFFEEB;
-  margin-top: 30px;
-}
+/* старый вариант .mealsContainer был ниже переопределён – удалён */
 
 /* Шапка таблицы */
 .mealsHeader {
+  width: 900px;
+  height: 66px;
   display: grid;
   grid-template-columns: 1fr 4fr 1fr; /* №, Name, Matching % */
-  padding: 16px 24px;
+  
   background-color: rgba(243, 243, 243, 0.60);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   color: white;
   font-weight: 600;
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.40);
-
+  color: #BFBFB9;
 text-align: center;
 font-family: Teachers;
-font-size: 22px;
+font-size: 20px;
 font-style: normal;
-font-weight: 400;
+font-weight: 10;
 line-height: normal;
-padding-top: 50px;
+align-items: center;
 }
 
 /* Список с прокруткой */
 .mealsList {
-  flex: 1;
+  width: 900px;
+  max-height: 726px;  /* ≈10 строк как в макете */
   overflow-y: auto;
+  margin-top: 8px;
 }
 
 /* Каждая строка блюда */
 .mealRow {
-  height: 46px;
+  height: 26px;
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
-  padding: 12px 24px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
   transition: background 0.2s;
   border: none;
+  padding: 20px;
 }
 
 .mealRow:hover {
   border: 1px solid rgba(52, 59, 27, 0.18);
+  height: 26px;
   border-radius: 10px;
   background: #EFF2D4;}
-
+.mealName{
+  width: 705px;
+}
 /* Элементы строки */
 .mealIndex,
 .mealName,
 .mealMatch {
   display: flex;
   align-items: center;
+
+}.mealIndex,
+.mealName,
+.mealMatch:hover {
+  color: #343B1B;
+
 }
+.mealHeaderNames{
+  
+  width:80%;
+font-family: Teachers;
+font-size: 20px;
+font-weight:normal;
+color: #BFBFB9;
+align-items: flex-start;
+
+}
+
+
 
 .mealName,.mealMatch{
   font-family: Teachers;
-font-size: 22px;
+font-size: 24px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
@@ -115,11 +135,31 @@ color: #242D96;
 
 }
 .mealIndex{
-color: #343B1B;  
+color: #343B1B; 
+width: 58px;
+font-size: 24px;
+justify-content: center;
 }
 
 .lineWrapper{
   margin-top: 200px;
+}
+
+/* Контейнер для кнопок Back / Clear, как на PotPage */
+.btnsWrapper{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 20px;
+  max-width: 1148px;
+  margin-left: auto;
+  margin-right: auto; 
+  margin-top: 20px;
+  margin-bottom: 40px;
+
+  gap: 450px;
 }
 
 .requestRecipe {
@@ -194,6 +234,7 @@ color: #343B1B;
   
   .backBtn {
     margin-bottom: 20px;
+    font-family: Teachers;
     padding: 10px 20px;
     border-radius: 30px;
     background: #242D96;
@@ -207,14 +248,15 @@ color: #343B1B;
   /* Большой контейнер */
 .mealsContainer {
   width: 90%;                  /* адаптивно под экран */
-  max-width: 1138px;           /* не больше оригинала на больших экранах */
+  max-width: 900px;           /* не больше оригинала на больших экранах */
   border-radius: 15px 15px 0 0;
   background: #FFFEEB;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: 30px;
-  padding: 16px;               /* немного внутреннего отступа */
+  padding-left: auto;
+  padding-right: auto;
+                /* немного внутреннего отступа */
 }
 
 /* Адаптивка для мобильных */
@@ -226,7 +268,7 @@ color: #343B1B;
 
   .mealsHeader, .mealRow {
     grid-template-columns: 1fr 3fr 1fr; /* подстраиваем колонки под меньший экран */
-    padding: 8px 12px;
+    
     font-size: 18px;
   }
 

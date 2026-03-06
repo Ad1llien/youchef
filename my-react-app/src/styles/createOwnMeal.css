@@ -25,6 +25,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap:5px;
 }
 
 /* ⭕ КРУГ ВОКРУГ ИКОНКИ */
@@ -90,7 +91,9 @@
 }
 
 .ingredientCard {
-  padding: 12px 18px;
+  width: 196px;
+  height: 229px;
+  /* padding: 12px 18px; */
   border: 1px solid #242D96;
   border-radius: 20px;
   font-size: 16px;
@@ -104,20 +107,20 @@
 .ingredientsGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 48px;
   justify-content: center;
 }
 
 .ingredientCard {
-  width: 100px;              /* 👈 меньше */
-  padding: 10px 6px;
+  /* width: 100px;              👈 меньше */
+  
   border: 1px solid #242D96;
-  border-radius: 14px;
+  border-radius: 15px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 20px;
 
   cursor: pointer;
   transition: 0.2s ease;
@@ -128,31 +131,32 @@
 }
 /* 🖼 картинка ингредиента */
 .ingredientImage {
-  width: 72px;
-  height: 72px;
+  width: 166px;
+  height: 146px;
   object-fit: contain;
 }
 
 /* 📝 название */
 .ingredientTitle {
   text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 550;
   line-height: 1.1;
   color: #242D96;
 }
 /* ===== DESKTOP (по умолчанию) ===== */
 .fivePerRow {
   display: grid;
-  grid-template-columns: repeat(5, 120px);
-  gap: 24px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 48px;
   justify-content: center;
   margin: 0 auto;
 }
 
 .line{
-  width: 100%;
-  margin-top: 50px;
+  width: 1440px;
+
+  margin-top: 124px;
 }
 .line img{
   width: 100%;      /* растягиваем на всю ширину контейнера */
@@ -188,6 +192,26 @@ object-fit: cover;
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* 🔹 Анимация кастрюли при добавлении ингредиента */
+@keyframes pot-bounce {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.08);
+  }
+  60% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.potIcon.open img {
+  animation: pot-bounce 0.8s ease-in-out;
 }
 
 

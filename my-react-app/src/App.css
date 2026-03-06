@@ -1,16 +1,17 @@
 body {
-  margin: 0;           /* убираем стандартные отступы */
+  margin-top: 0px;           /* убираем стандартные отступы */
   padding: 0;
   background-color: #FFFEEB; /* твой цвет */
-  font-family: Arial, sans-serif; /* можно добавить шрифт */
-    color: #343B1B; /* текст тёмный для контраста */
+  font-family: Teachers; /* можно добавить шрифт */
+    color: #242D96; /* текст тёмный для контраста */
+    font-weight:550;
 
 }
 
 .app-header{
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 48px;
   padding: 0 20px;   
   max-width: 1148px;
@@ -18,7 +19,8 @@ body {
   margin-right: auto;
 }
 .logo {
-  height: 50px;       
+  width: 245px;
+  height: 74px;       
   display: block;       
 }
 
@@ -38,7 +40,8 @@ body {
 }
 .nav-buttons button{
   display: flex;                    /* включаем flex, чтобы содержимое внутри центрировалось */
-  width: 121px;                     /* ширина кнопки */
+  width: 128px;    
+  height: 40px;                 /* ширина кнопки */
   padding: 10px 12px;               /* верх/низ = 10px, лево/право = 12px */
   justify-content: center;           /* центрируем содержимое по горизонтали */
   align-items: center;               /* центрируем содержимое по вертикали */
@@ -49,6 +52,7 @@ body {
   border-radius: 6px;
   border-radius: 30px;
   background: #242D96;
+  margin-left: 64px;
 }
 
 .loginBtn{
@@ -75,7 +79,7 @@ body {
 
 }
 .main1stChild{
-  margin-top: 120px;
+  margin-top: 100px;
 }
 .mainNavBtns{
   display: flex;
@@ -99,28 +103,33 @@ body {
 
 .search-wrapper {
   position: relative;
-  width: 320px;                  /* стартовая ширина больше */
+  width: 588px; 
+  height: 40px;                 /* стартовая ширина больше */
   transition: width 0.3s ease;
   
 }
 
 .search-wrapper:hover,
 .search-wrapper:focus-within {
-  width: 400px;                  /* расширение при фокусе */
+  width: 488px;                  /* расширение при фокусе */
+  
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 46px 8px 12px;   /* правый padding = место для иконки */
+  padding: 9px 46px 9px 20px;   /* правый padding = место для иконки */
   border: 1px solid #ccc;
   border-radius: 30px;
   font-size: 16px;
+  font-style: normal;
   transition: all 0.3s ease;
   box-sizing: border-box;        /* чтобы padding учитывался в ширине */
   outline: none;          /* 🔥 убрали стандартную рамку */
-
+  color: #242D96;
 }
-
+.search-input:hover{
+  border: 1px solid #242D96;
+}
 .search-input::placeholder {
   transition: opacity 0.2s ease;
 }
@@ -148,9 +157,7 @@ body {
   border-radius: 14px;
 }
 
-.search-btn:hover img {
-  transform: scale(1.2);         /* немного увеличиваем при наведении */
-}
+
 
 .popularMeal{
   cursor: pointer;
@@ -165,29 +172,38 @@ body {
 .mainNavBtns {
   display: flex;
   gap: 32px;
-  position: relative; /* важно для абсолютной линии */
+  position: relative;
 }
 
 .mainNavBtns div {
   cursor: pointer;
-  padding-bottom: 6px; /* отступ для линии */
+  padding-bottom: 6px;
   position: relative;
   font-weight: 400;
   font-size: 18px;
   color: #242D96;
 }
 
-/* Линия под активной вкладкой */
-.mainNavBtns div.active::after {
+/* создаём линию у всех */
+.mainNavBtns div::after {
   content: '';
   position: absolute;
-  left: 35%;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0); /* скрыта */
+  transform-origin: center;
   bottom: 0;
   width: 35px;
-  height: 2px;         /* толщина линии */
-  background-color:  #242D96;; /* цвет линии */
+  height: 2px;
+  background-color: #242D96;
   border-radius: 2px;
+  transition: transform 0.3s ease;
 }
+
+/* активная плавно появляется */
+.mainNavBtns div.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
 
 .lines {
   width: 100%;                    /* вся ширина экрана */
@@ -343,7 +359,7 @@ body.dark-theme header.app-header {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  padding: 12px;
+  
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }

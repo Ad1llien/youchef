@@ -12,7 +12,7 @@ import arrowDown from "../icons/arrow-down-s-line.svg";
 function MainRecipeContent() {
   const navigate = useNavigate();
 
-  const MEALS_PER_PAGE = 24;
+  const MEALS_PER_PAGE = 9;
 
   const [allMeals, setAllMeals] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
