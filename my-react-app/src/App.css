@@ -1,67 +1,12 @@
 body {
-  margin-top: 0px;           /* убираем стандартные отступы */
+  margin-top: 0px;   
+  margin: 0px;        /* убираем стандартные отступы */
   padding: 0;
   background-color: #FFFEEB; /* твой цвет */
   font-family: Teachers; /* можно добавить шрифт */
     color: #242D96; /* текст тёмный для контраста */
     font-weight:550;
 
-}
-
-.app-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 48px;
-  padding: 0 20px;   
-  max-width: 1148px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.logo {
-  width: 245px;
-  height: 74px;       
-  display: block;       
-}
-
-.nav-buttons{
-  gap: 32px;
-  display: flex;
-  color: #242D96;
-  font-family: Teachers;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  align-items: center;
-}
-.nav-buttons div{
-  cursor: pointer;
-}
-.nav-buttons button{
-  display: flex;                    /* включаем flex, чтобы содержимое внутри центрировалось */
-  width: 128px;    
-  height: 40px;                 /* ширина кнопки */
-  padding: 10px 12px;               /* верх/низ = 10px, лево/право = 12px */
-  justify-content: center;           /* центрируем содержимое по горизонтали */
-  align-items: center;               /* центрируем содержимое по вертикали */
-  gap: 4px;                          /* расстояние между внутренними элементами (например, текст + иконка) */
-  border: none;                      /* убираем стандартную рамку */
-  cursor: pointer;                   /* курсор при наведении */
-  background-color: #f0f0f0;        /* цвет фона кнопки */
-  border-radius: 6px;
-  border-radius: 30px;
-  background: #242D96;
-  margin-left: 64px;
-}
-
-.loginBtn{
-  color: #FFF;
-  text-align: center;
-  font-family: Teachers;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
 }
 
 .recipeEmpty{
@@ -93,72 +38,6 @@ body {
   line-height: normal;
   
 }
-.container-search {
-  display: flex;
-  justify-content: center; /* горизонтальное центрирование */
-  margin-top: 24px;
-  cursor: pointer;
-}
-
-
-.search-wrapper {
-  position: relative;
-  width: 588px; 
-  height: 40px;                 /* стартовая ширина больше */
-  transition: width 0.3s ease;
-  
-}
-
-.search-wrapper:hover,
-.search-wrapper:focus-within {
-  width: 488px;                  /* расширение при фокусе */
-  
-}
-
-.search-input {
-  width: 100%;
-  padding: 9px 46px 9px 20px;   /* правый padding = место для иконки */
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  font-size: 16px;
-  font-style: normal;
-  transition: all 0.3s ease;
-  box-sizing: border-box;        /* чтобы padding учитывался в ширине */
-  outline: none;          /* 🔥 убрали стандартную рамку */
-  color: #242D96;
-}
-.search-input:hover{
-  border: 1px solid #242D96;
-}
-.search-input::placeholder {
-  transition: opacity 0.2s ease;
-}
-
-.search-input:focus::placeholder {
-  opacity: 0;   /* 🔥 placeholder исчез */
-}
-.search-btn {
-  position: absolute;
-  right: 1px;
-  top: 50%;
-  transform: translateY(-45%);
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.search-btn img {
-  width: 20px;
-  height: 20px;
-  transition: transform 0.2s ease;
-  padding: 4px;
-  background: #242D96;
-  border-radius: 14px;
-}
-
-
-
 .popularMeal{
   cursor: pointer;
 }
@@ -255,58 +134,14 @@ footer{
   margin-bottom: 50px;
 }
 
-.searchDropdown {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  background: #FFFEEB;
-  border-radius: 12px;
-  margin-top: 8px;
-  z-index: 999;
-  max-height: 420px;
-  overflow-y: auto;
-}
-
-.searchItem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.searchItem:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.searchItem img {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.searchItem span {
-  color: black;
-  font-size: 14px;
-}
-
 .filterItem.active {
   background: rgba(255, 255, 255, 0.1);
   font-weight: 600;
 }
-header.app-header {
-  background-color: #FFFEEB;
-}
-
 /* тёмная тема */
 body.dark-theme {
   background-color: #1e1e2f;
   color: #f0f0f0;
-}
-
-body.dark-theme header.app-header {
-  background-color: #2c2c3c;
 }
 
 /* кнопки темы */
@@ -355,36 +190,8 @@ body.dark-theme header.app-header {
   }
 }
 
-.categories {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.categories::-webkit-scrollbar {
-  display: none;
-}
-
 @media (max-width: 393px) {
-  .mealGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    padding: 0 12px;
-  }
-
-  .mealCard {
-    width: 100%;
-  }
 }
-@media (max-width: 393px) {
-  .desktop-nav {
-    display: none;
-  }
-
 @media (max-width: 393px) {
   .footerText {
     flex-direction: column;
@@ -401,81 +208,6 @@ body.dark-theme header.app-header {
   }
 }
 
-.desktop-nav {
-  display: flex;
-}
-
-.mobile-header {
-  display: none;
-}
-
-
-  .mobile-header {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .burger {
-    font-size: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .mobile-menu {
-    display: flex;
-    justify-content: space-around;
-    background: #FFFEEB;
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-  }
-}
-
-@media (max-width: 393px) {
-
-  .mealGrid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px;
-    padding: 0 12px;
-  }
-
-  .mealCard {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    box-sizing: border-box;
-  }
-
-  .mealCard img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-}
-
-
-
-
-
-/* ================= MOBILE HEADER ================= */
-
-.mobile-header {
-  display: none;
-  align-items: center;
-  gap: 12px;
-}
-
-.burger {
-  font-size: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #242D96;
-}
-
 /* ================= MOBILE SLIDE MENU ================= */
 
 .mobile-slide-menu {
@@ -485,15 +217,6 @@ body.dark-theme header.app-header {
 /* ================= ADAPTIVE ================= */
 
 @media (max-width: 393px) {
-
-  .desktop-nav {
-    display: none;
-  }
-
-  .mobile-header {
-    display: flex;
-  }
-
   .mobile-slide-menu {
     display: flex;
     justify-content: space-around;

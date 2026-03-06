@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -6,8 +6,6 @@ import {
   useNavigate
 } from "react-router-dom";
 
-import youChefLogo from "./logos/logo.svg";
-import searchIcon from "./icons/search-2-line.svg";
 import "./App.css";
 
 import MealPage from "./components/MealPage";
@@ -16,6 +14,8 @@ import PopularMealContent from "./components/PopularMealContent";
 import MainRecipeContent from "./components/MainRecipeContent";
 import CreateOwnMealContent from "./components/CreateOwnMealContent";
 import SearchResultsPage from "./components/SearchResultsPage";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
 
 import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
@@ -52,76 +52,12 @@ function App() {
   const [activeTab, setActiveTab] = useState("popular");
 
   /* 🔍 поиск */
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchLoading, setSearchLoading] = useState(false);
-
-  const searchRef = useRef(null);
-
-  /* 🔄 debounce search */
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    const timeout = setTimeout(async () => {
-      setSearchLoading(true);
-      try {
-        const res = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
-        );
-        const data = await res.json();
-        setSearchResults(data.meals ? data.meals.slice(0, 10) : []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setSearchLoading(false);
-      }
-    }, 400);
-
-    return () => clearTimeout(timeout);
-  }, [searchQuery]);
-
-  /* ❌ закрытие dropdown */
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setSearchResults([]);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  // поиск теперь живет внутри компонента SearchBar
 
   return (
-    <div className="App">
+    <div className="App overflow-x-hidden">
 
-      {/* ================= HEADER ================= */}
-      <header className="app-header">
-        <img src={youChefLogo} alt="YouChef Logo" className="logo" />
-
-        {/* DESKTOP NAV */}
-        <nav className="nav-buttons desktop-nav">
-          <div>Recipe</div>
-          <div>Premium</div>
-          <div>Contact</div>
-          <button className="loginBtn">Log In</button>
-        </nav>
-
-        {/* MOBILE HEADER */}
-        <div className="mobile-header">
-          <button className="loginBtn">Log In</button>
-          <button
-            className="burger"
-            onClick={() => setMobileMenuOpen(prev => !prev)}
-          >
-            ☰
-          </button>
-        </div>
-      </header>
+      <Header onBurgerClick={() => setMobileMenuOpen((prev) => !prev)} />
 
       {/* MOBILE SLIDE MENU */}
       {mobileMenuOpen && (
@@ -169,41 +105,7 @@ function App() {
                   </div>
                 </div>
 
-                <div className="container-search">
-                  <div className="search-wrapper" ref={searchRef}>
-                    <input
-                      className="search-input"
-                      placeholder="Which meal you want? Search it"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-
-                    <button className="search-btn">
-                      <img src={searchIcon} alt="Search" />
-                    </button>
-
-                    {searchResults.length > 0 && (
-                      <div className="searchDropdown">
-                        {searchResults.map(meal => (
-                          <div
-                            key={meal.idMeal}
-                            className="searchItem"
-                            onClick={() => {
-                              setSearchQuery("");
-                              setSearchResults([]);
-                              navigate(`/meal/${meal.idMeal}`);
-                            }}
-                          >
-                            <img src={meal.strMealThumb} alt="" />
-                            <span>{meal.strMeal}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {searchLoading && <div>Searching...</div>}
-                  </div>
-                </div>
+                <SearchBar />
 
                 {activeTab === "popular" && <PopularMealContent />}
                 {activeTab === "main" && <MainRecipeContent />}
@@ -235,7 +137,7 @@ function App() {
 
       {/* ================= FOOTER ================= */}
       <footer>
-        <img className="line5" src={footlines} alt="" />
+        <img className="line5 max-w-full mx-auto" src={footlines} alt="" />
 
         <div className="footerText">
           <div className="makeUs">Make us a part of your lifestyle</div>
