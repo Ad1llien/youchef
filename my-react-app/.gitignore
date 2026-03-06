@@ -29,3 +29,6 @@ dist-ssr
 # Build
 dist/
 dist-ssr/
+
+.env
+node_modules
