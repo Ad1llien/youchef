@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/inYourPot.css";
 import Line from "../icons/Line36.svg";
-import pot from "../icons/closedPot.svg";
+import pot from "../icons/openPot.svg";
 
 function PotPage({ checkPot = [], setCheckPot = () => {} }) {
   const navigate = useNavigate();
@@ -31,10 +31,12 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
         <img src={Line} alt="" />
       </div>
 
+      {/* Кнопки Back / Clear такие же, как на странице результатов */}
       <div className="btnsWrapper">
-        <button className="backBtn" onClick={() => navigate("/")}>
+        <button className="backBtn" onClick={() => navigate(-1)}>
           ← Back
         </button>
+        <div />
         <button className="backBtn clearBtn" onClick={clearAllIngredients}>
           Clear all
         </button>
@@ -49,14 +51,29 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
       ) : (
         <>
           <div className="potList">
-            {checkPot.map((item) => (
+            {checkPot.map((item, index) => (
               <div
                 key={item}
                 className="potRow"
                 onClick={() => handleDelete(item)}
               >
-                <span className="potLabel">Ingredient</span>
                 <span className="potName">{item}</span>
+                <svg className="potLine" width="100%" height="9" viewBox="0 0 511 9" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                  <g filter={`url(#filter_wavy_${index})`}>
+                    <line x1="3.00065" y1="4" x2="508.001" y2="4.32665" stroke="currentColor" strokeWidth="2"/>
+                  </g>
+                  <defs>
+                    <filter id={`filter_wavy_${index}`} x="0" y="0" width="511" height="8.32812" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                      <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                      <feTurbulence type="fractalNoise" baseFrequency="0.2083333283662796 0.2083333283662796" numOctaves="3" seed="6150" />
+                      <feDisplacementMap in="shape" scale="6" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+                      <feMerge result="effect1_texture_702_9862">
+                        <feMergeNode in="displacedImage"/>
+                      </feMerge>
+                    </filter>
+                  </defs>
+                </svg>
                 <span
                   className="deleteBtn"
                   onClick={(e) => {

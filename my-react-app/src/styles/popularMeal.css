@@ -2,7 +2,7 @@
   display: flex;
     border-radius: 30px;
     border: 1px solid #788CA5;
-    width: 168px;
+    width: 140px;
     height: 40px;
     padding: 10px var(--Spacing-spacing-lg, 12px);
     justify-content: center;
@@ -27,13 +27,13 @@
     border-radius: 30px;
     border: 1px solid #C8D69B;
     background: rgba(200, 214, 155, 0.29);
-    color:black;
+    color: #343B1B;
 }
 .popularMealContent {
     display: flex;
     justify-content: space-between;
     align-items: flex-start; /* выравнивание по верхнему краю */
-    gap: 20px;
+    gap: 48px;
     flex: 1;
     max-width: 1200px;       /* центрируем блок популярного меню */
     margin: 48px auto 0;     /* отступ сверху и выравнивание по центру */
@@ -52,7 +52,7 @@
 
 .popularMealFilter{
     display: flex;
-    justify-content: center;
+    margin-left: 195px;
     gap: 40px;
     width: 100%;
 }
@@ -61,8 +61,9 @@
     display: flex;
     flex-direction: column; /* колонки: фильтры сверху, список блюд снизу */
     align-items: center;    /* центрируем все дочерние элементы по горизонтали */
-    gap: 20px;              /* расстояние между фильтрами и списком блюд */
+    /* gap: 20px;              расстояние между фильтрами и списком блюд */
     flex: 1;                /* занимает всё оставшееся пространство слева */
+    padding: 0px;
 }
 
 /* базовые размеры карточки здесь не задаём, используем из mealCard.css */
@@ -179,10 +180,10 @@ object-fit: cover; /* чтобы картинка заполняла конте�
 
 .categories {
     display: flex;
-    gap: 16px;
     overflow-x: auto;        /* ✅ ТОЛЬКО ТУТ */
     overflow-y: hidden;
-    padding: 12px 16px;
+    padding: 12px 16px 48px 12px;
+    
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -205,22 +206,15 @@ object-fit: cover; /* чтобы картинка заполняла конте�
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    padding: 16px;
     overflow-x: hidden;   /* 🔥 запрещаем горизонтальный скролл */
   }
   
   .mealCard {
-    width: 100%;
+    width: 197px;
+    gap: 17px;
   }
 
-  .mealGrid22 {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-    padding: 16px;
-    align-content: flex-start;
-    min-height: 520px; /* 3 columns × 2 rows space so pagination stays fixed */
-  }
+  
 
   .loadMoreWrapper {
     display: flex;
@@ -310,22 +304,29 @@ object-fit: cover; /* чтобы картинка заполняла конте�
   
     .mealCard {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+    /* width: 195px;
+    height: 195px; */
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid #242D96; */
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-sizing: border-box;
     }
   
     .mealCard img {
-      width: 100%;
-      aspect-ratio: 1 / 1;   /* 🔥 КВАДРАТ */
-      object-fit: cover;     /* 🔥 без искажений */
-      border-radius: 8px;
+      width: 195px;
+    height: 195px;
+    border-radius: 15px;
+    object-fit: cover;
+    border: 1px solid #242D96;
     }
 
     .mealCard .textName,
   .cardTitle {
     font-size: 13px;
     line-height: 1.2;
-    margin-top: 4px;
     text-align: center;
   }
 

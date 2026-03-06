@@ -95,10 +95,10 @@ function SearchResultsPage() {
       {/* Большой контейнер */}
       <div className="mealsContainer">
         {/* Шапка */}
-        <div className="mealsHeader">
-          <span className="mealIndex">ID</span>
-          <span className="mealName">Name</span>
-          <span className="mealMatch">Matching %</span>
+        <div className="mealHeader">
+          <span className="mealHeaderNames">ID</span>
+          <span className="mealHeaderNames">Name</span>
+          <span className="mealHeaderNames">Matching %</span>
         </div>
 
         {/* Список с прокруткой */}

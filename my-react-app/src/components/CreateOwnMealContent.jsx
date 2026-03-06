@@ -1,7 +1,7 @@
 import '../styles/createOwnMeal.css';
 import { useState, useRef } from 'react';
 import ingredientsData from '../../classified_ingredients.json';
-import stroke from '../icons/stroke.svg';
+import stroke from '../icons/greenLine.svg';
 import { useNavigate } from "react-router-dom";
 
 // icons
@@ -17,7 +17,8 @@ import grainIcon from '../icons/seeds1.svg';
 import dairyIcon from '../icons/dairy1.svg';
 import sauceIcon from '../icons/oil1.svg';
 import bakingIcon from '../icons/baking1.svg';
-import potIcon from '../icons/openPot.svg';
+import openPotIcon from '../icons/openPot.svg';
+import closedPotIcon from '../icons/closedPot.svg';
 
 const CATEGORIES = [
   { key: 'Meat', icon: meatIcon },
@@ -35,9 +36,10 @@ const CATEGORIES = [
 ];
 
 function CreateOwnMealContent({ checkPot, setCheckPot }) {
-  const navigate = useNavigate(); // ✔ внутри компонента
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isPotOpen, setIsPotOpen] = useState(false); // closed by default when "thinking"
   const flyRef = useRef(null);
   const potRef = useRef(null);
 
@@ -55,11 +57,22 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
     setTimeout(() => setLoading(false), 600);
   };
 
+  const animatePotOpenThenClose = (duration = 900) => {
+    setIsPotOpen(true);
+    setTimeout(() => setIsPotOpen(false), duration);
+  };
+
   // Добавление / удаление ингредиента
   const checkIngredient = (item, e) => {
     if (checkPot.includes(item)) {
+      // Remove: open pot → ingredient flies from pot to card → then close pot
+      setIsPotOpen(true);
+      flyFromPot(e, item);
       setCheckPot(checkPot.filter((i) => i !== item));
+      setTimeout(() => setIsPotOpen(false), 900);
     } else {
+      // Add: open pot → ingredient flies to pot (existing animation)
+      animatePotOpenThenClose(900);
       flyToPot(e, item);
       setCheckPot([...checkPot, item]);
     }
@@ -103,6 +116,44 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
     }, 900);
   };
 
+  // Reverse: ingredient flies from open pot back to card position
+  const flyFromPot = (e, src) => {
+    const fly = flyRef.current;
+    const pot = potRef.current;
+    if (!fly || !pot) return;
+
+    const imgSrc = `https://www.themealdb.com/images/ingredients/${src}.png`;
+    fly.querySelector('img').src = imgSrc;
+    fly.style.display = 'block';
+    fly.style.transition = 'none';
+
+    const potRect = pot.getBoundingClientRect();
+    const startX = potRect.left + potRect.width / 2 - 36;
+    const startY = potRect.top + potRect.height / 2 - 36;
+
+    fly.style.left = `${startX}px`;
+    fly.style.top = `${startY}px`;
+    fly.style.width = '30px';
+    fly.style.height = '30px';
+    fly.style.opacity = 1;
+
+    const targetX = e.clientX - 36;
+    const targetY = e.clientY - 36;
+
+    setTimeout(() => {
+      fly.style.transition = 'all 0.8s ease-in-out';
+      fly.style.left = `${targetX}px`;
+      fly.style.top = `${targetY}px`;
+      fly.style.width = '72px';
+      fly.style.height = '72px';
+    }, 10);
+
+    setTimeout(() => {
+      fly.style.opacity = 0;
+      fly.style.display = 'none';
+    }, 900);
+  };
+
   return (
     <div className="createOwnMealContent">
       {/* 🔹 Летающая картинка */}
@@ -128,9 +179,13 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
         ))}
       </div>
 
-      {/* 🔹 Иконка кастрюли */}
-      <div className="potIcon" ref={potRef} onClick={() => navigate("/pot")}>
-        <img src={potIcon} alt="pot" />
+      {/* 🔹 Иконка кастрюли: closed when thinking, opens when add/remove */}
+      <div
+        className={`potIcon ${isPotOpen ? 'open' : 'closed'}`}
+        ref={potRef}
+        onClick={() => navigate("/pot")}
+      >
+        <img src={isPotOpen ? openPotIcon : closedPotIcon} alt="pot" />
       </div>
 
       <div className="line">
@@ -164,9 +219,12 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
                 </div>
               ))}
             </div>
+            
           )}
         </div>
+        
       )}
+      
     </div>
   );
 }

@@ -5,24 +5,21 @@ font-size: 32px;
 font-style: normal;
 font-weight: 500;
 line-height: normal;
+margin-top: 100px;
+margin-bottom: 16px;
 }
 .backBtn{
     display: flex;
-    justify-content:left;
-    margin-left: 50px;
-    width: 100px;
-    padding: 10px 12px;
+    font-family: Teachers;
+    width: 128px;
+    height: 40px;
     justify-content: center;
     align-items: center;
-    gap: 4px;
     border: none;
     cursor: pointer;
-    background-color: #f0f0f0;
-    border-radius: 6px;
+    background-color: #242D96;
     border-radius: 30px;
-    background: #242D96;;
     color:white;
-    margin-top: 20px;
 }
 .Line36 {
   width: 100%;          /* растягиваем на всю ширину родителя */
@@ -35,22 +32,18 @@ line-height: normal;
   height: 2px;          /* фиксированная высота линии */
   object-fit: cover;    /* корректное заполнение */
 }
+.PotImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
 .PotImage img{
     width: 93px;
     height: 92px;
 }
 
-.potList {
-    display: inline-grid;
-  width: 1138px;
-  margin: 40px auto;          /* 🔥 центр по экрану */
-  justify-content: center;    /* 🔥 центр grid */
-  row-gap: 36px;
-  column-gap: 36px;
-  grid-template-columns: minmax(0, 1fr) 730px 151px;
-  }
-  
-  /* Строка */
 
   /* Текст */
   .potLabel {
@@ -76,25 +69,32 @@ line-height: normal;
     font-weight: 400;
     line-height: normal;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items:flex-start;
     cursor: pointer;
   }
   
   /* Delete */
   .deleteBtn {
+    width: 148;
     color: #242D96;
     text-align: center;
     font-family: Teachers;
     font-size: 22px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 100;
     line-height: normal;
     cursor: pointer;
     text-decoration: none;
+    align-items: center;
+    justify-content:end;
   }
  
-  
+  .potLine {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
   
   
   .emptyText {
@@ -105,7 +105,8 @@ line-height: normal;
 
 
 .searchBtn{
-    width: 234px;
+  font-family: Teachers;
+    width: 200px;
     height: 40px;
     border-radius: 30px;
     background: #242D96;
@@ -117,58 +118,97 @@ line-height: normal;
     width: 100%;
   }
   .searchBtn {
-    width: 300px;
+    font-family: Teachers;
+    width: 200px;
     height: 40px;
     border-radius: 30px;
     background: #242D96;
     color: white;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: 100;
   }
 
+
+
   .potList {
-    display: grid;
-    width: 80%;            /* можно адаптировать под экран */
+    display: flex;
+    flex-direction: column;
+    width: 920px;           /* container width */
+    height: 445px;          /* container height */
     margin: 40px auto;
-    row-gap: 36px;
-    column-gap: 36px;
-    grid-template-columns: 1fr; /* одна колонка для строк */
+    row-gap: 26px;
+    overflow-y: auto;       /* vertical scrollbar */
+    overflow-x: hidden;
+    padding-right: 16px;    /* space for scrollbar */
   }
-
-  .potList {
-    display: grid;
-    width: 80%;              /* адаптивно под экран */
-    margin: 40px auto;       /* центр по горизонтали */
-    row-gap: 16px;           /* расстояние между строками */
+  
+  .potList::-webkit-scrollbar {
+    width: 14px;            /* scrollbar width */
+  }
+  
+  .potList::-webkit-scrollbar-track {
+    background: #e4e7ec;
+    border-radius: 10px;
+  }
+  
+  .potList::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+    border-radius: 10px;
+    border: 2px solid transparent; /* inner rectangle ~10px */
+    background-clip: padding-box;
   }
   
   .potRow {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    width: 900px;           /* line (ingredient + line + delete) width */
+    margin: 0 auto;
+    grid-template-columns: minmax(120px, auto) 1fr minmax(80px, auto);
     align-items: center;
-    justify-items: center;
+    justify-items: stretch;
     background: #FFFEEB;
     border-radius: 10px;
-    padding: 14px 0;
+    gap: 36px;
+    cursor: pointer;
+    transition: background 0.2s ease;
   }
   
-  /* Hover эффект: меняем цвет и делаем line-through */
-  .potRow:hover .potLabel,
-  .potRow:hover .potName,
-  .potRow:hover .deleteBtn {
+  .potRow:hover {
+    background: rgba(255, 254, 235, 0.9);
+  }
+  
+  /* Hover: ingredient, line and Delete change to #852222 */
+  .potRow:hover .deleteBtn,
+  .potRow:hover .potName {
+    color: #852222;
+  }
+  
+  .potLine {
+    color: #697289;
+    transition: color 0.2s ease;
+    min-width: 0;
+  }
+  
+  .potRow:hover .potLine {
     color: #852222;
   }
   
   /* Стили для текста внутри колонок */
-  .potLabel,
-  .potName,
+
+  .potName {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 0;
+  }
+  
   .deleteBtn {
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-decoration: none;
-    width: 100%; /* чтобы текст занимал всю ширину колонки */
+    justify-content: flex-end;
+    min-width: 60px;
+    transition: color 0.2s ease;
   }
 
   .centerLine {
@@ -183,9 +223,9 @@ line-height: normal;
   }
 
   .searchingQuestion{
-    margin-top: 200px;
+    margin-top: 80px;
     display: flex;
-height: 17px;
+font-size: 22px;
 flex-direction: column;
 justify-content: center;
 align-self: stretch;
@@ -201,7 +241,7 @@ line-height: normal;
 
   .searchWrapper{
     margin-top: 130px;
-    margin-bottom: 200px;
+    margin-bottom: 130px;
   }
 
   .expandTitle {
@@ -247,11 +287,15 @@ cursor: pointer;
   }
 
   .btnsWrapper{
-    display: flex;
-    justify-content: space-between;
-  align-items: center;
-  width: 95%;
-  margin-bottom: 12px
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: flex-end;
+    padding: 0 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 20px;
+    margin-bottom: 40px;   /* center under the line, как на странице результатов */
   }
 
   @media (max-width: 390px) {

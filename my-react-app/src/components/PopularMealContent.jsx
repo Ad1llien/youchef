@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/popularMeal.css";
 import { useNavigate } from "react-router-dom";
 import "../styles/mealCard.css";
+import mealPhoto from "../icons/BAU.svg";
 
 const STORAGE_KEY = "popularMealFilter";
 const MEALS_PER_PAGE = 6;
@@ -144,7 +145,7 @@ function PopularMealContent() {
           <div className="loader"></div>
         ) : (
           <>
-            <div className="mealGrid22">
+            <div className="mealGrid">
               {currentMeals.map((meal) => (
                 <div
                   className="mealCard"
@@ -212,7 +213,7 @@ function PopularMealContent() {
       </div>
 
       <div className="photoContainer">
-        {/* future preview */}
+      <img src={mealPhoto} alt="Meal preview" />
       </div>
     </div>
   );

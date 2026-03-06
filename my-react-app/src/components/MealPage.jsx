@@ -82,47 +82,46 @@ for (let i = 1; i <= 20; i++) {
       </div>
       <div className="infoWrapper">
         <div className="youtubeLink">
-          <img src={youtubeLogo} alt="" />
+          <img src={youtubeLogo} alt="YouTube" />
           <div className="youtubeText">
-          There is a video on YouTube link 
-          "How to cook this <span>{meal.strMeal}</span>
+            <div>There is a video on YouTube link</div>
+            {meal.strYoutube && (
+              <a
+                href={meal.strYoutube}
+                target="_blank"
+                rel="noreferrer"
+                className="youtubeRecipeLink"
+              >
+                "How to cook this {meal.strMeal}"
+              </a>
+            )}
           </div>
         </div>
         <div className="calculationWrapper">
-          <div className="topCalc">
-            <img src={Calculator} alt="" />
-            <div className="calcInfos">
-              <div className="digits">
-                <div>
-                  0 cal
-                </div>
-                <div>
-                  0 g
-                </div>
-                <div>
-                  0 g
-                </div>
-                <div>
-                  0 g
-                </div>
-              </div>
-              <div className="categories">
-                <div>
-                  Cal
-                </div>
-                <div>
-                  Carbs
-                </div>
-                <div>
-                  Protein
-                </div>
-                <div>
-                  Fat
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                    <div className="topCalc">
+                      <img className= "caloriesCalculator" src={Calculator} alt="Calories calculator" />
+                      <div className="calcInfos">
+                        <div className="nutritionRow">
+                          <div className="nutritionItem">
+                            <div className="nutritionValue">63 Cal</div>
+                            <div className="nutritionLabel">Calories</div>
+                          </div>
+                          <div className="nutritionItem">
+                            <div className="nutritionValue">13.2 g</div>
+                            <div className="nutritionLabel">Carbs</div>
+                          </div>
+                          <div className="nutritionItem">
+                            <div className="nutritionValue">20 g</div>
+                            <div className="nutritionLabel">Protein</div>
+                          </div>
+                          <div className="nutritionItem">
+                            <div className="nutritionValue">0.3 g</div>
+                            <div className="nutritionLabel">Fat</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
       </div>
       <div className="limitWrapper">
         <div className="img">

@@ -6,8 +6,8 @@ import {
   useNavigate
 } from "react-router-dom";
 
-import youChefLogo from "./logos/logo.png";
-import searchIcon from "./icons/search-2-line.png";
+import youChefLogo from "./logos/logo.svg";
+import searchIcon from "./icons/search-2-line.svg";
 import "./App.css";
 
 import MealPage from "./components/MealPage";
@@ -17,9 +17,9 @@ import MainRecipeContent from "./components/MainRecipeContent";
 import CreateOwnMealContent from "./components/CreateOwnMealContent";
 import SearchResultsPage from "./components/SearchResultsPage";
 
-import instagramIcon from "./icons/instagram.png";
-import telegramIcon from "./icons/telegram.png";
-import tiktokIcon from "./icons/filled.png";
+import instagramIcon from "./icons/instagram.svg";
+import telegramIcon from "./icons/telegram.svg";
+import tiktokIcon from "./icons/tik-tok.svg";
 import footlines from "./icons/footerlines.svg";
 
 /* ================= APP WRAPPER ================= */
@@ -173,7 +173,7 @@ function App() {
                   <div className="search-wrapper" ref={searchRef}>
                     <input
                       className="search-input"
-                      placeholder="Which meal you want?"
+                      placeholder="Which meal you want? Search it"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
