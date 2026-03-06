@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/mainRecipe.css";
-import "../styles/mealCard.css";
 
 import halalLogo from "../icons/hugeicons_halal.svg";
 import veganLogo from "../icons/lucide_vegan.svg";
 import codeChef from "../icons/simple-icons_codechef.svg";
 import arrowDown from "../icons/arrow-down-s-line.svg";
+import CategoryFilter from "./CategoryFilter.jsx";
+import MealCardGrid from "./MealCardGrid.jsx";
+import Pagination from "./Pagination.jsx";
 
 function MainRecipeContent() {
   const navigate = useNavigate();
@@ -93,51 +95,12 @@ const loadMealsByCountry = (country) => {
     currentPage * MEALS_PER_PAGE
   );
 
-  const getPageItems = () => {
-    if (totalPages <= 1) return [];
-
-    if (totalPages <= 7) {
-      return Array.from({ length: totalPages }, (_, idx) => ({
-        type: "page",
-        value: idx + 1,
-      }));
+  const handleTopFilterSelect = (value) => {
+    if (value === "default") {
+      loadDefaultMeals();
+    } else {
+      loadFilteredMeals(value);
     }
-
-    const items = [];
-    items.push({ type: "page", value: 1 });
-
-    let left = currentPage - 1;
-    let right = currentPage + 1;
-
-    if (currentPage <= 3) {
-      left = 2;
-      right = 4;
-    } else if (currentPage >= totalPages - 2) {
-      left = totalPages - 3;
-      right = totalPages - 1;
-    }
-
-    if (left > 2) {
-      items.push({ type: "ellipsis", key: "left" });
-    }
-
-    for (let page = left; page <= right; page += 1) {
-      if (page > 1 && page < totalPages) {
-        items.push({ type: "page", value: page });
-      }
-    }
-
-    if (right < totalPages - 1) {
-      items.push({ type: "ellipsis", key: "right" });
-    }
-
-    items.push({ type: "page", value: totalPages });
-
-    return items;
-  };
-
-  const formatTitle = (title) => {
-    return title.length > 15 ? title.slice(0, 15) + "..." : title;
   };
 
   return (
@@ -225,97 +188,36 @@ const loadMealsByCountry = (country) => {
 
       {/* MAIN CONTENT */}
       <div className="cardsWrapper">
-
-        {/* TOP FILTER BUTTONS — только этот ряд скроллится по X */}
-        <div className="popularMealFilter mainRecipeCategories">
-          <div className="categories">
-            <button
-              className={activeFilter === "Vegan" ? "active" : ""}
-              onClick={() => loadFilteredMeals("Vegan")}
-            >
-              Vegan
-            </button>
-
-            <button
-              className={activeFilter === "Seafood" ? "active" : ""}
-              onClick={() => loadFilteredMeals("Seafood")}
-            >
-              Halal
-            </button>
-
-            <button
-              className={activeFilter === "Beef" ? "active" : ""}
-              onClick={() => loadFilteredMeals("Beef")}
-            >
-              From Chef
-            </button>
-          </div>
+        <div className="flex justify-end w-full ">
+        <CategoryFilter
+          activeValue={activeFilter}
+          onSelect={handleTopFilterSelect}
+          options={[
+            { label: "Vegan", value: "Vegan" },
+            { label: "Halal", value: "Seafood" },
+            { label: "From Chef", value: "Beef" },
+          ]}
+        />
         </div>
-
         {/* MEALS */}
         {loading ? (
           <div className="loader"></div>
         ) : (
           <>
-            <div className="popularMealList mainRecipeCardsGrid">
-              {currentMeals.map(meal => (
-                <div
-                  key={meal.idMeal}
-                  className="mealCard"
-                  onClick={() => navigate(`/meal/${meal.idMeal}`)}
-                >
-                  <img src={meal.strMealThumb} alt={meal.strMeal} />
-                  <div className="textName">{formatTitle(meal.strMeal)}</div>
-                </div>
-              ))}
+            <MealCardGrid
+              meals={currentMeals}
+              onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
+              titleMaxLength={15}
+              variant="mainRecipe"
+              useLongTitle
+            />
+            <div className="flex justify-center w-full">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
             </div>
-
-            {/* PAGINATION */}
-            {totalPages > 1 && (
-              <div className="loadMoreWrapper">
-                <div className="pagination">
-                  <button
-                    className="pageArrow"
-                    disabled={currentPage === 1}
-                    onClick={() =>
-                      setCurrentPage(prev => (prev > 1 ? prev - 1 : prev))
-                    }
-                  >
-                    «
-                  </button>
-
-                  {getPageItems().map(item =>
-                    item.type === "page" ? (
-                      <button
-                        key={item.value}
-                        className={`pageBtn ${
-                          item.value === currentPage ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentPage(item.value)}
-                      >
-                        {item.value}
-                      </button>
-                    ) : (
-                      <span key={item.key} className="pageDots">
-                        ...
-                      </span>
-                    )
-                  )}
-
-                  <button
-                    className="pageArrow"
-                    disabled={currentPage === totalPages}
-                    onClick={() =>
-                      setCurrentPage(prev =>
-                        prev < totalPages ? prev + 1 : prev
-                      )
-                    }
-                  >
-                    »
-                  </button>
-                </div>
-              </div>
-            )}
           </>
         )}
       </div>

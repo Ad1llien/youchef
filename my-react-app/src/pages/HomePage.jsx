@@ -1,5 +1,5 @@
 import { useState } from "react";
-import searchIcon from "../icons/search-2-line.svg";
+import SearchBar from "../components/SearchBar.jsx";
 
 import PopularMealContent from "../components/PopularMealContent.jsx";
 import MainRecipeContent from "../components/MainRecipeContent.jsx";
@@ -37,19 +37,7 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Search */}
-        <div className="container-search">
-          <div className="search-wrapper">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Which meal you want? Search it!"
-            />
-            <button className="search-btn">
-              <img src={searchIcon} alt="Search" />
-            </button>
-          </div>
-        </div>
+        <SearchBar />
 
         {/* Content */}
         {activeTab === "popular" && <PopularMealContent />}

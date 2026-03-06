@@ -1,42 +1,12 @@
-.popularMealFilter button{
-  display: flex;
-    border-radius: 30px;
-    border: 1px solid #788CA5;
-    width: 140px;
-    height: 40px;
-    padding: 10px var(--Spacing-spacing-lg, 12px);
-    justify-content: center;
-    align-items: center;
-    gap: var(--Spacing-spacing-xs, 4px);
-    flex-shrink: 0;
-    background:transparent;
-    color:#788CA5;
-    cursor: pointer;
-    font-family: Teachers;
-    font-size: 18px;
-}
-
-.popularMealFilter button:hover{
-    border-radius: 30px;
-    border: 1px solid #0060B9;
-    background: rgba(0, 96, 185, 0.15);
-    color:#0060B9;
-}
-
-.popularMealFilter button:focus{
-    border-radius: 30px;
-    border: 1px solid #C8D69B;
-    background: rgba(200, 214, 155, 0.29);
-    color: #343B1B;
-}
 .popularMealContent {
     display: flex;
     justify-content: space-between;
     align-items: flex-start; /* выравнивание по верхнему краю */
     gap: 48px;
     flex: 1;
-    max-width: 1200px;       /* центрируем блок популярного меню */
-    margin: 48px auto 0;     /* отступ сверху и выравнивание по центру */
+     /* центрируем блок популярного меню */
+    margin: 48px 0 0 auto ; 
+    padding-left: 146px;    /* отступ сверху и выравнивание по центру */
 }
 
 .photoContainer {
@@ -50,72 +20,13 @@
     align-items: center;
 }
 
-.popularMealFilter{
-    display: flex;
-    margin-left: 195px;
-    gap: 40px;
-    width: 100%;
-}
-
 .popularMealMainContainer {
     display: flex;
     flex-direction: column; /* колонки: фильтры сверху, список блюд снизу */
-    align-items: center;    /* центрируем все дочерние элементы по горизонтали */
+    align-items: start;    /* центрируем все дочерние элементы по горизонтали */
     /* gap: 20px;              расстояние между фильтрами и списком блюд */
     flex: 1;                /* занимает всё оставшееся пространство слева */
     padding: 0px;
-}
-
-/* базовые размеры карточки здесь не задаём, используем из mealCard.css */
-.cardTitle{
-    color: #242D96;
-    font-family: Teachers;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    justify-content: center;
-    margin-top: 5px;
-    text-align: center;
-}
-
-
-.popularMealList{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 48px;
-    justify-content: center;
-}
-.lines {
-    width: 100%;
-}
-.line-img {
-width: 100%;      /* растягиваем на всю ширину контейнера */
-height: 2px;      /* или auto, если нужна пропорция */
-object-fit: cover; /* чтобы картинка заполняла контейнер без искажений */
-}
-.lines:nth-child(0){
-    width: 1440.001px;
-    height: 0;
-    stroke-width: 2px;
-    stroke: #242D96;
-}
-.lines:nth-child(1){
-    width: 1440.001px;
-    height: 0;
-    stroke-width: 2px;
-    stroke: #242D96;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.line1{
-    width: 1440.001px;
-    height: 2px;
-    stroke-width: 2px;
-    stroke: #242D96;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 /* LOADER */
@@ -144,137 +55,6 @@ object-fit: cover; /* чтобы картинка заполняла конте�
       inset: 0;
     }
   }
-  
-.mainRecipeWrapper{
-    display: flex;
-    justify-content: space-around;
-    margin-top: 48px;
-}
-
-.fromChef{
-    display: flex;
-    width: 130px;
-    height: 40px;
-    padding: 10px var(--Spacing-spacing-lg, 12px);
-    justify-content: center;
-    align-items: center;
-    gap: var(--Spacing-spacing-xs, 4px);
-    border-radius: 30px;
-    border: 1px solid #788CA5;
-    background:transparent;
-    color: #788CA5;
-    text-align: center;
-    font-family: Teachers;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.recipeFilter{
-    display: flex;
-    gap: 40px;
-    text-align:right;
-
-}
-
-.categories {
-    display: flex;
-    overflow-x: auto;        /* ✅ ТОЛЬКО ТУТ */
-    overflow-y: hidden;
-    padding: 12px 16px 48px 12px;
-    
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  
-  .categories::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .categoryItem {
-    flex: 0 0 auto;          /* 🔥 запрещаем сжиматься */
-    padding: 10px 18px;
-    border-radius: 20px;
-    background: #242D96;
-    color: white;
-    white-space: nowrap;    /* 🔥 чтобы текст не переносился */
-    cursor: pointer;
-  }
-
-  .mealGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    overflow-x: hidden;   /* 🔥 запрещаем горизонтальный скролл */
-  }
-  
-  .mealCard {
-    width: 197px;
-    gap: 17px;
-  }
-
-  
-
-  .loadMoreWrapper {
-    display: flex;
-    justify-content: center;
-    margin: 32px 0;
-  }
-
-  .pagination {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: #fffbea;
-    padding: 8px 16px;
-    border-radius: 999px;
-  }
-
-  .pageArrow,
-  .pageBtn {
-    min-width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    border: 1px solid #d0d5dd;
-    background: #ffffff;
-    color: #242d96;
-    font-family: Teachers, system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
-      box-shadow 0.15s ease;
-  }
-
-  .pageArrow:disabled,
-  .pageBtn:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
-
-  .pageBtn.active {
-    background: #242d96;
-    color: #ffffff;
-    border-color: #242d96;
-    box-shadow: 0 0 0 1px rgba(36, 45, 150, 0.2);
-  }
-
-  .pageBtn:not(.active):hover,
-  .pageArrow:not(:disabled):hover {
-    background: #f4f5ff;
-    border-color: #242d96;
-  }
-
-  .pageDots {
-    padding: 0 4px;
-    color: #98a2b3;
-    font-size: 14px;
-  }
 
   @media (max-width: 393px) {
 
@@ -294,48 +74,6 @@ object-fit: cover; /* чтобы картинка заполняла конте�
       height: 300px;
       min-height: 150px;            /* чтобы была заметная область под картинку */
     }
-
-    .mealGrid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 12px;
-      padding: 0 8px;
-    }
-  
-    .mealCard {
-      display: flex;
-    /* width: 195px;
-    height: 195px; */
-    flex-direction: column;
-    align-items: center;
-    /* border: 1px solid #242D96; */
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.2s ease;
-    box-sizing: border-box;
-    }
-  
-    .mealCard img {
-      width: 195px;
-    height: 195px;
-    border-radius: 15px;
-    object-fit: cover;
-    border: 1px solid #242D96;
-    }
-
-    .mealCard .textName,
-  .cardTitle {
-    font-size: 13px;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .mealCard .textName {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
   }
 
   

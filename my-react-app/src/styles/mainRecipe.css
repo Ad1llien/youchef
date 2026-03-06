@@ -1,6 +1,4 @@
-.mainRecipeWrapper{
-    display: flex;
-}
+
 .sideRecipeFilter{
     display: flex;
     flex-direction: column;
@@ -120,7 +118,10 @@
 
 .mainRecipeWrapper {
     display: flex;
-    justify-content: center;              /* центрируем весь блок по ширине */
+    justify-content: center; 
+    max-width: 1148px;
+    padding: 0 146px;
+              /* центрируем весь блок по ширине */
     gap: 186px;                            /* расстояние между фильтрами и карточками */
     margin-top: 48px;                     /* отступ сверху как у popular meals */
 }
@@ -132,8 +133,7 @@
     width: 278px;
     flex-shrink: 0;        /* ❗ не сжиматься */
     gap: 80px;
-    margin-left: 50px;
-    margin-top: 28px;
+    
 }
 .recipeFilter{
     display: flex;
@@ -141,28 +141,9 @@
 }
 
 
-/* сетка карточек управляется через .mealGrid / mealCard.css */
-/* .popularMealList{
-    margin-top: 48px;
-} */
+/* карточки/грид теперь на Tailwind */
 
-/* сетка карточек в Main Recipe на ПК: максимум 3 в ряд и по центру */
-/* ПК ВЕРСИЯ */
-.mainRecipeCardsGrid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    flex-wrap: wrap;
-    row-gap: 38px;
-    column-gap: 48px;
-    justify-content: flex-start;                 /* без растягивания */
-}
 
-/* контейнер с карточками занимает всё оставшееся пространство справа */
-.cardsWrapper{
-    flex: 1;
-    min-width: 0;
-    
-}
 
 .arrow {
     transition: transform 0.3s ease;
@@ -281,22 +262,15 @@
         height: 18px;
     }
 
-    .mainRecipeCardsGrid{
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;                    /* 2 блюда в строку, плотнее друг к другу */
-    }
-
-    .mainRecipeCardsGrid .mealCard img{
-        width: 100%;
-        height: auto;
-        max-height: 110px;            /* как в popular meals на мобайле */
-    }
+    /* сетка карточек теперь на Tailwind */
 
     .cardsWrapper {
-        width: 100%;
+        width: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
         overflow-x: hidden;
-        
+        padding-right: 146px;
     }
 
     .mainRecipeCategories {
