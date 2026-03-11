@@ -24,7 +24,7 @@ body {
 
 }
 .main1stChild{
-  margin-top: 100px;
+  margin-top: 50px;
 }
 .mainNavBtns{
   display: flex;
@@ -247,3 +247,4 @@ body.dark-theme {
     opacity: 1;
   }
 }
+

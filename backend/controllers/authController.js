@@ -65,7 +65,10 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.json({ success: true, message: "Logged in" });
+    return res.json({
+      success: true,
+      token
+    });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
@@ -179,30 +182,85 @@ export const sendResetOtp = async (req, res) => {
 
 
 export const resetPassword = async (req, res) => {
-    const {email, otp, newPassword} = req.body;
-    if(!email || !otp || newPassword){
+  const { email, newPassword } = req.body;
 
+  // Проверка данных
+  if (!email || !newPassword) {
+    return res.json({
+      success: false,
+      message: "Email and new password are required"
+    });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found"
+      });
     }
-    try{
-        const user = await userModel.findOne({email});
-        if(!user){
-            res.json({success: false, message: "User not Found"})
-        }
-        if(user.resetOtp === "" || user.resetOtp !== otp){
-            res.json({success: false, message: "Invalid OTP"})
-        }
-        if(user.resetOtpExpireAt < Date.now()){
-            res.json({success: false, message: "OTP Expired"})
-        }
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        user.password = hashedPassword;
-        user.resetOtp = "";
-        user.resetOtpExpireAt = 0;
 
-        await user.save();
-        res.json({success: true, message: "Password has been reset successfully"})
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
 
-    }catch(error){
-        res.json({success: false, message: error.meassage})
+    if (isSamePassword) {
+      return res.json({
+        success: false,
+        message: "New password cannot be the same as the old password"
+      });
     }
-}
+
+    // хешируем новый пароль
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // сохраняем
+    user.password = hashedPassword;
+
+    // очищаем OTP (на всякий случай)
+    user.resetOtp = "";
+    user.resetOtpExpireAt = 0;
+
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "Password changed successfully"
+    });
+
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const verifyResetOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.json({ success: false, message: "Missing details" });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    if (user.resetOtp === "" || user.resetOtp !== otp) {
+      return res.json({ success: false, message: "Invalid OTP" });
+    }
+
+    if (user.resetOtpExpireAt < Date.now()) {
+      return res.json({ success: false, message: "OTP expired" });
+    }
+
+    return res.json({ success: true });
+
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};

@@ -1,12 +1,47 @@
+import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import youChefLogo from "../logos/logo.svg";
-
+import accountLogo from "../icons/account-circle-line.svg"
+import likes from "../icons/likes.svg"
+import vipCrown from "../icons/crown.svg"
+import qaa from "../icons/question-line.svg"
+import guide from "../icons/news-line.svg"
 function Header({ onBurgerClick }) {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Закрытие меню при клике вне
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/api/user/data", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setUser(data.userData);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <header className="flex justify-between items-end pt-12 px-[146px] max-w-[1148px] mx-auto bg-[#FFFEEB]">
       <img
         src={youChefLogo}
         alt="YouChef Logo"
-        className="w-[245px] h-[74px] block"
+        className="w-[245px] h-[74px] block cursor-pointer"
+        onClick={() => navigate("/")}
       />
 
       {/* DESKTOP NAV */}
@@ -14,16 +49,171 @@ function Header({ onBurgerClick }) {
         <div className="cursor-pointer">Recipe</div>
         <div className="cursor-pointer">Premium</div>
         <div className="cursor-pointer">Contact</div>
-        <button className="flex w-32 h-10 py-2.5 px-3 justify-center items-center gap-1 border-none cursor-pointer rounded-full bg-[#242D96] ml-16 text-white font-teachers text-lg font-medium">
-          Log In
-        </button>
+
+        {user ? (
+          <div className="relative ml-16" ref={menuRef}>
+            {/* Профиль */}
+            <div
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="flex items-center gap-2 text-[#50576B] font-medium bg-white rounded-[30px] border border-[#242D96] w-[200px] px-3 py-1 cursor-pointer"
+            >
+              {/* Аватар */}
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+
+              {/* Имя */}
+              <span className="truncate">{user.name}</span>
+
+              {/* Стрелка вниз */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-4 w-4 text-[#242D96] ml-auto transition-transform ${
+                  menuOpen ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+
+            {/* Dropdown меню */}
+            {menuOpen && (
+              <div
+                className="absolute top-full mt-2 w-[210px] min-w-[180px] flex flex-col items-start gap-2 p-2 border border-[#BBC8D8] rounded-[5px] bg-white shadow-md z-50"
+              >
+                <div className="profile-modal">
+                <div className="relative w-8 h-8">
+  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
+    {user.name.charAt(0).toUpperCase()}
+  </div>
+
+  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
+</div>
+                  <div className="nameWrapper">
+                    <div className="name">
+                      {user.name}
+                    </div>
+                    <div className="email">
+                      {user.email}
+                    </div>
+                  </div>
+                  <div className="upanddown">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-10 text-[#242D96]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2} >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 11l4-4 4 4" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 13l-4 4-4-4" transform="translate(0,4)" />
+                    </svg>
+                  </div>
+                </div>
+                <hr className="hr" />
+                <div  className="account-modal">
+                  Account
+                </div>
+                <div className="modal-logo" onClick={() => {navigate("/my-account")}}>
+                  <img className="accLogo" src={accountLogo} alt="" />
+                  <div>Account</div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 text-[#242D96]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                  <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7" // стрелка направо
+                   />
+                </svg>
+                </div>
+                <div className="modal-logo">
+                  <img className="accLogo" src={likes} alt="" />
+                  <div>Likes</div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 text-[#242D96]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                  <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7" // стрелка направо
+                   />
+                </svg>
+                </div>
+                <div className="modal-logo">
+                  <img className="accLogo" src={vipCrown} alt="" />
+                  <div>Premium</div>
+                  <div className="pr">
+                    Free
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 text-[#242D96]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                  <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7" // стрелка направо
+                   />
+                </svg>
+                </div>
+                <hr className="hr"/>
+                <div className="account-modal">
+                  Support
+                </div>
+                <div className="modal-logo">
+                  
+                  <img className="accLogo" src={qaa} alt="" />
+                  <div>Help center</div>
+                </div>
+                <div className="modal-logo">
+                  
+                  <img className="accLogo" src={guide} alt="" />
+                  <div>Guides</div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="flex w-32 h-10 py-2.5 px-3 justify-center items-center gap-1 border-none cursor-pointer rounded-full bg-[#242D96] ml-16 text-white font-teachers text-lg font-medium"
+          >
+            Log In
+          </button>
+        )}
       </nav>
 
       {/* MOBILE HEADER */}
       <div className="hidden max-[393px]:flex max-[393px]:gap-3 max-[393px]:items-center">
-        <button className="flex w-32 h-10 py-2.5 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-lg font-medium">
-          Log In
-        </button>
+        {user ? (
+          <div className="text-[#242D96] font-medium">{user.name}</div>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="flex w-32 h-10 py-2.5 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-lg font-medium"
+          >
+            Log In
+          </button>
+        )}
         <button
           className="text-[28px] bg-transparent border-none cursor-pointer text-[#242D96]"
           onClick={onBurgerClick}

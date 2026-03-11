@@ -16,4 +16,5 @@ export default defineConfig({
     port: 5173, // твой локальный порт
     allowedHosts: ['unmerchandised-hypothermal-marilyn.ngrok-free.dev'],
   },
+  
 })

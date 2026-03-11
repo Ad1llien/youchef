@@ -1,0 +1,682 @@
+body {
+    margin: 0;
+    padding: 0;
+    /* Осы жердегі код сүт түстес фонды орнатады */
+    background-color: #FDFBE7; 
+    
+    font-family: 'Poppins', sans-serif;
+    margin-right: 100px;
+}
+main{
+    justify-content: center;
+    align-items: center;
+}
+.auth-card {
+    /* Егер форманың артындағы ақ блокты да алып тастағың келсе, 
+       background-ды 'transparent' (мөлдір) етіп қой немесе алып таста */
+    background: transparent; 
+    width: 400px;
+    text-align: center;
+    /* Көлеңкені де алып тастауға болады, егер ол ақ болып көрінсе */
+    box-shadow: none; 
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1a237e;
+    margin-bottom: 20px;
+}
+
+h2 { color: #1a237e; margin-bottom: 5px; }
+
+.subtitle { color: #666; font-size: 14px; margin-bottom: 30px; }
+
+/* Әлеуметтік батырмалар */
+.social-login {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.social-btn img { width: 24px; }
+
+/* Бөлгіш (OR) */
+.divider {
+    margin: 20px 0;
+    color: #aaa;
+    position: relative;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    height: 1px;
+    width: 40%;
+    background: #eee;
+    position: absolute;
+    top: 50%;
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+/* Енгізу өрістері */
+.input-group { text-align: left; margin-bottom: 15px; }
+
+.input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 10px;
+    color: #999;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 12px 12px 35px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.eye-icon { left: auto !important; right: 10px; cursor: pointer; }
+
+/* Опциялар және Батырма */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #283593;
+    color: white;
+    border: none;
+    border-radius: 30px; /* Суреттегідей сопақша */
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 300px;
+}
+
+.footer-text { margin-top: 20px; font-size: 14px; }
+
+.copyright { margin-top: 40px; font-size: 11px; color: #999; }
+
+
+
+/* Reset Password бетіне арналған арнайы стильдер */
+
+/* 1. Негізгі фон */
+body {
+    margin: 0;
+    padding: 0;
+    /* Осы жердегі код сүт түстес фонды орнатады */
+    background-color: #FDFBE7; 
+    
+    font-family: 'Poppins', sans-serif;
+}
+
+.auth-card {
+    /* Егер форманың артындағы ақ блокты да алып тастағың келсе, 
+       background-ды 'transparent' (мөлдір) етіп қой немесе алып таста */
+    background: transparent; 
+    width: 400px;
+    text-align: center;
+    /* Көлеңкені де алып тастауға болады, егер ол ақ болып көрінсе */
+    box-shadow: none; 
+}
+
+/* 3. Логотип және тақырыптар */
+.main-logo {
+    width: 160px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #1E2B8F; /* Қанық көк */
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #6B7280;
+    font-size: 15px;
+    margin-bottom: 40px;
+}
+
+/* 4. Енгізу өрісі (Email Address) */
+.input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E2B8F;
+    margin-bottom: 10px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 18px;
+    color: #9CA3AF;
+    font-size: 18px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 16px 16px 16px 50px;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: #1E2B8F;
+    box-shadow: 0 0 0 4px rgba(30, 43, 143, 0.05);
+}
+
+/* Сұр кіші мәтін (Info) */
+.input-info {
+    font-size: 13px;
+    color: #9CA3AF;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 5. Reset Password батырмасы */
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    background-color: #2D3996;
+    color: white;
+    border: none;
+    border-radius: 50px; /* Сопақша стиль */
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1A237E;
+}
+
+/* 6. Төменгі сілтемелер */
+.footer-text {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #4B5563;
+}
+
+.footer-text a {
+    color: #2D3996;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    position: absolute;
+    bottom: 30px;
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+.copyright {
+    width: 100%;
+    text-align: left;
+    padding-left: 85px;      /* Мәтінді оңға 30px-ге жылжытады */
+    margin-top: 50px;
+    font-size: 12px;
+    color: #9CA3AF;
+    display: block;
+    box-sizing: border-box; /* Padding еніне әсер етпеуі үшін керек */
+}
+
+
+
+/* Жалпы фон (Сүт түстес) */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FDFBE7;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+}
+
+.auth-container {
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.main-logo {
+    width: 160px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #1E2B8F;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #4B5563;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.user-email {
+    color: #1E2B8F;
+    font-weight: 600;
+}
+
+.divider-line {
+    height: 1px;
+    background-color: #D1D5DB;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 40px auto;
+}
+
+/* Код ұяшықтарының стилі */
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.otp-container input {
+    width: 70px;
+    height: 80px;
+    border: 1px solid #D1D5DB;
+    border-radius: 12px;
+    background-color: white;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    color: #1E2B8F;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.otp-container input:focus {
+    border-color: #1E2B8F;
+    box-shadow: 0 0 0 4px rgba(30, 43, 143, 0.05);
+}
+
+.otp-container input::placeholder {
+    color: #E5E7EB;
+}
+
+/* Батырма */
+.btn-primary {
+    width: 100%;
+    max-width: 350px;
+    padding: 16px;
+    background-color: #2D3996;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #1A237E;
+}
+
+.resend-text {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.resend-text a {
+    color: #2D3996;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Авторлық құқық - ортада */
+.copyright {
+    width: 100%;
+    text-align: left;
+    padding-left: 120px;      /* Мәтінді оңға 30px-ге жылжытады */
+    margin-top: 50px;
+    font-size: 12px;
+    color: #9CA3AF;
+    display: block;
+    box-sizing: border-box; /* Padding еніне әсер етпеуі үшін керек */
+}
+
+
+
+/* Ақпараттық көк блок */
+.info-alert {
+    background-color: #EEF2FF;
+    color: #4338CA;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+/* Құпия сөз индикаторы (Bars) */
+.strength-meter {
+    display: flex;
+    gap: 5px;
+    margin: 15px 0 5px 0;
+}
+
+.strength-meter .bar {
+    height: 4px;
+    flex: 1;
+    background-color: #E5E7EB;
+    border-radius: 2px;
+}
+
+.strength-meter .bar.active {
+    background-color: #10B981; /* Жасыл түс - Good */
+}
+
+.strength-text {
+    text-align: right;
+    font-size: 12px;
+    color: #6B7280;
+    margin-bottom: 20px;
+}
+
+/* Тексеру тізімі (Checklist) */
+.requirements-list {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.requirements-list li {
+    font-size: 13px;
+    color: #9CA3AF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.requirements-list li.valid {
+    color: #10B981; /* Белсенді болғандағы жасыл түс */
+}
+
+/* Авторлық құқық мәтінін жылжыту (Сен сұрағандай) */
+.copyright {
+    width: 100%;
+    text-align: left;
+    padding-left: 130px;      /* Мәтінді оңға 30px-ге жылжытады */
+    margin-top: 50px;
+    font-size: 12px;
+    color: #9CA3AF;
+    display: block;
+    box-sizing: border-box; /* Padding еніне әсер етпеуі үшін керек */
+}
+/* Жынысты таңдау бөлімі */
+.gender-section {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.gender-section label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A237E;
+    margin-bottom: 10px;
+}
+
+.gender-options {
+    display: flex;
+    gap: 10px;
+}
+
+.radio-label {
+    cursor: pointer;
+    flex: 1;
+}
+
+.radio-label input {
+    display: none; /* Стандартты нүктені жасыру */
+}
+
+.custom-radio {
+    display: block;
+    padding: 10px;
+    border: 1px solid #E5E7EB;
+    border-radius: 20px; /* Сопақша бұрыштар */
+    text-align: center;
+    font-size: 14px;
+    color: #4B5563;
+    transition: all 0.2s;
+}
+
+/* Таңдалған кездегі стиль */
+.radio-label input:checked + .custom-radio {
+    border-color: #2D3996;
+    background-color: rgba(45, 57, 150, 0.05);
+    color: #2D3996;
+    font-weight: 600;
+}
+
+/* Checkbox стилі */
+.terms-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: #4B5563;
+}
+
+.terms-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Авторлық құқықты оңға жылжыту (сенің сұрауың бойынша) */
+.copyright {
+    width: 100%;
+    text-align: left;
+    padding-left: 80px;      /* Мәтінді оңға 30px-ге жылжытады */
+    margin-top: 50px;
+    font-size: 12px;
+    color: #9CA3AF;
+    display: block;
+    box-sizing: border-box; /* Padding еніне әсер етпеуі үшін керек */
+}
+
+.auth-wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.auth-card{
+    width:400px;
+}
+
+.password-strength {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 5px;
+  margin-top: 6px;
+}
+
+.strength-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.authWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    margin-bottom: 150px;
+
+}.profile-modal{
+display: flex;
+}
+
+.nameWrapper{
+    margin-left: 10px;
+
+}
+
+.email{
+    color: #242D96;
+
+text-overflow: ellipsis;
+font-family: Teachers;
+font-size: var(--Font-size-xs, 12px);
+font-style: normal;
+font-weight: 400;
+}
+
+.name{
+    overflow: hidden;
+color: #13151A;
+
+text-overflow: ellipsis;
+font-family: Teachers;
+font-size: var(--Font-size-sm, 14px);
+font-style: normal;
+font-weight: 500;
+line-height: var(--Line-height-sm, 20px); /* 142.857% */
+letter-spacing: -0.14px;
+display: flex;
+align-items: center;
+}
+
+.hr{
+    width: 100%;
+}
+
+.pfp{
+    justify-content: center;
+}
+
+.upanddown {
+    gap:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-modal{
+    color: #242D96;
+
+font-family: Teachers;
+font-size: var(--Font-size-xs, 12px);
+font-style: normal;
+font-weight: 500;
+}
+
+.accLogo{
+    width: 25px;
+    height: auto;
+  }
+
+  .modal-logo{
+    display: flex;
+    align-items: center;justify-content: center;
+    gap: 4px;
+    padding: 4px;
+    cursor:pointer
+  }
+  .modal-logo div{
+    overflow: hidden;
+color: #242D96;
+
+text-overflow: ellipsis;
+font-family: Teachers;
+font-size: var(--Font-size-sm, 18px);
+font-style: normal;
+font-weight: 500;
+line-height: var(--Line-height-sm, 20px); /* 142.857% */
+letter-spacing: -0.14px;
+display: flex;
+align-items: center;justify-content: center;
+  }
+
+  .modal-logo svg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pr{
+    border-radius: 30px;
+    background: #E6FAED;
+    display: flex;
+    padding: var(--Spacing-spacing-2xs, 2px) var(--Spacing-spacing-md, 8px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Spacing-spacing-xs, 4px);
+    color: #029663;
+
+    text-align: center;
+    font-family: Teachers;
+    font-size: 14px !important;
+  line-height: 16px !important;
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 25px;
+  }

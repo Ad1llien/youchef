@@ -5,9 +5,14 @@ import {
   Route,
   useNavigate
 } from "react-router-dom";
-
+import MyAccount from "../src/components/myAccount"
+import { useLocation } from "react-router-dom";
+import LoginPage from "./pages/loginPage";
+import SignUpPage from "./pages/SignUpPage"
 import "./App.css";
-
+import ResetPasswordPage from "./pages/resetPassword"
+import VerifyCodePage from "./pages/VerifyCodePage"
+import SetNewPasswordPage from "./pages/SetNewPassword";
 import MealPage from "./components/MealPage";
 import PotPage from "./components/PotPage";
 import PopularMealContent from "./components/PopularMealContent";
@@ -34,15 +39,16 @@ function AppWrapper() {
 /* ================= APP ================= */
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   /* 🍔 mobile menu */
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   /* 🫕 кастрюля */
   const [checkPot, setCheckPot] = useState(() => {
     const saved = localStorage.getItem("checkPot");
     return saved ? JSON.parse(saved) : [];
   });
+  
 
   useEffect(() => {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
@@ -50,15 +56,16 @@ function App() {
 
   /* 📂 вкладки */
   const [activeTab, setActiveTab] = useState("popular");
+  const isAuthPage = ["/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword"].includes(location.pathname);
 
   /* 🔍 поиск */
   // поиск теперь живет внутри компонента SearchBar
 
   return (
     <div className="App overflow-x-hidden">
-
+      {!isAuthPage && (
       <Header onBurgerClick={() => setMobileMenuOpen((prev) => !prev)} />
-
+      )}
       {/* MOBILE SLIDE MENU */}
       {mobileMenuOpen && (
         <div
@@ -131,7 +138,12 @@ function App() {
 
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
-
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} /> 
+          <Route path="/verify-account" element={<VerifyCodePage />} /> 
+          <Route path="/setNewPassword" element={<SetNewPasswordPage />} /> 
+          <Route path="/my-account" element={<MyAccount/>}/>
         </Routes>
       </main>
 
