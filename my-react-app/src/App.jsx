@@ -5,8 +5,11 @@ import {
   Route,
   useNavigate
 } from "react-router-dom";
+import Contact from "./components/contact"
+import HelpCenter from "./components/HelpCenter";
 import MyAccount from "../src/components/myAccount"
 import { useLocation } from "react-router-dom";
+import MyLikes from "./components/MyLikes"
 import LoginPage from "./pages/loginPage";
 import SignUpPage from "./pages/SignUpPage"
 import "./App.css";
@@ -21,7 +24,7 @@ import CreateOwnMealContent from "./components/CreateOwnMealContent";
 import SearchResultsPage from "./components/SearchResultsPage";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
-
+import Guides from "./components/Guides"
 import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
 import tiktokIcon from "./icons/tik-tok.svg";
@@ -144,6 +147,10 @@ function App() {
           <Route path="/verify-account" element={<VerifyCodePage />} /> 
           <Route path="/setNewPassword" element={<SetNewPasswordPage />} /> 
           <Route path="/my-account" element={<MyAccount/>}/>
+          <Route path="/my-likes" element={<MyLikes/>}/>
+          <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/help-center" element={<HelpCenter/>}></Route>
+          <Route path="/guide" element={<Guides />}></Route>
         </Routes>
       </main>
 

@@ -48,7 +48,7 @@ function Header({ onBurgerClick }) {
       <nav className="flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center max-[393px]:hidden">
         <div className="cursor-pointer">Recipe</div>
         <div className="cursor-pointer">Premium</div>
-        <div className="cursor-pointer">Contact</div>
+        <div className="cursor-pointer" onClick={()=> {navigate("/contact")}}>Contact</div>
 
         {user ? (
           <div className="relative ml-16" ref={menuRef}>
@@ -136,7 +136,7 @@ function Header({ onBurgerClick }) {
                    />
                 </svg>
                 </div>
-                <div className="modal-logo">
+                <div className="modal-logo" onClick={()=> {navigate("/my-likes")}}>
                   <img className="accLogo" src={likes} alt="" />
                   <div>Likes</div>
                   <svg
@@ -179,12 +179,12 @@ function Header({ onBurgerClick }) {
                 <div className="account-modal">
                   Support
                 </div>
-                <div className="modal-logo">
+                <div className="modal-logo" onClick={()=> {navigate("/help-center")}}>
                   
                   <img className="accLogo" src={qaa} alt="" />
                   <div>Help center</div>
                 </div>
-                <div className="modal-logo">
+                <div className="modal-logo" onClick={()=> {navigate("/guide")}}>
                   
                   <img className="accLogo" src={guide} alt="" />
                   <div>Guides</div>
