@@ -4,6 +4,7 @@ import Line from "../icons/Line36.svg";
 import pot from "../icons/openPot.svg";
 
 function PotPage({ checkPot = [], setCheckPot = () => {} }) {
+  
   const navigate = useNavigate();
 
   const clearAllIngredients = () => {

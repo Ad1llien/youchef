@@ -6,6 +6,7 @@ import {
   useNavigate
 } from "react-router-dom";
 import Contact from "./components/contact"
+import PasswordManager  from "./components/PasswordManager";
 import HelpCenter from "./components/HelpCenter";
 import MyAccount from "../src/components/myAccount"
 import { useLocation } from "react-router-dom";
@@ -151,6 +152,7 @@ function App() {
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/help-center" element={<HelpCenter/>}></Route>
           <Route path="/guide" element={<Guides />}></Route>
+          <Route path="/password-manager" element={< PasswordManager/>}></Route>
         </Routes>
       </main>
 

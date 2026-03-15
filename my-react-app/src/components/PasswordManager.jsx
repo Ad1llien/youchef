@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-function MyAccount() {
-  const [user, setUser] = useState(null);
+function PasswordManager() {
+
+    const [user, setUser] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -31,9 +33,8 @@ function MyAccount() {
     }
   };
 
-    return (
-        
-      <div className="myAccountWrapper">
+    return(
+        <div className="myAccountWrapper">
         <div className="recipeEmpty">My Account</div>
         <div className="accountMenu">
           <div className="account-page">
@@ -81,7 +82,7 @@ function MyAccount() {
                 
                 <hr />
               </div>
-              <div className="personalInfo" onClick={()=> navigate("/password-manager")}>
+              <div className="personalInfo">
                 <div className="rp">
                   <div>Password Manager</div>
                   <svg
@@ -134,51 +135,11 @@ function MyAccount() {
             </div>
 
             <div className="right-side">
-              <div className="avatar">
-                <div className="avatar-wrapper">
-                  <div className="avatar">
-                    {user?.name?.charAt(0).toUpperCase()}
-                  </div>
+          
 
-                  <div className="edit-avatar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#242D96" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M12 20h9"/>
-                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-            <form className="profileForm">
-          <div className="input-group shorter">
-            <label>Full Name *</label>
-            <div className="input-wrapper">
-              <input
-                type="email"
-                placeholder=""
-                                
-                
-              />
-            </div>
-          </div>
-
-          <div className="input-group shorter">
-            <label>Email Address *</label>
-            <div className="input-wrapper">
-              <input
-                type="password"
-                placeholder=""
-                
-              />
-            </div>
-          </div>         
-        </form>
-        <div className="searchWrapper leeft">
-            <button
-              className="searchBtn">
-              Update
-            </button>
-          </div>
+               
+        
+        
             </div>
           </div>
         </div>
@@ -207,7 +168,9 @@ function MyAccount() {
   </div>
 )}
       </div>
-    );
-  }
-  
-  export default MyAccount;
+ 
+    )
+}
+
+
+export default PasswordManager;
