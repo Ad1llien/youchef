@@ -87,12 +87,12 @@ function Header({ onBurgerClick }) {
               >
                 <div className="profile-modal">
                 <div className="relative w-8 h-8">
-  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
-    {user.name.charAt(0).toUpperCase()}
-  </div>
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                  </div>
 
-  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
-</div>
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
                   <div className="nameWrapper">
                     <div className="name">
                       {user.name}

@@ -680,3 +680,107 @@ align-items: center;justify-content: center;
     font-weight: 500;
     margin-left: 25px;
   }
+
+
+  .account-page{
+    display: flex;
+    width: 100%;
+  }
+  
+  .left-side{
+    width: 40%;
+    display: flex;
+    align-items: top;
+    justify-content: center;
+  }
+  
+  .right-side{
+    width: 60%;
+  }
+
+  .personalInfo{
+    color: #343B1B;
+
+font-family: Teachers;
+font-size: 18px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+width: 278px;
+margin-bottom: 30px;
+  }
+
+  .rp{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .account-page{
+    margin-top: 40px;
+  }
+
+  .personalInfo hr{
+    background: #BBC8D8;
+    height: 2px;
+    border-radius: 50px;
+  }
+
+  .myAccountWrapper{
+    margin-top: 50px;
+  }
+
+
+
+
+
+  .avatar-wrapper{
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .avatar{
+    display: flex;
+    width: 100px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+  
+    border-radius: 50%;
+    background-color: #242D96;
+    color: white;
+  
+    font-size: 36px;
+    font-weight: 600;
+  }
+  
+  .edit-avatar{
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+  
+    width: 32px;
+    height: 32px;
+  
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #242D96;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+
+
+
+  .shorter{
+    max-width: 500px !important;
+  }
+
+  .profileForm{
+    margin-top: 20px;
+  }
