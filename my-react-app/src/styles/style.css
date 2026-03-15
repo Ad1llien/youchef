@@ -847,3 +847,40 @@ margin-bottom: 30px;
     border-radius: 8px;
     cursor: pointer;
   }
+
+  #google_translate_element {
+    display: none;
+  }
+  
+  .goog-te-gadget {
+    display: none !important;
+  }
+  
+  .goog-te-banner-frame {
+    display: none !important;
+  }
+  
+  .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+  }
+  
+  .goog-tooltip {
+    display: none !important;
+  }
+  
+  .goog-text-highlight {
+    background: none !important;
+    box-shadow: none !important;
+  }
+  
+  .goog-logo-link {
+    display: none !important;
+  }
+  
+  .goog-te-gadget span {
+    display: none !important;
+  }
+  
+  body {
+    top: 0px !important;
+  }
