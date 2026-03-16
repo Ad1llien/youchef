@@ -69,7 +69,7 @@ function Header({ onBurgerClick }) {
 
         {/* language switch */}
         <div className="flex gap-2 ml-4 text-sm">
-          <button onClick={() => i18n.changeLanguage("en")}>EN</button>
+          <button onClick={() => changeLanguage("en")}>EN</button>
           <button onClick={() => changeLanguage("ru")}>RU</button>
         </div>
 

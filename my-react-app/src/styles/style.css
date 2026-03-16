@@ -884,3 +884,7 @@ margin-bottom: 30px;
   body {
     top: 0px !important;
   }
+
+  .goog-te-banner-frame.skiptranslate { display: none !important; }
+body { top: 0px !important; }
+iframe.goog-te-menu-frame { display: none !important; }
