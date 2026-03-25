@@ -30,8 +30,9 @@ import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
 import tiktokIcon from "./icons/tik-tok.svg";
 import footlines from "./icons/footerlines.svg";
-
-/* ================= APP WRAPPER ================= */
+import VerifyPage from "./pages/VerifyPage";
+import CheckEmailPage from "./pages/CheckEmailPage"
+import RequestRecipe from "./components/requestRecipe";/* ================= APP WRAPPER ================= */
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -153,7 +154,10 @@ function App() {
           <Route path="/help-center" element={<HelpCenter/>}></Route>
           <Route path="/guide" element={<Guides />}></Route>
           <Route path="/password-manager" element={< PasswordManager/>}></Route>
-        </Routes>
+          <Route path="/verify" element={<VerifyPage />}></Route>
+          <Route path="/check-email" element={<CheckEmailPage />} />
+          <Route path="/request-recipe" element={<RequestRecipe />} />          
+          </Routes>
       </main>
 
       {/* ================= FOOTER ================= */}

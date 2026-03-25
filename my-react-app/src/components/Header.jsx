@@ -7,13 +7,18 @@ import vipCrown from "../icons/crown.svg"
 import qaa from "../icons/question-line.svg"
 import guide from "../icons/news-line.svg"
 
-
 function Header({ onBurgerClick }) {
 
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // ✅ новый state для languages
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+
   const menuRef = useRef(null);
+  const langMenuRef = useRef(null);
+
   const changeLanguage = (lang) => {
     const select = document.querySelector(".goog-te-combo");
     if (select) {
@@ -22,11 +27,14 @@ function Header({ onBurgerClick }) {
     }
   };
 
-
+  // закрытие профиля
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
+      }
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) {
+        setLangMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -67,10 +75,55 @@ function Header({ onBurgerClick }) {
           contact
         </div>
 
-        {/* language switch */}
-        <div className="flex gap-2 ml-4 text-sm">
-          <button onClick={() => changeLanguage("en")}>EN</button>
-          <button onClick={() => changeLanguage("ru")}>RU</button>
+        {/* ✅ LANGUAGE DROPDOWN */}
+        <div className="relative ml-4 text-sm" ref={langMenuRef}>
+          <div
+            onClick={() => setLangMenuOpen((prev) => !prev)}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            Languages
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-4 w-4 transition-transform ${
+                langMenuOpen ? "rotate-180" : "rotate-0"
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          {langMenuOpen && (
+            <div className="absolute top-full mt-2 w-[140px] flex flex-col bg-white border border-[#BBC8D8] rounded-[5px] shadow-md z-50">
+              <div
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => changeLanguage("ru")}
+              >
+                Русский
+              </div>
+              <div
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => changeLanguage("kk")}
+              >
+                Қазақша
+              </div>
+              <div
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => changeLanguage("en")}
+              >
+                English
+              </div>
+              <div
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => changeLanguage("es")}
+              >
+                Español
+              </div>
+            </div>
+          )}
         </div>
 
         {user ? (

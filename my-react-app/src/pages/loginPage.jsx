@@ -94,13 +94,13 @@ const LoginPage = () => {
         </form>
 
         {/* Кнопка для регистрации */}
-        <button
+        <div
           className="btn-secondary"
           onClick={() => navigate("/signup")}
           style={{ marginTop: "15px" }}
         >
-          Don't have an account? Sign Up
-        </button>
+          Don't have an account? <span style={{cursor: "pointer"}}>Sign Up</span>
+        </div>
       </div>
     </div>
   );

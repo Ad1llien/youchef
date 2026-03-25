@@ -20,7 +20,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "4.1",
     "mongoose": "^9.2.3",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^8.0.1",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "openai": "^6.32.0"
   }
 }

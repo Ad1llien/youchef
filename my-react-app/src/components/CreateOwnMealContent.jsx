@@ -35,11 +35,11 @@ const CATEGORIES = [
   { key: 'Baking & Sweets', icon: bakingIcon },
 ];
 
-function CreateOwnMealContent({ checkPot, setCheckPot }) {
+function CreateOwnMealContent({ checkPot, setCheckPot, showPot = true }) {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isPotOpen, setIsPotOpen] = useState(false); // closed by default when "thinking"
+  const [isPotOpen, setIsPotOpen] = useState(false);
   const flyRef = useRef(null);
   const potRef = useRef(null);
 
@@ -62,23 +62,19 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
     setTimeout(() => setIsPotOpen(false), duration);
   };
 
-  // Добавление / удаление ингредиента
   const checkIngredient = (item, e) => {
     if (checkPot.includes(item)) {
-      // Remove: open pot → ingredient flies from pot to card → then close pot
       setIsPotOpen(true);
       flyFromPot(e, item);
       setCheckPot(checkPot.filter((i) => i !== item));
       setTimeout(() => setIsPotOpen(false), 900);
     } else {
-      // Add: open pot → ingredient flies to pot (existing animation)
       animatePotOpenThenClose(900);
       flyToPot(e, item);
       setCheckPot([...checkPot, item]);
     }
   };
 
-  // Анимация “летящей” картинки
   const flyToPot = (e, src) => {
     const fly = flyRef.current;
     const pot = potRef.current;
@@ -116,7 +112,6 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
     }, 900);
   };
 
-  // Reverse: ingredient flies from open pot back to card position
   const flyFromPot = (e, src) => {
     const fly = flyRef.current;
     const pot = potRef.current;
@@ -179,14 +174,16 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
         ))}
       </div>
 
-      {/* 🔹 Иконка кастрюли: closed when thinking, opens when add/remove */}
-      <div
-        className={`potIcon ${isPotOpen ? 'open' : 'closed'}`}
-        ref={potRef}
-        onClick={() => navigate("/pot")}
-      >
-        <img src={isPotOpen ? openPotIcon : closedPotIcon} alt="pot" />
-      </div>
+      {/* 🔹 Кастрюля: отображается только если showPot=true */}
+      {showPot && (
+        <div
+          className={`potIcon ${isPotOpen ? 'open' : 'closed'}`}
+          ref={potRef}
+          onClick={() => navigate("/pot")}
+        >
+          <img src={isPotOpen ? openPotIcon : closedPotIcon} alt="pot" />
+        </div>
+      )}
 
       <div className="line">
         <img src={stroke} alt="" />
@@ -219,12 +216,9 @@ function CreateOwnMealContent({ checkPot, setCheckPot }) {
                 </div>
               ))}
             </div>
-            
           )}
         </div>
-        
       )}
-      
     </div>
   );
 }

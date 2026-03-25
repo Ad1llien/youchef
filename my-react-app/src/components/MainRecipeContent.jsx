@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import hybridMeals from "../mealsDB.json"
 import "../styles/mainRecipe.css";
 
 import halalLogo from "../icons/hugeicons_halal.svg";
@@ -36,44 +36,69 @@ function MainRecipeContent() {
     setLoading(true);
     setActiveFilter("default");
     setCurrentPage(1);
-
+  
     fetch("https://www.themealdb.com/api/json/v2/65232507/search.php?s=")
       .then(res => res.json())
       .then(data => {
-        setAllMeals(data.meals || []);
+        const merged = mergeMeals(data.meals || []);
+        setAllMeals(merged);
         setLoading(false);
       });
   };
   // 🔹 Загрузка блюд по стране
-const loadMealsByCountry = (country) => {
-  setLoading(true);
-  setActiveFilter(country);
-  setCurrentPage(1);
-
-  fetch(
-    `https://www.themealdb.com/api/json/v2/65232507/filter.php?a=${country}`
-  )
-    .then(res => res.json())
-    .then(data => {
-      setAllMeals(data.meals || []);
-      setLoading(false);
-    });
-};
+  const loadMealsByCountry = (country) => {
+    setLoading(true);
+    setActiveFilter(country);
+    setCurrentPage(1);
+  
+    fetch(`https://www.themealdb.com/api/json/v2/65232507/filter.php?a=${country}`)
+      .then(res => res.json())
+      .then(data => {
+        const apiMeals = data.meals || [];
+  
+        // 🔥 фильтруем локальные блюда
+        const localMeals = (hybridMeals.meals || []).filter(
+          meal => meal.strArea === country
+        );
+  
+        const merged = mergeMeals([...apiMeals, ...localMeals]);
+  
+        setAllMeals(merged);
+        setLoading(false);
+      });
+  };
 
   // 🔹 Загрузка блюд по категориям
   const loadFilteredMeals = (category) => {
     setLoading(true);
     setActiveFilter(category);
     setCurrentPage(1);
-
+  
     fetch(`https://www.themealdb.com/api/json/v2/65232507/filter.php?c=${category}`)
       .then(res => res.json())
       .then(data => {
-        setAllMeals(data.meals || []);
+        const apiMeals = data.meals || [];
+        let localMeals = hybridMeals.meals || [];
+  
+        // 🔥 ВАЖНО: фильтрация локальных
+        if (category === "Vegan") {
+          localMeals = localMeals.filter(meal =>
+            !meal.tags?.includes("meat") &&
+            !meal.tags?.includes("beef") &&
+            !meal.tags?.includes("chicken")
+          );
+        } else {
+          localMeals = localMeals.filter(
+            meal => meal.strCategory === category
+          );
+        }
+  
+        const merged = mergeMeals([...apiMeals, ...localMeals]);
+  
+        setAllMeals(merged);
         setLoading(false);
       });
   };
-
   // 🔹 Категории (Dish Type)
   useEffect(() => {
     fetch("https://www.themealdb.com/api/json/v2/65232507/list.php?c=list")
@@ -85,9 +110,21 @@ const loadMealsByCountry = (country) => {
   useEffect(() => {
     fetch("https://www.themealdb.com/api/json/v2/65232507/list.php?a=list")
       .then(res => res.json())
-      .then(data => setCountries(data.meals || []));
+      .then(data => {
+        const apiCountries = data.meals || [];
+  
+        // ➕ добавляем Казахстан вручную
+        const hasKazakhstan = apiCountries.some(
+          c => c.strArea === "Kazakhstan"
+        );
+  
+        if (!hasKazakhstan) {
+          apiCountries.push({ strArea: "Kazakhstan" });
+        }
+  
+        setCountries(apiCountries);
+      });
   }, []);
-
   const totalPages = Math.ceil(allMeals.length / MEALS_PER_PAGE);
 
   const currentMeals = allMeals.slice(
@@ -101,6 +138,24 @@ const loadMealsByCountry = (country) => {
     } else {
       loadFilteredMeals(value);
     }
+  };
+
+
+  const mergeMeals = (apiMeals = []) => {
+    const map = new Map();
+    const localMeals = hybridMeals.meals || [];
+  
+    // 🔹 сначала API
+    apiMeals.forEach(meal => {
+      map.set(meal.idMeal, meal);
+    });
+  
+    // 🔹 потом локальные (перезаписывают API если совпадает id)
+    localMeals.forEach(meal => {
+      map.set(meal.idMeal, meal);
+    });
+  
+    return Array.from(map.values());
   };
 
   return (

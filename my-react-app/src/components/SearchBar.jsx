@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import searchIcon from "../icons/search-2-line.svg";
+import hybridMeals from "../mealsDB.json"; // локальные блюда
+import { mealDictionary } from "../../../backend/backend/utils/mealDictionary.js";
 
 function SearchBar() {
   const navigate = useNavigate();
@@ -8,6 +10,24 @@ function SearchBar() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef(null);
+
+  async function translateQuery(text) {
+    const lowerText = text.toLowerCase();
+    if (mealDictionary[lowerText]) return mealDictionary[lowerText];
+
+    try {
+      const res = await fetch("http://localhost:4000/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json();
+      return data.translated;
+    } catch (err) {
+      console.error(err);
+      return text;
+    }
+  }
 
   useEffect(() => {
     if (!query.trim()) {
@@ -18,11 +38,24 @@ function SearchBar() {
     const timeout = setTimeout(async () => {
       setLoading(true);
       try {
+        const translatedQuery = await translateQuery(query);
+
+        // 🔹 Поиск в локальном DB
+        const localResults = (hybridMeals.meals || []).filter((meal) =>
+          meal.strMeal.toLowerCase().includes(translatedQuery.toLowerCase())
+        );
+
+        // 🔹 Поиск через API
         const res = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${translatedQuery}`
         );
         const data = await res.json();
-        setResults(data.meals ? data.meals.slice(0, 10) : []);
+        const apiResults = data.meals ? data.meals : [];
+
+        // 🔹 Объединяем и ограничиваем 10 элементов
+        const combined = [...localResults, ...apiResults].slice(0, 10);
+
+        setResults(combined);
       } catch (err) {
         console.error(err);
       } finally {
@@ -39,7 +72,6 @@ function SearchBar() {
         setResults([]);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -104,4 +136,3 @@ function SearchBar() {
 }
 
 export default SearchBar;
-

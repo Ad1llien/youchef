@@ -7,9 +7,11 @@ import youtubeLogo from '../icons/youtube.svg';
 import line from '../icons/Line36.svg';
 import Calculator from '../icons/Group135.svg';
 import warn from '../icons/information-fill.svg';
-
+import hybridMeals from "../mealsDB.json";
 function MealPage() {
   const { id } = useParams();
+  const [nutrition, setNutrition] = useState(null);
+
   const navigate = useNavigate();
 
   const [meal, setMeal] = useState(null);
@@ -18,6 +20,68 @@ function MealPage() {
     const saved = localStorage.getItem("favorites");
     return saved ? JSON.parse(saved) : [];
   });
+
+  const loadSpecialFilter = (type) => {
+    setLoading(true);
+    setActiveFilter(type);
+    setCurrentPage(1);
+  
+    // 🔹 локальные блюда
+    const localMeals = hybridMeals.filter(meal =>
+      meal.tags?.includes(type)
+    );
+  
+    // 🔹 API блюда (опционально)
+    let apiCategory = "";
+  
+    if (type === "halal") apiCategory = "Beef";
+    if (type === "vegan") apiCategory = "Vegetarian";
+    if (type === "chef") apiCategory = "Chicken";
+  
+    fetch(`https://www.themealdb.com/api/json/v2/65232507/filter.php?c=${apiCategory}`)
+      .then(res => res.json())
+      .then(data => {
+        const apiMeals = data.meals || [];
+  
+        const merged = mergeMeals([...apiMeals, ...localMeals]);
+  
+        setAllMeals(merged);
+        setLoading(false);
+      });
+  };
+  const ingredients = [];
+  if (meal) {
+    for (let i = 1; i <= 20; i++) {
+      const ingredient = meal[`strIngredient${i}`];
+      const measure = meal[`strMeasure${i}`];
+      if (ingredient && ingredient.trim() !== "") {
+        ingredients.push({ ingredient, measure });
+      }
+    }
+  }
+  useEffect(() => {
+    if (!meal || ingredients.length === 0) return; // убедились, что meal и ingredients готовы
+  
+    const fetchNutrition = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/api/nutrition/${meal.idMeal}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ingredients, mealName: meal.strMeal ,   instructions: meal.strInstructions, // 👈 ДОБАВИЛИ
+        }), // теперь отправляем название
+        });
+  
+        if (!res.ok) throw new Error("Failed to fetch nutrition");
+        const data = await res.json();
+        setNutrition(data);
+      } catch (err) {
+        console.error(err);
+        setNutrition({ calories: "...", carbs: "...", protein: "...", fat: "..." });
+      }
+    };
+  
+    fetchNutrition();
+  }, [meal, ingredients]); // зависимость от meal и ingredients
 
   const [checkPot, setCheckPot] = useState(() => {
     const saved = localStorage.getItem("checkPot");
@@ -29,25 +93,47 @@ function MealPage() {
   useEffect(() => {
     const loadMeal = async () => {
       setLoading(true);
+  
       try {
+        // 1️⃣ сначала ищем в локальной БД
+        const localMeal = (hybridMeals.meals || []).find(
+          m => m.idMeal === id
+        );
+  
+        if (localMeal) {
+          setMeal(localMeal);
+  
+          if (localMeal.strYoutube) {
+            const videoId = localMeal.strYoutube.split("v=")[1];
+            setVideoId(videoId);
+          }
+  
+          setLoading(false);
+          return; // ❗ ВАЖНО: не идем в API
+        }
+  
+        // 2️⃣ если нет — идем в API
         const mealRes = await fetch(
           `https://www.themealdb.com/api/json/v2/65232507/lookup.php?i=${id}`
         );
+  
         const mealData = await mealRes.json();
         const currentMeal = mealData.meals?.[0] || null;
+  
         setMeal(currentMeal);
-
+  
         if (currentMeal?.strYoutube) {
           const videoId = currentMeal.strYoutube.split("v=")[1];
           setVideoId(videoId);
         }
+  
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
+  
     loadMeal();
   }, [id]);
 
@@ -80,14 +166,7 @@ function MealPage() {
     return <div>Meal not found</div>;
   }
 
-  const ingredients = [];
-  for (let i = 1; i <= 20; i++) {
-    const ingredient = meal[`strIngredient${i}`];
-    const measure = meal[`strMeasure${i}`];
-    if (ingredient && ingredient.trim() !== "") {
-      ingredients.push({ ingredient, measure });
-    }
-  }
+ 
 
   const isFavorite = favorites.some(f => f.idMeal === meal.idMeal);
 
@@ -134,19 +213,19 @@ function MealPage() {
             <div className="calcInfos">
               <div className="nutritionRow">
                 <div className="nutritionItem">
-                  <div className="nutritionValue">63 Cal</div>
+                  <div className="nutritionValue"> {nutrition ? nutrition.calories : "..."}</div>
                   <div className="nutritionLabel">Calories</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue">13.2 g</div>
+                  <div className="nutritionValue"> {nutrition ? nutrition.carbs : "..."}</div>
                   <div className="nutritionLabel">Carbs</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue">20 g</div>
+                  <div className="nutritionValue"> {nutrition ? nutrition.protein : "..."}</div>
                   <div className="nutritionLabel">Protein</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue">0.3 g</div>
+                  <div className="nutritionValue">{nutrition ? nutrition.fat : "..."}</div>
                   <div className="nutritionLabel">Fat</div>
                 </div>
               </div>

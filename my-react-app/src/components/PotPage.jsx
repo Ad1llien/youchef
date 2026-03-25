@@ -109,7 +109,7 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
             YouChef is always looking to expand their recipes catalogue. Request a recipe and we’ll do our best to help
           </div>
 
-          <button className="requestRecipe">Request Recipe</button>
+          <button className="requestRecipe" onClick={() => navigate("/request-recipe")}>Request Recipe</button>
         </>
       )}
     </div>

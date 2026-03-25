@@ -69,7 +69,8 @@ h2 { color: #1a237e; margin-bottom: 5px; }
 .divider::after { right: 0; }
 
 /* Енгізу өрістері */
-.input-group { text-align: left; margin-bottom: 15px; }
+.input-group { text-align: left; margin-bottom: 15px;     max-width:500px;
+}
 
 .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
 
@@ -556,6 +557,7 @@ h2 {
   background: #eee;
   border-radius: 5px;
   margin-top: 6px;
+  margin-top: 30px;
 }
 
 .strength-bar {
@@ -888,3 +890,485 @@ margin-bottom: 30px;
   .goog-te-banner-frame.skiptranslate { display: none !important; }
 body { top: 0px !important; }
 iframe.goog-te-menu-frame { display: none !important; }
+
+
+.passwordStrengthIndicator{
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+.passwordStrengthIndicator div{
+    color: #838B9E;
+font-family: Teachers;
+font-size: var(--Font-size-xs, 12px);
+font-style: normal;
+font-weight: 400;
+line-height: var(--Line-height-xs, 16px);
+}
+.passwS{
+    text-align: right;
+
+}
+
+.try{
+    display: flex;
+    gap: 5px;
+    padding-top: 5px;
+}
+
+.active_MenuPage{
+    color: #242D96;
+
+}
+
+
+.btn_center{
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    margin-left: 20%;
+    margin-top: 30px;
+}
+
+.errorMessagePassword_ {
+    max-width: 300px;
+    margin: 20px;
+    margin-left: 15%;   /* центр по горизонтали */
+    text-align: center;  /* текст по центру */
+    color: red;
+}
+
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .avatarModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .avatarModalContent img {
+    max-width: 90vw;   /* максимум 90% ширины экрана */
+    max-height: 90vh;  /* максимум 90% высоты экрана */
+    width: auto;       /* сохраняем пропорции */
+    height: auto;      /* сохраняем пропорции */
+    display: block;
+    margin: 0 auto;    /* центрирование */
+    object-fit: contain; /* изображение не обрезается и сохраняет пропорции */
+  }
+
+.signup{
+    margin-top: 60px;
+}
+
+.formBlock{
+    display: flex;
+    border: 0.6px solid #AAA;
+    max-width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 50px;
+    
+}
+
+.formBlock{
+    padding: 30px;
+    gap: 30px;
+}
+.photoBtns{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content:end;
+    gap: 15px;
+}
+.photoBtns img{
+    cursor: pointer;
+}
+
+.photoFrame {
+    border-radius: 5px;
+    border: 0.6px solid #AAA;
+    width: 300px;
+    height: 300px;
+    background-color: #F6F6F6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden; /* 🔥 чтобы фото не вылезало */
+}
+
+.photoFrame img {
+    max-width: 80%;   /* оставляем немного отступов, чтобы иконка не была слишком большой */
+    max-height: 80%;
+    object-fit: contain; /* сохраняем пропорции */
+}
+.photoFrame div{
+    display: flex;
+    margin: 0 auto;
+}
+
+.addBlock{
+    width: 100%;
+}
+.addBlockLine{
+  display: grid;
+  grid-template-columns: 180px 1fr; /* 👈 магия */
+  align-items: center;
+  margin-bottom: 20px;
+
+}
+
+.AddBlockInputWrapper {
+    padding: 10px 10px 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 5px;
+    border: 1px solid #E5EAF0;
+    background: #FFF;
+    overflow: hidden;
+    min-width: 0; /* 🔥 ВОТ ЭТО ЧИНИТ ВСЁ */
+    overflow: hidden; /* 🔥 важно */
+
+  }
+
+.AddBlockInputWrapper input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: inherit;
+}
+.addBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    border: 1px solid #E5EAF0;
+    background: #FFF;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    cursor: pointer;
+  }
+
+  .plusIcon {
+    display: inline-block;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+  }
+  .plusIcon.active {
+    transform: rotate(45deg);
+  }
+  .plusIcon {
+    transform-origin: center;
+  }
+ 
+  .addBtn:hover {
+    border-color: #ED8B07;
+    color: #ED8B07;
+  }
+.AddBlockInput{
+    width: 100%;
+    min-width: 0; /* 🔥 КРИТИЧЕСКИ ВАЖНО */
+    overflow: hidden; /* 🔥 добавь */
+
+}
+
+.addBlockLineTitle{
+    display: flex;
+    align-items: start;
+}
+
+.long{
+    white-space: nowrap;
+}
+.premiumRadio {
+    display: inline-flex; /* 🔥 важно */
+    align-items: center;
+    justify-content: center;
+    width: 20px;  /* фикс */
+    height: 20px; /* фикс */
+    flex-shrink: 0; /* чтобы не сжимался */
+  }
+.premiumRadioWrapper{
+   display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;     /* добавь */
+
+}
+.addBlockLineTitle{
+    white-space: nowrap;
+}
+
+.radioTitleWrapper{
+    border-radius: 999px;
+    background: var(--Colors-Utility-Warning-utility-warning-50, #FFF5E5);
+    display: flex;
+padding: var(--Spacing-spacing-xs, 4px) 10px;
+justify-content: center;
+align-items: center;
+gap: var(--Spacing-spacing-xs, 4px);
+align-items: center;
+justify-content: center;
+display: flex;
+
+}
+
+.radioTitle{
+    color:#ED8B07;
+    text-align: center;
+font-family: Teachers;
+font-size: var(--Font-size-xs, 12px);
+font-style: normal;
+font-weight: 500;
+line-height: var(--Line-height-xs, 16px);
+}
+
+
+.premiumRadio input {
+    display: none;
+  }
+  
+  /* внешний круг */
+  .customRadio {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;  /* 🔥 фикс от grid */
+    min-height: 20px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid #ccc;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  /* внутренний круг */
+  .customRadio::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: #ccc; /* серый центр */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* 🔥 АКТИВНОЕ СОСТОЯНИЕ */
+  .premiumRadio input:checked + .customRadio {
+    border: 2px solid #ED8B07; /* желтый край */
+    background: #ED8B07; /* фон как в SVG */
+  }
+  
+  /* центр при активном */
+  .premiumRadio input:checked + .customRadio::after {
+    background: white;
+  }
+
+  .customRadio:hover {
+    border-color: #ED8B07;
+  }
+
+  .addBlockLine textarea{
+    width: 600px;
+    height: 250px;
+  }
+
+  .addBlockLine textarea::placeholder{
+    color: #838B9E;
+font-family: Teachers;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: var(--Line-height-sm, 20px); /* 125% */
+letter-spacing: -0.16px;
+  }
+
+  .AddBlockInputWrapper textarea::placeholder {
+    color: #838B9E;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+  }
+
+
+  .createOwnMealWrapper {
+    margin-top: 10px;
+    animation: slideDown 0.3s ease;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+
+
+  .ingredientsScroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  
+    flex: 1;
+    min-width: 0;
+  
+    overflow-x: auto;
+    overflow-y: hidden;
+  
+    white-space: nowrap;
+    max-width: 100%;
+  
+    padding-bottom: 6px; /* чтобы было место под скролл */
+  }
+  /* скрыть скроллбар (по желанию) */
+  .ingredientsScroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* placeholder */
+  .placeholder {
+    color: #838B9E;
+text-overflow: ellipsis;
+font-family: Teachers;
+font-size: var(--Font-size-sm, 14px);
+font-style: normal;
+font-weight: 400;
+line-height: var(--Line-height-sm, 20px); /* 142.857% */
+letter-spacing: -0.14px;
+  }
+  
+  /* один ингредиент */
+  .ingredientTag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  
+    padding: 6px 12px;
+    border-radius: 30px;
+    border: 1px solid #E5EAF0;
+    background: #FFF;
+  
+    font-size: 14px;
+  
+    flex: 0 0 auto;
+  
+    max-width: 140px; /* чуть меньше */
+  }
+  
+  .ingredientName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ingredientsScroll:active {
+    cursor: grabbing;
+  }
+
+  
+  
+  .removeBtn {
+    font-size: 14px;
+    color: #9AA3B2;
+    cursor: pointer;
+  
+    transition: all 0.2s ease;
+  }
+  
+  .removeBtn:hover {
+    color: #ED8B07;
+    transform: scale(1.2);
+  }
+
+
+  /* текст ингредиента с обрезанием длинных названий */
+.tagText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100px; /* регулируй под ширину блока */
+    display: inline-block;
+  }
+  
+  /* крестик удаления */
+  .removeTag {
+    font-size: 14px;
+    color: #9AA3B2;
+    cursor: pointer;
+    margin-left: 6px;
+    transition: all 0.2s ease;
+    flex-shrink: 0; /* чтобы не сжимался при скролле */
+  }
+  
+  .removeTag:hover {
+    color: #ED8B07;
+    transform: scale(1.2);
+  }
+  .submitBtn{
+    display: flex;
+width: 172px;
+padding: 10px var(--Spacing-spacing-lg, 12px);
+justify-content: center;
+align-items: center;
+gap: var(--Spacing-spacing-xs, 4px);
+border-radius: 30px;
+background: #242D96;
+color: white;
+cursor: pointer;
+
+  }
+
+  .submitBtns{
+    display: flex;
+    gap:12px;
+    justify-content:end;
+    margin-top: 20px;
+    margin-right: 15%;
+  }
+
+  .cancelBtns{
+    display: flex;
+width: 138px;
+padding: 10px var(--Spacing-spacing-lg, 12px);
+justify-content: center;
+align-items: center;
+gap: var(--Spacing-spacing-xs, 4px);
+border-radius: 30px;
+border: 1px solid #BBC8D8;
+color:#BBC8D8;
+cursor: pointer;
+  }
+
+  .cancelBtns:hover{
+    border: 1px solid #DF0006;
+    color:#DF0006;
+  }
+
+
+  
