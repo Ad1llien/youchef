@@ -1,0 +1,181 @@
+.help-center-page {
+  width: 100%;
+  color: #242d96;
+  margin-top: 84px;
+}
+
+.help-center-header {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.help-center-header h1 {
+  margin: 0;
+  font-family: Taviraj;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.help-center-header p {
+  margin: 24px 0 0;
+  font-family: Teachers;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.44px;
+}
+
+.help-accordion {
+  width: 100%;
+  max-width: 600px;
+  margin: 64px auto 0;
+}
+
+.help-accordion-item {
+  width: 100%;
+  border: 0;
+  border-bottom: 0.6px solid #aaaaaa;
+  background: transparent;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  color: #242d96;
+  cursor: pointer;
+}
+
+.question-mark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #242d96;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Teachers;
+  font-size: 14px;
+  line-height: 1;
+  margin-top: 1px;
+  box-sizing: border-box;
+}
+
+.help-accordion-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.help-question {
+  font-family: Teachers;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+}
+
+.help-answer {
+  font-family: Teachers;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+}
+
+.help-chevron {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.help-chevron.up svg {
+  transform: rotate(180deg);
+}
+
+.help-divider {
+  width: calc(100% - 60px);
+  max-width: 1148px;
+  border-top: 2px solid #242d96;
+  margin: 100px auto;
+}
+
+.help-cta {
+  width: 100%;
+  max-width: 379px;
+  margin: 0 auto;
+  text-align: center;
+  color: #242d96;
+}
+
+.help-cta h2 {
+  margin: 0;
+  font-family: Taviraj;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.help-cta p {
+  margin: 16px auto 24px;
+  width: 329px;
+  max-width: 100%;
+  font-family: Taviraj;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.help-cta button {
+  width: 204px;
+  height: 40px;
+  border-radius: 30px;
+  border: 2px solid #242d96;
+  background: transparent;
+  color: #242d96;
+  font-family: Teachers;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.help-cta button:hover {
+  background: #242d96;
+  color: #fffeeb;
+}
+
+@media (max-width: 700px) {
+  .help-center-page {
+    margin-top: 48px;
+    padding: 0 16px;
+  }
+
+  .help-center-header h1 {
+    font-size: 30px;
+  }
+
+  .help-center-header p {
+    font-size: 20px;
+  }
+
+  .help-divider {
+    width: 100%;
+    margin: 64px auto;
+  }
+
+  .help-cta h2 {
+    font-size: 24px;
+  }
+
+  .help-cta p {
+    width: 100%;
+    font-size: 16px;
+  }
+}

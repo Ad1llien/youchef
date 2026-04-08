@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import "../styles/style.css";
 
 function MyAccount() {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);

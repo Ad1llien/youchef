@@ -12,6 +12,7 @@ function Header({ onBurgerClick }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState("EN");
 
   // ✅ новый state для languages
   const [langMenuOpen, setLangMenuOpen] = useState(false);
@@ -25,6 +26,19 @@ function Header({ onBurgerClick }) {
       select.value = lang;
       select.dispatchEvent(new Event("change"));
     }
+  };
+
+  const languageOptions = [
+    { label: "ru", value: "ru" },
+    { label: "kz", value: "kk" },
+    { label: "en", value: "en" },
+    { label: "es", value: "es" },
+  ];
+
+  const handleLanguageChange = (option) => {
+    setCurrentLang(option.label);
+    changeLanguage(option.value);
+    setLangMenuOpen(false);
   };
 
   // закрытие профиля
@@ -65,78 +79,61 @@ function Header({ onBurgerClick }) {
 
       <nav className="flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center max-[393px]:hidden">
 
-        <div className="cursor-pointer">recipe</div>
-        <div className="cursor-pointer">premium</div>
+        <div className="cursor-pointer" onClick={() => navigate("/")}>Recipes</div>
+        <div className="cursor-pointer" onClick={() => navigate("/premium")}>Premium</div>
 
         <div
           className="cursor-pointer"
           onClick={()=> {navigate("/contact")}}
         >
-          contact
+          Contact
         </div>
 
-        {/* ✅ LANGUAGE DROPDOWN */}
         <div className="relative ml-4 text-sm" ref={langMenuRef}>
           <div
             onClick={() => setLangMenuOpen((prev) => !prev)}
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium"
           >
-            Languages
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`h-4 w-4 transition-transform ${
-                langMenuOpen ? "rotate-180" : "rotate-0"
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <span className="text-[20px] leading-none tracking-tight">{currentLang}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                stroke="#242D96"
+                strokeWidth="1.8"
+              />
+              <path d="M3 12H21" stroke="#242D96" strokeWidth="1.8" />
+              <path d="M12 3C14.5 5.7 15.9 8.8 15.9 12C15.9 15.2 14.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8" />
+              <path d="M12 3C9.5 5.7 8.1 8.8 8.1 12C8.1 15.2 9.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8" />
             </svg>
           </div>
 
           {langMenuOpen && (
-            <div className="absolute top-full mt-2 w-[140px] flex flex-col bg-white border border-[#BBC8D8] rounded-[5px] shadow-md z-50">
-              <div
-                className="p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => changeLanguage("ru")}
-              >
-                Русский
-              </div>
-              <div
-                className="p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => changeLanguage("kk")}
-              >
-                Қазақша
-              </div>
-              <div
-                className="p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => changeLanguage("en")}
-              >
-                English
-              </div>
-              <div
-                className="p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => changeLanguage("es")}
-              >
-                Español
-              </div>
+            <div className="absolute top-full mt-2 w-[60px] flex flex-col bg-white border border-[#BBC8D8] rounded-[8px] shadow-md z-50">
+              {languageOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-[#242D96] text-[20px] text-left border-none bg-transparent"
+                  onClick={() => handleLanguageChange(option)}
+                >
+                  {option.label}
+                </button>
+              ))}
             </div>
           )}
         </div>
 
         {user ? (
-          <div className="relative ml-16" ref={menuRef}>
+          <div className="relative " ref={menuRef}>
             <div
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="flex items-center gap-2 text-[#50576B] font-medium bg-white rounded-[30px] border border-[#242D96] w-[200px] px-3 py-1 cursor-pointer"
+              className="flex items-center gap-2 text-[#50576B] font-medium bg-white rounded-[30px] border border-[#242D96] w-[128px] px-1 py-1 cursor-pointer"
             >
               <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
                 {user.name.charAt(0).toUpperCase()}
               </div>
 
-              <span className="truncate">{user.name}</span>
+              <span className="truncate text-[20px]">{user.name}</span>
 
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +184,7 @@ function Header({ onBurgerClick }) {
                   <div>Favorites</div>
                 </div>
 
-                <div className="modal-logo">
+                <div className="modal-logo" onClick={() => navigate("/premium")}>
                   <img className="accLogo" src={vipCrown} alt="" />
                   <div>premium</div>
                   <div className="pr">Free</div>

@@ -1,0 +1,211 @@
+.premium-page {
+  margin-top: 84px;
+  color: #242d96;
+}
+
+.premium-title {
+  margin: 0;
+  text-align: center;
+  font-family: Taviraj;
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.premium-top-line {
+  max-width: 1148px;
+  width: calc(100% - 60px);
+  margin: 16px auto 46px;
+  border-top: 2px solid #242d96;
+}
+
+.premium-toggle {
+  margin: 0 auto 48px;
+  width: 384px;
+  max-width: calc(100% - 32px);
+  background: #eff3f7;
+  border-radius: 30px;
+  padding: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.toggle-item {
+  border: none;
+  background: transparent;
+  border-radius: 30px;
+  height: 40px;
+  color: #838b9e;
+  font-family: Teachers;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.toggle-item.active {
+  background: white;
+  color: #242d96;
+  box-shadow: 0 2px 4px -1px rgba(20, 20, 23, 0.1), 0 4px 8px -1px rgba(20, 20, 23, 0.06);
+}
+
+.save-badge {
+  margin-left: 8px;
+  background: white;
+  color: #ff786d;
+  border-radius: 30px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.premium-cards {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.premium-card {
+  min-width: 0;
+}
+
+.card-top {
+  background: #fff;
+  border: 1px solid #989cce;
+  border-radius: 5px;
+  padding: 24px;
+}
+
+.popular-card .card-top {
+  background: rgba(255, 237, 203, 0.5);
+  border: 1px solid #f6e6a5;
+}
+
+.plan-icon {
+  width: 78px;
+  height: 52px;
+  margin: 0 auto 24px;
+  border-bottom: 2px solid #ff8a7d;
+}
+
+.plan-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plan-title-row h2 {
+  margin: 0;
+  font-family: Teachers;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.popular-badge {
+  background: #ff786d;
+  color: white;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-family: Teachers;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.plan-price-row {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.plan-price {
+  font-family: Teachers;
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -1.2px;
+  line-height: 1;
+}
+
+.plan-period {
+  color: #50576b;
+  font-family: Teachers;
+  font-size: 20px;
+  margin-bottom: 7px;
+}
+
+.plan-description {
+  margin: 8px 0 0;
+  color: #50576b;
+  font-family: Teachers;
+  font-size: 16px;
+}
+
+.plan-divider {
+  margin: 24px 0 16px;
+  border-top: 1px solid #e5eaf0;
+}
+
+.plan-btn {
+  width: 100%;
+  height: 40px;
+  border-radius: 30px;
+  font-family: Teachers;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.plan-btn.filled {
+  background: #2a32a9;
+  color: white;
+  border: none;
+}
+
+.plan-btn.outline {
+  background: transparent;
+  color: #242d96;
+  border: 1px solid #242d96;
+}
+
+.card-features {
+  margin-top: 16px;
+  padding: 0 12px;
+}
+
+.features-title {
+  margin: 0 0 10px;
+  color: #697289;
+  font-family: Teachers;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.feature-item {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+  font-family: Teachers;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.feature-check {
+  color: #242d96;
+}
+
+.feature-item.disabled,
+.feature-item.disabled .feature-check {
+  color: #bcc4d4;
+}
+
+@media (max-width: 1200px) {
+  .premium-cards {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    gap: 40px;
+  }
+}

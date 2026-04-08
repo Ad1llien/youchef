@@ -26,6 +26,7 @@ import SearchResultsPage from "./components/SearchResultsPage";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Guides from "./components/Guides"
+import Premium from "./components/Premium";
 import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
 import tiktokIcon from "./icons/tik-tok.svg";
@@ -161,6 +162,7 @@ function App() {
           <Route path="/my-account" element={<MyAccount/>}/>
           <Route path="/my-likes" element={<MyLikes/>}/>
           <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/premium" element={<Premium />}></Route>
           <Route path="/help-center" element={<HelpCenter/>}></Route>
           <Route path="/guide" element={<Guides />}></Route>
           <Route path="/password-manager" element={< PasswordManager/>}></Route>
@@ -174,18 +176,27 @@ function App() {
       <footer>
         <img className="line5 max-w-full mx-auto" src={footlines} alt="" />
 
-        <div className="footerText">
-          <div className="makeUs">Make us a part of your lifestyle</div>
+        <div className="footerContent">
+          <div className="footerLeft">
+            <div className="makeUs">Make us a part of your lifestyle</div>
+            <div className="socialLogos">
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Instagram">
+                <img src={instagramIcon} alt="" />
+              </a>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Telegram">
+                <img src={telegramIcon} alt="" />
+              </a>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="TikTok">
+                <img src={tiktokIcon} alt="" />
+              </a>
+            </div>
+          </div>
           <div className="tasteIn">
             A taste of home <br /> in every dish
           </div>
         </div>
 
-        <div className="socialLogos">
-          <img src={instagramIcon} alt="" />
-          <img src={telegramIcon} alt="" />
-          <img src={tiktokIcon} alt="" />
-        </div>
+        <div className="footerCopyright">© ShaiQas company All Rights Reserved.</div>
       </footer>
 
     </div>
