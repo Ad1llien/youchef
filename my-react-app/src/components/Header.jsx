@@ -184,7 +184,7 @@ function Header({ onBurgerClick }) {
 
                 <div className="modal-logo" onClick={()=> {navigate("/my-likes")}}>
                   <img className="accLogo" src={likes} alt="" />
-                  <div>likes</div>
+                  <div>Favorites</div>
                 </div>
 
                 <div className="modal-logo">

@@ -128,7 +128,7 @@ function PasswordManager() {
 
               <div className="personalInfo" onClick={() => navigate("/my-likes")}>
                 <div className="rp">
-                  <div>Likes</div>
+                  <div>Favorites</div>
                 </div>
                 <hr />
               </div>

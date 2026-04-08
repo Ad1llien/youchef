@@ -1,17 +1,41 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CreateOwnMealContent from "./CreateOwnMealContent";
 import Line from "../icons/Line36.svg";
 import link from "../icons/link-2.svg";
 import addphotos from "../icons/sidekickicons_photo-plus.svg";
 import pto from "../icons/deleteIcon.svg";
 import attach from "../icons/attachIcon.svg";
+import { useNavigate } from "react-router-dom";
 import more from "../icons/moreIcon.svg";
-
+import success from "C:/Users/Asus/Desktop/projects/diploma_project/youchef/my-react-app/src/icons/success.svg"
 function RequestRecipe() {
   const [active, setActive] = useState(false);
+  
   const [addedIngredients, setAddedIngredients] = useState([]);
-  const [photo, setPhoto] = useState(null); // state для загруженного фото
-  const fileInputRef = useRef(null); // реф для скрытого input
+  const [photo, setPhoto] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  // form fields
+  const [name, setName] = useState("");
+  const [video, setVideo] = useState("");
+  const [description, setDescription] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
+  const navigate = useNavigate();
+  // user info
+  const [user, setUser] = useState(null);
+
+  const fileInputRef = useRef(null);
+
+  // получить данные пользователя
+  useEffect(() => {
+    fetch("http://localhost:4000/api/user/data", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setUser(data.userData);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   // выбор файла
   const handleFileChange = (e) => {
@@ -19,15 +43,61 @@ function RequestRecipe() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setPhoto(event.target.result); // сохраняем base64
+        setPhoto(URL.createObjectURL(file));
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // удаление фото
-  const removePhoto = () => {
-    setPhoto(null);
+  const removePhoto = () => setPhoto(null);
+
+  // отправка заявки
+  const handleSubmit = async () => {
+    if (!user) {
+      alert("Сначала войдите в аккаунт");
+      return;
+    }
+  
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("ingredients", JSON.stringify(addedIngredients));
+      formData.append("video", video);
+      formData.append("description", description);
+      formData.append("isPremium", isPremium);
+      formData.append("userName", user.name);
+      formData.append("userEmail", user.email);
+  
+      if (fileInputRef.current.files[0]) {
+        formData.append("photo", fileInputRef.current.files[0]); // файл вместо base64
+      }
+  
+      const res = await fetch("http://localhost:4000/api/recipe-request", {
+        method: "POST",
+        credentials: "include",
+        body: formData, // тут FormData
+      });
+  
+      const data = await res.json();
+  
+      if (data.success) {
+        setShowSuccessModal(true);
+        setTimeout(() => {
+            setShowSuccessModal(false);
+          }, 5000);
+        setName("");
+        setVideo("");
+        setDescription("");
+        setAddedIngredients([]);
+        setPhoto(null);
+        setIsPremium(false);
+      } else {
+        alert("Ошибка: " + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Ошибка отправки");
+    }
   };
 
   return (
@@ -39,7 +109,7 @@ function RequestRecipe() {
       </div>
 
       <div className="formBlock">
-        {/* Фото блок */}
+        {/* Фото */}
         <div className="photoBlock">
           <div className="photoFrame">
             {photo ? (
@@ -48,6 +118,7 @@ function RequestRecipe() {
               <img src={addphotos} alt="placeholder" />
             )}
           </div>
+
           <div className="photoBtns">
             <img src={pto} alt="delete" onClick={removePhoto} />
             <img
@@ -57,6 +128,7 @@ function RequestRecipe() {
             />
             <img src={more} alt="more" />
           </div>
+
           <input
             type="file"
             accept="image/*"
@@ -73,7 +145,12 @@ function RequestRecipe() {
             <div className="addBlockLineTitle">Name</div>
             <div className="AddBlockInput">
               <div className="AddBlockInputWrapper">
-                <input type="text" placeholder="Add Subject" required />
+                <input
+                  type="text"
+                  placeholder="Add Subject"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -122,7 +199,12 @@ function RequestRecipe() {
             <div className="AddBlockInput">
               <div className="AddBlockInputWrapper">
                 <img src={link} alt="" />
-                <input type="text" placeholder="Paste file url" required />
+                <input
+                  type="text"
+                  placeholder="Paste file url"
+                  value={video}
+                  onChange={(e) => setVideo(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -132,7 +214,11 @@ function RequestRecipe() {
             <div className="addBlockLineTitle">Set Visibility Recipe</div>
             <div className="premiumRadioWrapper">
               <label className="premiumRadio">
-                <input type="checkbox" name="option" />
+                <input
+                  type="checkbox"
+                  checked={isPremium}
+                  onChange={(e) => setIsPremium(e.target.checked)}
+                />
                 <span className="customRadio"></span>
               </label>
 
@@ -144,27 +230,44 @@ function RequestRecipe() {
 
           {/* Textarea */}
           <div className="addBlockLine">
-            <textarea placeholder="Type your Recipe here"></textarea>
+            <textarea
+              placeholder="Type your Recipe here"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
         </div>
-        
       </div>
-      <div className="submitBtns">
-            <div className="cancelBtns">
-                Cancel
-            </div>
-            <div className="submitBtn">
-                Submit
-            </div>
-        </div>
 
-      {/* Категории */}
+      {/* КНОПКИ */}
+      <div className="submitBtnsWrapper">
+        <div className="submitBtns">
+          <div className="cancelBtns">Cancel</div>
+          <div className="submitBtn" onClick={handleSubmit}>
+            Submit
+          </div>
+        </div>
+      </div>
+
+      {/* Ингредиенты popup */}
       {active && (
         <CreateOwnMealContent
           checkPot={addedIngredients}
           setCheckPot={setAddedIngredients}
           showPot={false}
         />
+      )}
+      {showSuccessModal  && (
+        <div className="logoutModalOverlay">
+          <div className="logoutModal">
+            <img src={success} alt="" />
+            <p>Successful!</p>
+            <div className="logoutButtons">
+              <button className="cancelBtn" onClick={() => setShowSuccessModal(false)}>Back</button>
+              <button className="logoutBtn" onClick={()=> navigate("/")}>Go to home</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

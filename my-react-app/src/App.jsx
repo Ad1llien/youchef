@@ -117,7 +117,17 @@ function App() {
                   </div>
                 </div>
 
-                <SearchBar />
+                <SearchBar
+  mode={activeTab === "create" ? "ingredients" : "meals"}
+  selectedIngredients={checkPot}
+  onIngredientSelect={(ingredient) => {
+    setCheckPot((prev) =>
+      prev.includes(ingredient)
+        ? prev.filter((i) => i !== ingredient) // toggle OFF
+        : [...prev, ingredient] // toggle ON
+    );
+  }}
+/>
 
                 {activeTab === "popular" && <PopularMealContent />}
                 {activeTab === "main" && <MainRecipeContent />}

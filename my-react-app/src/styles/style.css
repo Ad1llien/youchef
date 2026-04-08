@@ -1371,4 +1371,21 @@ cursor: pointer;
   }
 
 
+  .searchResultItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.2s ease;
+  }
   
+  .searchResultItem:hover {
+    background: rgba(36, 45, 150, 0.05);
+  }
+  
+  .searchResultItem.active {
+    border: 1px solid #C8D69B;
+    background: rgba(200, 214, 155, 0.29);
+  }

@@ -17,10 +17,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "form-data": "^4.0.5",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "4.1",
     "mongoose": "^9.2.3",
     "node-fetch": "^3.3.2",
+    "node-telegram-bot-api": "^0.67.0",
     "nodemailer": "^8.0.1",
     "nodemon": "^3.1.14",
     "openai": "^6.32.0"

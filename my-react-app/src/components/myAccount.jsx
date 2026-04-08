@@ -136,7 +136,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
               </div>
               <div className="personalInfo" onClick={() => navigate("/my-likes")}>
                 <div className="rp">
-                  <div >Likes</div>
+                  <div >Favourites</div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-4 h-4 text-[#242D96]"
@@ -207,30 +207,31 @@ const [avatarPreview, setAvatarPreview] = useState(null);
   </div>
 </div>
 
-            <form className="profileForm">
-          <div className="input-group shorter">
-            <label>Full Name *</label>
-            <div className="input-wrapper">
-              <input
-                type="email"
-                placeholder=""
-                                
-                
-              />
-            </div>
-          </div>
+<form className="profileForm">
+  <div className="input-group shorter">
+    <label>Full Name *</label>
+    <div className="input-wrapper">
+      <input
+        type="text"
+        placeholder="Full Name"
+        value={user?.name || ""}
+        onChange={(e) => setUser({ ...user, name: e.target.value })}
+      />
+    </div>
+  </div>
 
-          <div className="input-group shorter">
-            <label>Email Address *</label>
-            <div className="input-wrapper">
-              <input
-                type="password"
-                placeholder=""
-                
-              />
-            </div>
-          </div>         
-        </form>
+  <div className="input-group shorter">
+    <label>Email Address *</label>
+    <div className="input-wrapper">
+      <input
+        type="email"
+        placeholder="Email"
+        value={user?.email || ""}
+        onChange={(e) => setUser({ ...user, email: e.target.value })}
+      />
+    </div>
+  </div>         
+</form>
         <div className="searchWrapper leeft">
             <button
               className="searchBtn">

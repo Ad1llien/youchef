@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MealCardGrid from "./MealCardGrid.jsx"; // карточки блюд
+import Pagination from "./Pagination.jsx"; // твой компонент Pagination
 
 function MyLikes() {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8); // сколько карточек на странице
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = async () => {
@@ -25,9 +28,16 @@ function MyLikes() {
     setFavorites(saved ? JSON.parse(saved) : []);
   }, []);
 
+  // Определяем карточки для текущей страницы
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentFavorites = favorites.slice(indexOfFirst, indexOfLast);
+
+  const totalPages = Math.ceil(favorites.length / itemsPerPage);
+
   return (
     <div className="myAccountWrapper">
-      <div className="recipeEmpty">My Likes</div>
+      <div className="recipeEmpty">My Favorites</div>
 
       <div className="accountMenu">
         <div className="account-page">
@@ -66,7 +76,7 @@ function MyLikes() {
 
               <div className="personalInfo active_MenuPage" onClick={() => navigate("/my-likes")}>
                 <div className="rp">
-                  <div>Likes</div>
+                  <div>Favorites</div>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
@@ -88,13 +98,24 @@ function MyLikes() {
             {favorites.length === 0 ? (
               <div className="emptyFavorites">No favorite recipes yet</div>
             ) : (
-              <MealCardGrid
-                meals={favorites}
-                onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
-                titleMaxLength={15}
-                variant="mainRecipe"
-                useLongTitle
-              />
+              <>
+                <MealCardGrid
+                  meals={currentFavorites}
+                  onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
+                  titleMaxLength={15}
+                  variant="mainRecipe"
+                  useLongTitle
+                />
+
+                {/* Пагинация */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>
