@@ -66,7 +66,7 @@ function Header({ onBurgerClick }) {
       <nav className="flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center max-[393px]:hidden">
 
         <div className="cursor-pointer">recipe</div>
-        <div className="cursor-pointer">premium</div>
+        <div className="cursor-pointer" onClick={()=>{navigate("/buy-premium")}}>premium</div>
 
         <div
           className="cursor-pointer"
@@ -189,7 +189,7 @@ function Header({ onBurgerClick }) {
 
                 <div className="modal-logo">
                   <img className="accLogo" src={vipCrown} alt="" />
-                  <div>premium</div>
+                  <div >premium</div>
                   <div className="pr">Free</div>
                 </div>
 
