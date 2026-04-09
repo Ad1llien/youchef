@@ -1,7 +1,7 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/searchResults.css";
-import lineSVG from "../icons/line36.svg";
+import lineSVG from "../icons/Line36.svg";
 import hybridMeals from "../mealsDB.json"; // путь поправь под свой проект
 function SearchResultsPage() {
   const navigate = useNavigate();
