@@ -186,7 +186,7 @@ function Header({ onBurgerClick }) {
 
                 <div className="modal-logo" onClick={() => navigate("/premium")}>
                   <img className="accLogo" src={vipCrown} alt="" />
-                  <div>premium</div>
+                  <div >premium</div>
                   <div className="pr">Free</div>
                 </div>
 

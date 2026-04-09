@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import RecipeRequest from "./models/recipeRequest.js";
 import transporter from "./config/nodemailer.js";
-
+import User from "./models/userModels.js";
 dotenv.config();
 
 // ======================
@@ -126,9 +126,16 @@ bot.onText(/\/menu/, async (msg) => {
             callback_data: "my_requests",
           },
         ],
+        [
+          {
+            text: "📊 Статистика",
+            callback_data: "stats",
+          },
+        ],
       ],
     },
   };
+
 
   const sent = await bot.sendMessage(userId, "📌 Модерторское меню:", options);
   adminPages[userId].messageId = sent.message_id;
@@ -178,6 +185,64 @@ bot.on("callback_query", async (query) => {
     if (data === "prev") {
       page.index = Math.max(page.index - 1, 0);
       return sendRequestToAdmin(userId, page.requests[page.index]);
+    }
+
+    if (data === "stats") {
+      const totalUsers = await User.countDocuments();
+    
+      const premiumUsers = await User.countDocuments({
+        premium: true,
+      });
+    
+      const pendingRequests = await RecipeRequest.countDocuments({
+        status: "pending",
+      });
+    
+      const statsText = `
+    📊 Статистика YouChef
+    
+    👥 Всего пользователей: ${totalUsers}
+    💎 Premium пользователей: ${premiumUsers}
+    🍳 Заявок на модерации: ${pendingRequests}
+    `;
+    
+      return sendOrUpdateMessage(userId, statsText, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "⬅️ Назад в меню",
+                callback_data: "back_to_menu",
+              },
+            ],
+          ],
+        },
+      });
+    }
+
+    if (data === "back_to_menu") {
+      const requestsCount = await RecipeRequest.countDocuments({
+        status: "pending",
+      });
+    
+      return sendOrUpdateMessage(userId, "📌 Модераторское меню:", {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: `🍳 Мои заявки (${requestsCount})`,
+                callback_data: "my_requests",
+              },
+            ],
+            [
+              {
+                text: "📊 Статистика",
+                callback_data: "stats",
+              },
+            ],
+          ],
+        },
+      });
     }
 
     // ======================
@@ -304,6 +369,26 @@ bot.on("callback_query", async (query) => {
   }
 });
 
+bot.on("web_app_data", async (msg) => {
+  const data = JSON.parse(msg.web_app_data.data);
+
+  if (data.action === "buy_premium") {
+    const userId = data.userId;
+
+    // Отправляем счёт пользователю
+    bot.sendInvoice(userId, {
+      title: "YouChef Premium",
+      description: "Подписка на все премиум рецепты",
+      payload: `premium_${userId}`,       // уникальный идентификатор
+      provider_token: process.env.TG_PROVIDER_TOKEN,
+      start_parameter: "premium-subscription",
+      currency: "USD",
+      prices: [{ label: "Premium", amount: 499 }], // $4.99 = 499 cents
+      need_email: true
+    });
+  }
+});
+
 // ======================
 // СООБЩЕНИЕ ОТ АДМИНА → EMAIL
 // ======================
@@ -333,6 +418,20 @@ bot.on("message", async (msg) => {
   delete adminReplyMode[userId];
 });
 
+
+bot.on("successful_payment", async (msg) => {
+  const userId = msg.successful_payment.invoice_payload.split("_")[1];
+
+  // Обновляем пользователя в базе
+  await User.findOneAndUpdate(
+    { telegramId: userId },
+    { premium: true },
+    { upsert: true }
+  );
+
+  // Сообщаем пользователю
+  bot.sendMessage(userId, "🎉 Вы успешно приобрели Premium!");
+});
 // ======================
 // Отправка новой заявки модерам
 // ======================

@@ -34,6 +34,7 @@ import footlines from "./icons/footerlines.svg";
 import VerifyPage from "./pages/VerifyPage";
 import CheckEmailPage from "./pages/CheckEmailPage"
 import RequestRecipe from "./components/requestRecipe";/* ================= APP WRAPPER ================= */
+import BuyPremium from "./components/premium";
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -46,7 +47,7 @@ function AppWrapper() {
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [tgUser, setTgUser] = useState(null);
   /* 🍔 mobile menu */
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   /* 🫕 кастрюля */
@@ -60,6 +61,20 @@ function App() {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
   }, [checkPot]);
 
+  useEffect(() => {
+    if (window.Telegram?.WebApp) {
+      const tg = window.Telegram.WebApp;
+  
+      tg.onEvent("themeChanged", () => {}); // чтобы WebApp точно инициализировался
+      tg.ready();
+      tg.expand();
+  
+      console.log("Telegram initData:", tg.initData); // полные данные
+      console.log("Telegram unsafe user:", tg.initDataUnsafe?.user);
+  
+      setTgUser(tg.initDataUnsafe?.user || null);
+    }
+  }, []);
   /* 📂 вкладки */
   const [activeTab, setActiveTab] = useState("popular");
   const isAuthPage = ["/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword"].includes(location.pathname);
@@ -168,7 +183,9 @@ function App() {
           <Route path="/password-manager" element={< PasswordManager/>}></Route>
           <Route path="/verify" element={<VerifyPage />}></Route>
           <Route path="/check-email" element={<CheckEmailPage />} />
-          <Route path="/request-recipe" element={<RequestRecipe />} />          
+          <Route path="/request-recipe" element={<RequestRecipe />} />
+          <Route path="/buy-premium" element={<BuyPremium tgUser={tgUser}/>} />          
+          
           </Routes>
       </main>
 
