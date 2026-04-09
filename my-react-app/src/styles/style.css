@@ -695,6 +695,10 @@ align-items: center;justify-content: center;
     align-items: top;
     justify-content: center;
   }
+
+  .menuwrapper {
+    width: 278px;
+  }
   
   .right-side{
     width: 60%;
@@ -703,19 +707,20 @@ align-items: center;justify-content: center;
   .personalInfo{
     color: #343B1B;
     cursor: pointer;
-
-font-family: Teachers;
-font-size: 18px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
-width: 278px;
-margin-bottom: 30px;
+    font-family: Teachers;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 278px;
+    margin-bottom: 20px;
   }
 
   .rp{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 50px;
   }
 
   .account-page{
@@ -723,9 +728,17 @@ margin-bottom: 30px;
   }
 
   .personalInfo hr{
-    background: #BBC8D8;
+    background: #bbc8d8;
     height: 2px;
+    border: 0;
     border-radius: 50px;
+    margin: 0;
+  }
+
+  .personalInfo .rp svg {
+    width: 26px;
+    height: 26px;
+    color: inherit !important;
   }
 
   .myAccountWrapper{
@@ -1373,6 +1386,7 @@ cursor: pointer;
 
   .searchResultItem {
     display: flex;
+    background-color: #ffffff;
     align-items: center;
     gap: 12px;
     padding: 10px 12px;

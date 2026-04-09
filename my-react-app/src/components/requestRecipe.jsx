@@ -7,7 +7,7 @@ import pto from "../icons/deleteIcon.svg";
 import attach from "../icons/attachIcon.svg";
 import { useNavigate } from "react-router-dom";
 import more from "../icons/moreIcon.svg";
-import success from "C:/Users/Asus/Desktop/projects/diploma_project/youchef/my-react-app/src/icons/success.svg"
+import success from "/Users/dilnazakhmetgaliyeva/Downloads/youchef/my-react-app/src/icons/clarity_success-standard-solid.svg"
 function RequestRecipe() {
   const [active, setActive] = useState(false);
   
@@ -16,7 +16,7 @@ function RequestRecipe() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   // form fields
   const [name, setName] = useState("");
-  const [video, setVideo] = useState("");
+  const [video, setVideo] = useState("");ç
   const [description, setDescription] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const navigate = useNavigate();

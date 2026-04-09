@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MealCardGrid from "./MealCardGrid.jsx"; // карточки блюд
 import Pagination from "./Pagination.jsx"; // твой компонент Pagination
+import "../styles/style.css";
 
 function MyLikes() {
   const navigate = useNavigate();
