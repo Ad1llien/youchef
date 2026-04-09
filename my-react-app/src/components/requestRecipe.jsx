@@ -7,7 +7,7 @@ import pto from "../icons/deleteIcon.svg";
 import attach from "../icons/attachIcon.svg";
 import { useNavigate } from "react-router-dom";
 import more from "../icons/moreIcon.svg";
-import success from "/Users/dilnazakhmetgaliyeva/Downloads/youchef/my-react-app/src/icons/clarity_success-standard-solid.svg"
+import success from "../icons/clarity_success-standard-solid.svg"
 function RequestRecipe() {
   const [active, setActive] = useState(false);
   
