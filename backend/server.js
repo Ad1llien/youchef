@@ -18,15 +18,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // MongoDB
 connectDB();
-
+const allowedOrigins = [
+      "http://localhost:5174", // локально
+      "https://youchef-front.onrender.com", // Render frontend
+      "https://www.youchef.com", // будущий .com
+      "https://www.youchef.kz", // будущий .kz
+].filter(Boolean);
 // CORS
 app.use(
   cors({
-    origin: ["http://localhost:5174"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
-
 // JSON
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
