@@ -26,7 +26,7 @@ import SearchResultsPage from "./components/SearchResultsPage";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Guides from "./components/Guides"
-import Premium from "./components/Premium";
+import Premium from "./components/premium";
 import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
 import tiktokIcon from "./icons/tik-tok.svg";
