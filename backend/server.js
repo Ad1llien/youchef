@@ -22,7 +22,8 @@ const allowedOrigins = [
       "http://localhost:5174", // локально
       "https://youchef-front.onrender.com", // Render frontend
       "https://www.youchef.com", // будущий .com
-      "https://www.youchef.kz", // будущий .kz
+      "https://www.youchef.kz",
+      "https://youchef.kz",
 ].filter(Boolean);
 // CORS
 app.use(
