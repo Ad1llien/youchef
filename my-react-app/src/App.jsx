@@ -26,7 +26,7 @@ import SearchResultsPage from "./components/SearchResultsPage";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import Guides from "./components/Guides"
-
+import Premium from "./components/Premium";
 import instagramIcon from "./icons/instagram.svg";
 import telegramIcon from "./icons/telegram.svg";
 import tiktokIcon from "./icons/tik-tok.svg";
@@ -34,7 +34,6 @@ import footlines from "./icons/footerlines.svg";
 import VerifyPage from "./pages/VerifyPage";
 import CheckEmailPage from "./pages/CheckEmailPage"
 import RequestRecipe from "./components/requestRecipe";/* ================= APP WRAPPER ================= */
-import BuyPremium from "./components/premium";
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -184,7 +183,6 @@ function App() {
           <Route path="/verify" element={<VerifyPage />}></Route>
           <Route path="/check-email" element={<CheckEmailPage />} />
           <Route path="/request-recipe" element={<RequestRecipe />} />
-          <Route path="/buy-premium" element={<BuyPremium tgUser={tgUser}/>} />          
           
           </Routes>
       </main>
