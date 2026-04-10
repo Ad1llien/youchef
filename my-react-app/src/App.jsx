@@ -5,7 +5,8 @@ import {
   Route,
   useNavigate
 } from "react-router-dom";
-import Contact from "./components/contact"
+import Contact from "./components/contact";
+import OfflinePage from "./components/OfflinePage";
 import PasswordManager  from "./components/PasswordManager";
 import HelpCenter from "./components/HelpCenter";
 import MyAccount from "../src/components/myAccount"
@@ -44,6 +45,7 @@ function AppWrapper() {
 
 /* ================= APP ================= */
 function App() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const navigate = useNavigate();
   const location = useLocation();
   const [tgUser, setTgUser] = useState(null);
@@ -54,6 +56,28 @@ function App() {
     const saved = localStorage.getItem("checkPot");
     return saved ? JSON.parse(saved) : [];
   });
+
+  useEffect(() => {
+    const updateStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
+
+    window.addEventListener("online", updateStatus);
+    window.addEventListener("offline", updateStatus);
+
+    // initial check
+    updateStatus();
+
+    return () => {
+      window.removeEventListener("online", updateStatus);
+      window.removeEventListener("offline", updateStatus);
+    };
+  }, []);
+
+  if (!isOnline) {
+    return <OfflinePage />;
+  }
+
   
 
   useEffect(() => {
@@ -78,6 +102,7 @@ function App() {
   const [activeTab, setActiveTab] = useState("popular");
   const isAuthPage = ["/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword"].includes(location.pathname);
 
+  
   /* 🔍 поиск */
   // поиск теперь живет внутри компонента SearchBar
 

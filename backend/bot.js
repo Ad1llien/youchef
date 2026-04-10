@@ -2,6 +2,7 @@ import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import bcrypt from "bcryptjs";
 import RecipeRequest from "./models/recipeRequest.js";
 import transporter from "./config/nodemailer.js";
 import User from "./models/userModels.js";
@@ -26,6 +27,59 @@ console.log("Модеры:", MODERATORS);
 // ======================
 const adminPages = {};
 const adminReplyMode = {};
+const userLoginMode = {};
+const USER_CALLBACKS = new Set(["user_help", "user_premium", "user_menu"]);
+const ADMIN_CALLBACKS = new Set([
+  "my_requests",
+  "stats",
+  "back_to_menu",
+  "next",
+  "prev",
+]);
+
+function isAdminCallback(data = "") {
+  return (
+    ADMIN_CALLBACKS.has(data) ||
+    data.startsWith("accept_") ||
+    data.startsWith("reject_") ||
+    data.startsWith("email_")
+  );
+}
+
+async function getUserRoleByTelegramId(telegramId) {
+  const tgId = String(telegramId);
+  const user = await User.findOne({ telegramId: tgId }).select("role");
+
+  if (user?.role === "admin") return "admin";
+  if (user?.role === "user") return "user";
+
+  return MODERATORS.includes(Number(telegramId)) ? "admin" : "user";
+}
+
+async function getUserPremiumStatusByTelegramId(telegramId) {
+  const tgId = String(telegramId);
+  const user = await User.findOne({ telegramId: tgId }).select("premium");
+  return Boolean(user?.premium);
+}
+
+function buildUserMenuButtons() {
+  return {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "💎 Статус Premium", callback_data: "user_premium" }],
+        [{ text: "ℹ️ Помощь", callback_data: "user_help" }],
+      ],
+    },
+  };
+}
+
+async function sendUserMenu(userId) {
+  return bot.sendMessage(
+    userId,
+    "👋 Добро пожаловать в YouChef!\n\nДоступные команды:\n/start — открыть меню\n/help — помощь\n/login — привязать аккаунт сайта\n/logout — отвязать аккаунт\n/cancel — отменить ввод\n/premium — статус подписки",
+    buildUserMenuButtons()
+  );
+}
 
 // ======================
 // ФУНКЦИЯ ОБНОВЛЕНИЯ/ОТПРАВКИ ОДНОГО СООБЩЕНИЯ
@@ -102,9 +156,14 @@ async function sendRequestToAdmin(userId, reqObj) {
 // ======================
 bot.onText(/\/menu/, async (msg) => {
   const userId = msg.from.id;
+  const role = await getUserRoleByTelegramId(userId);
 
-  if (!MODERATORS.includes(userId)) {
-    return bot.sendMessage(userId, "❌ У тебя нет доступа к админ-меню");
+  if (role !== "admin") {
+    await bot.sendMessage(
+      userId,
+      "❌ У тебя нет доступа к админ-меню. Открываю пользовательское меню."
+    );
+    return sendUserMenu(userId);
   }
 
   const requests = await RecipeRequest.find({ status: "pending" }).sort({
@@ -141,15 +200,116 @@ bot.onText(/\/menu/, async (msg) => {
   adminPages[userId].messageId = sent.message_id;
 });
 
+bot.onText(/\/start/, async (msg) => {
+  const userId = msg.from.id;
+  const role = await getUserRoleByTelegramId(userId);
+
+  if (role === "admin") {
+    return bot.sendMessage(
+      userId,
+      "👋 Привет, админ! Используй /menu для открытия панели модерации."
+    );
+  }
+
+  return sendUserMenu(userId);
+});
+
+bot.onText(/\/help/, async (msg) => {
+  const userId = msg.from.id;
+  return bot.sendMessage(
+    userId,
+    "ℹ️ Команды:\n/login — вход в аккаунт сайта (email + пароль)\n/logout — отвязать Telegram от аккаунта\n/cancel — отменить текущий ввод\n/premium — проверить подписку\n/start — открыть меню"
+  );
+});
+
+bot.onText(/\/login/, async (msg) => {
+  const userId = msg.from.id;
+  userLoginMode[userId] = { step: "email" };
+  return bot.sendMessage(
+    userId,
+    "Введите email от аккаунта YouChef:\n(или /cancel для отмены)"
+  );
+});
+
+bot.onText(/\/cancel/, async (msg) => {
+  const userId = msg.from.id;
+  if (userLoginMode[userId]) {
+    delete userLoginMode[userId];
+    return bot.sendMessage(userId, "Ввод отменен.");
+  }
+  return bot.sendMessage(userId, "Сейчас нет активного ввода.");
+});
+
+bot.onText(/\/logout/, async (msg) => {
+  const userId = String(msg.from.id);
+  try {
+    const user = await User.findOne({ telegramId: userId });
+    if (!user) {
+      return bot.sendMessage(msg.chat.id, "Этот Telegram еще не привязан к аккаунту.");
+    }
+
+    user.telegramId = undefined;
+    await user.save();
+    return bot.sendMessage(msg.chat.id, "✅ Telegram успешно отвязан от аккаунта.");
+  } catch (error) {
+    console.error("Ошибка /logout в боте:", error.message);
+    return bot.sendMessage(msg.chat.id, "Ошибка при отвязке. Попробуйте позже.");
+  }
+});
+
+bot.onText(/\/premium/, async (msg) => {
+  const userId = msg.from.id;
+  const isPremium = await getUserPremiumStatusByTelegramId(userId);
+  return bot.sendMessage(
+    userId,
+    isPremium
+      ? "💎 У тебя активен Premium."
+      : "🔒 Premium пока не активен. Открой Web App, чтобы оформить подписку."
+  );
+});
+
 // ======================
 // CALLBACK кнопки
 // ======================
 bot.on("callback_query", async (query) => {
   const userId = query.from.id;
   const data = query.data;
+  const role = await getUserRoleByTelegramId(userId);
 
-  if (!MODERATORS.includes(userId)) {
-    return bot.answerCallbackQuery(query.id, { text: "Нет доступа" });
+  if (USER_CALLBACKS.has(data)) {
+    if (data === "user_help") {
+      await bot.sendMessage(
+        userId,
+        "ℹ️ Команды: /start, /help, /premium. Для покупки Premium используй Web App."
+      );
+    }
+
+    if (data === "user_premium") {
+      const isPremium = await getUserPremiumStatusByTelegramId(userId);
+      await bot.sendMessage(
+        userId,
+        isPremium
+          ? "💎 У тебя активен Premium."
+          : "🔒 Premium пока не активен."
+      );
+    }
+
+    if (data === "user_menu") {
+      await sendUserMenu(userId);
+    }
+
+    return bot.answerCallbackQuery(query.id);
+  }
+
+  if (isAdminCallback(data) && role !== "admin") {
+    return bot.answerCallbackQuery(query.id, {
+      text: "Нет доступа к админ-действиям",
+      show_alert: true,
+    });
+  }
+
+  if (role !== "admin") {
+    return bot.answerCallbackQuery(query.id, { text: "Неизвестная команда" });
   }
 
   if (!adminPages[userId]) {
@@ -370,22 +530,26 @@ bot.on("callback_query", async (query) => {
 });
 
 bot.on("web_app_data", async (msg) => {
-  const data = JSON.parse(msg.web_app_data.data);
+  try {
+    const data = JSON.parse(msg.web_app_data.data);
 
-  if (data.action === "buy_premium") {
-    const userId = data.userId;
+    if (data.action === "buy_premium") {
+      const userId = msg.from.id;
 
-    // Отправляем счёт пользователю
-    bot.sendInvoice(userId, {
-      title: "YouChef Premium",
-      description: "Подписка на все премиум рецепты",
-      payload: `premium_${userId}`,       // уникальный идентификатор
-      provider_token: process.env.TG_PROVIDER_TOKEN,
-      start_parameter: "premium-subscription",
-      currency: "USD",
-      prices: [{ label: "Premium", amount: 499 }], // $4.99 = 499 cents
-      need_email: true
-    });
+      // Отправляем счёт пользователю
+      bot.sendInvoice(userId, {
+        title: "YouChef Premium",
+        description: "Подписка на все премиум рецепты",
+        payload: `premium_${userId}`, // уникальный идентификатор
+        provider_token: process.env.TG_PROVIDER_TOKEN,
+        start_parameter: "premium-subscription",
+        currency: "USD",
+        prices: [{ label: "Premium", amount: 499 }], // $4.99 = 499 cents
+        need_email: true,
+      });
+    }
+  } catch (error) {
+    console.error("Ошибка web_app_data:", error.message);
   }
 });
 
@@ -394,6 +558,59 @@ bot.on("web_app_data", async (msg) => {
 // ======================
 bot.on("message", async (msg) => {
   const userId = msg.from.id;
+
+  if (userLoginMode[userId] && msg.text && !msg.text.startsWith("/")) {
+    const session = userLoginMode[userId];
+
+    if (session.step === "email") {
+      session.email = msg.text.trim().toLowerCase();
+      session.step = "password";
+      userLoginMode[userId] = session;
+      return bot.sendMessage(userId, "Введите пароль:");
+    }
+
+    if (session.step === "password") {
+      const password = msg.text;
+      const email = session.email;
+
+      try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+          delete userLoginMode[userId];
+          return bot.sendMessage(
+            userId,
+            "Аккаунт с таким email не найден. Попробуйте снова через /login."
+          );
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          delete userLoginMode[userId];
+          return bot.sendMessage(
+            userId,
+            "Неверный пароль. Попробуйте снова через /login."
+          );
+        }
+
+        user.telegramId = String(userId);
+        await user.save();
+        delete userLoginMode[userId];
+
+        return bot.sendMessage(
+          userId,
+          "✅ Аккаунт успешно привязан к Telegram. Теперь можно проверять /premium и покупать подписку."
+        );
+      } catch (error) {
+        console.error("Ошибка /login в боте:", error.message);
+        delete userLoginMode[userId];
+        return bot.sendMessage(
+          userId,
+          "Ошибка авторизации. Попробуйте позже."
+        );
+      }
+    }
+  }
 
   if (!adminReplyMode[userId]) return;
   if (!MODERATORS.includes(userId)) return;
@@ -420,17 +637,41 @@ bot.on("message", async (msg) => {
 
 
 bot.on("successful_payment", async (msg) => {
-  const userId = msg.successful_payment.invoice_payload.split("_")[1];
-
-  // Обновляем пользователя в базе
-  await User.findOneAndUpdate(
-    { telegramId: userId },
-    { premium: true },
-    { upsert: true }
+  const tgIdFromSender = String(msg.from.id);
+  const tgIdFromPayload = String(
+    msg.successful_payment?.invoice_payload?.split("_")[1] || ""
   );
+  const telegramId = tgIdFromPayload || tgIdFromSender;
 
-  // Сообщаем пользователю
-  bot.sendMessage(userId, "🎉 Вы успешно приобрели Premium!");
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { telegramId },
+      { premium: true },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      await bot.sendMessage(
+        msg.chat.id,
+        "Оплата получена, но веб-аккаунт не найден. Привяжите Telegram к YouChef аккаунту и напишите в поддержку."
+      );
+      console.warn(
+        `[payment] successful_payment without linked user telegramId=${telegramId}`
+      );
+      return;
+    }
+
+    await bot.sendMessage(
+      msg.chat.id,
+      "🎉 Вы успешно приобрели Premium! Статус в приложении обновится автоматически."
+    );
+  } catch (error) {
+    console.error("Ошибка обработки successful_payment:", error.message);
+    await bot.sendMessage(
+      msg.chat.id,
+      "Оплата прошла, но не удалось обновить Premium автоматически. Напишите в поддержку."
+    );
+  }
 });
 // ======================
 // Отправка новой заявки модерам

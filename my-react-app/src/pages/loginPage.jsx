@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import logo from "../logos/logo.svg";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../config/api";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:4000/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

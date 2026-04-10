@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
+import API_BASE_URL, { API_ORIGIN } from "../config/api";
 
 function MyAccount() {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
@@ -9,7 +10,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:4000/api/user/data", {
+    fetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
       credentials: "include",
     })
@@ -35,7 +36,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
     formData.append("avatar", file);
   
     try {
-      const res = await fetch("http://localhost:4000/api/user/avatar", {
+      const res = await fetch(`${API_BASE_URL}/api/user/avatar`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -53,7 +54,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:4000/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include"
       });
@@ -187,7 +188,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
       {avatarPreview ? (
         <img src={avatarPreview} alt="avatar" />
       ) : user?.avatar ? (
-        <img src={avatarPreview || `http://localhost:4000${user?.avatar}`} alt="avatar" />
+        <img src={avatarPreview || `${API_ORIGIN}${user?.avatar}`} alt="avatar" />
       ) : (
         user?.name?.charAt(0).toUpperCase()
       )}
@@ -273,7 +274,7 @@ const [avatarPreview, setAvatarPreview] = useState(null);
   >
     <div className="avatarModalContent">
     <img
-  src={avatarPreview || (user?.avatar && `http://localhost:4000${user.avatar}`)}
+  src={avatarPreview || (user?.avatar && `${API_ORIGIN}${user.avatar}`)}
   alt="big avatar"
 />
     </div>

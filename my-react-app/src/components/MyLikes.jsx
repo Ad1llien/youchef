@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import MealCardGrid from "./MealCardGrid.jsx"; // карточки блюд
 import Pagination from "./Pagination.jsx"; // твой компонент Pagination
 import "../styles/style.css";
+import API_BASE_URL from "../config/api";
 
 function MyLikes() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function MyLikes() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:4000/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include"
       });

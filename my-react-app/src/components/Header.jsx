@@ -6,6 +6,7 @@ import likes from "../icons/likes.svg"
 import vipCrown from "../icons/crown.svg"
 import qaa from "../icons/question-line.svg"
 import guide from "../icons/news-line.svg"
+import API_BASE_URL from "../config/api";
 
 function Header({ onBurgerClick }) {
 
@@ -56,7 +57,7 @@ function Header({ onBurgerClick }) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/user/data", {
+    fetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
       credentials: "include",
     })

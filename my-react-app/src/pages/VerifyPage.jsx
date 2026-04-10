@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config/api";
 
 const VerifyPage = () => {
   const [otp, setOtp] = useState("");
@@ -11,7 +12,7 @@ const VerifyPage = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:4000/api/auth/verify-Account", {
+    const res = await fetch(`${API_BASE_URL}/api/auth/verify-Account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

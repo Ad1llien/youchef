@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
 import checkLine from "../icons/checkbox-circle-fill.svg";
+import API_BASE_URL from "../config/api";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const SignUpPage = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

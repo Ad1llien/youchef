@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import checkLine from "../icons/checkbox-circle-fill.svg"
 import "../styles/style.css"
+import API_BASE_URL from "../config/api";
 
 function PasswordManager() {
 
@@ -17,7 +18,7 @@ function PasswordManager() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/user/data", {
+    fetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
       credentials: "include",
     })
@@ -32,7 +33,7 @@ function PasswordManager() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:4000/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include"
       });
@@ -56,7 +57,7 @@ function PasswordManager() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/change-password", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

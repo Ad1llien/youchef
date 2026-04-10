@@ -1,10 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 
 function BuyPremium({ tgUser }){
 
 const navigate = useNavigate();
+const userContext = useUser();
+const user = userContext?.user ?? null;
+const refreshUser = userContext?.refreshUser;
 
   const handleBuy = () => {
     if (!tgUser) {
@@ -12,12 +16,15 @@ const navigate = useNavigate();
       return;
     }
 
-    // Отправляем данные на бота
+    // Передаём сигнал в Telegram-бот для выставления инвойса.
     window.Telegram.WebApp.sendData(
       JSON.stringify({ action: "buy_premium", userId: tgUser.id })
     );
 
     alert("Инструкция по оплате отправлена в Telegram");
+    if (typeof refreshUser === "function") {
+      refreshUser();
+    }
   };
 
     return (
@@ -129,6 +136,9 @@ const navigate = useNavigate();
   
   
           <div className="searchWrapper leeft">
+              <div style={{ marginBottom: "8px", color: "#242D96" }}>
+                Status: {user?.premium ? "Premium active" : "Free"}
+              </div>
               <button
                 className="searchBtn" onClick={handleBuy}>
                 pay

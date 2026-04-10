@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
+import API_BASE_URL from "../config/api";
 
 function ResetPasswordPage() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function ResetPasswordPage() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/send-reset-otp", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/send-reset-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

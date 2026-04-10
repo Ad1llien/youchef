@@ -15,6 +15,10 @@ export const getUserData = async (req, res) => {
         email: user.email,
         isAccountVerified: user.isAccountVerified,
         avatar: user.avatar || "",
+        role: user.role,
+        premium: Boolean(user.premium),
+        freeKbjuViewsUsed: user.freeKbjuViewsUsed ?? 0,
+        telegramId: user.telegramId || "",
       },
     });
   } catch (error) {

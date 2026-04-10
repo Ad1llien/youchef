@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
 import checkLine from "../icons/checkbox-circle-fill.svg"
+import API_BASE_URL from "../config/api";
 
 function SetNewPasswordPage() {
   const location = useLocation();
@@ -48,7 +49,7 @@ function SetNewPasswordPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/reset-password", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword }),

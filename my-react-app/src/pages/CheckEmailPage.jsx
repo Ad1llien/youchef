@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config/api";
 
 const CheckEmailPage = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const CheckEmailPage = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/verify-email", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/verify-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, otp }),

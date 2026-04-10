@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../styles/popularMeal.css";
 import blueFav from '../icons/blueFav.svg';
 import "../styles/mealPage.css";
@@ -8,9 +8,17 @@ import line from '../icons/Line36.svg';
 import Calculator from '../icons/Group135.svg';
 import warn from '../icons/information-fill.svg';
 import hybridMeals from "../mealsDB.json";
+import API_BASE_URL from "../config/api";
+import { useUser } from "../context/UserContext";
 function MealPage() {
   const { id } = useParams();
+  const userContext = useUser();
+  const user = userContext?.user ?? null;
   const [nutrition, setNutrition] = useState(null);
+  const [freeKbjuViewsUsed, setFreeKbjuViewsUsed] = useState(0);
+  const [freeKbjuLimit, setFreeKbjuLimit] = useState(3);
+  const [limitReached, setLimitReached] = useState(false);
+  const [nutritionLoading, setNutritionLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,34 +57,57 @@ function MealPage() {
         setLoading(false);
       });
   };
-  const ingredients = [];
-  if (meal) {
-    for (let i = 1; i <= 20; i++) {
-      const ingredient = meal[`strIngredient${i}`];
-      const measure = meal[`strMeasure${i}`];
-      if (ingredient && ingredient.trim() !== "") {
-        ingredients.push({ ingredient, measure });
+  const ingredients = useMemo(() => {
+    const list = [];
+    if (meal) {
+      for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+        if (ingredient && ingredient.trim() !== "") {
+          list.push({ ingredient, measure });
+        }
       }
     }
-  }
+    return list;
+  }, [meal]);
+
   useEffect(() => {
     if (!meal || ingredients.length === 0) return; // убедились, что meal и ingredients готовы
   
     const fetchNutrition = async () => {
+      setNutritionLoading(true);
       try {
-        const res = await fetch(`http://localhost:4000/api/nutrition/${meal.idMeal}`, {
+        const res = await fetch(`${API_BASE_URL}/api/nutrition/${meal.idMeal}`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ingredients, mealName: meal.strMeal ,   instructions: meal.strInstructions, // 👈 ДОБАВИЛИ
         }), // теперь отправляем название
         });
-  
-        if (!res.ok) throw new Error("Failed to fetch nutrition");
+
         const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 403 && data.limitReached) {
+            setLimitReached(true);
+            setFreeKbjuViewsUsed(data.freeKbjuViewsUsed ?? freeKbjuLimit);
+            setFreeKbjuLimit(data.freeKbjuLimit ?? 3);
+            setNutrition({ calories: "...", carbs: "...", protein: "...", fat: "..." });
+            return;
+          }
+          throw new Error("Failed to fetch nutrition");
+        }
+
+        setLimitReached(false);
+        setFreeKbjuViewsUsed(data.freeKbjuViewsUsed ?? 0);
+        setFreeKbjuLimit(data.freeKbjuLimit ?? 3);
         setNutrition(data);
       } catch (err) {
         console.error(err);
+        setLimitReached(false);
         setNutrition({ calories: "...", carbs: "...", protein: "...", fat: "..." });
+      } finally {
+        setNutritionLoading(false);
       }
     };
   
@@ -169,6 +200,12 @@ function MealPage() {
  
 
   const isFavorite = favorites.some(f => f.idMeal === meal.idMeal);
+  const isPremium = Boolean(user?.premium);
+  const remainingViews = Math.max(0, freeKbjuLimit - freeKbjuViewsUsed);
+  const shouldBlurNutrition = limitReached && !isPremium;
+  const shownNutrition = shouldBlurNutrition
+    ? { calories: "•••", carbs: "•••", protein: "•••", fat: "•••" }
+    : nutrition;
 
   return (
     <div className="mealPage">
@@ -211,44 +248,52 @@ function MealPage() {
           <div className="topCalc">
             <img className="caloriesCalculator" src={Calculator} alt="Calories calculator" />
             <div className="calcInfos">
-              <div className="nutritionRow">
+              <div className={`nutritionRow ${shouldBlurNutrition ? "nutritionBlurred" : ""}`}>
                 <div className="nutritionItem">
-                  <div className="nutritionValue"> {nutrition ? nutrition.calories : "..."}</div>
+                  <div className="nutritionValue"> {nutritionLoading ? "..." : (shownNutrition ? shownNutrition.calories : "...")}</div>
                   <div className="nutritionLabel">Calories</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue"> {nutrition ? nutrition.carbs : "..."}</div>
+                  <div className="nutritionValue"> {nutritionLoading ? "..." : (shownNutrition ? shownNutrition.carbs : "...")}</div>
                   <div className="nutritionLabel">Carbs</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue"> {nutrition ? nutrition.protein : "..."}</div>
+                  <div className="nutritionValue"> {nutritionLoading ? "..." : (shownNutrition ? shownNutrition.protein : "...")}</div>
                   <div className="nutritionLabel">Protein</div>
                 </div>
                 <div className="nutritionItem">
-                  <div className="nutritionValue">{nutrition ? nutrition.fat : "..."}</div>
+                  <div className="nutritionValue">{nutritionLoading ? "..." : (shownNutrition ? shownNutrition.fat : "...")}</div>
                   <div className="nutritionLabel">Fat</div>
                 </div>
               </div>
+              {shouldBlurNutrition && (
+                <div className="nutritionLockNotice">
+                  Для разблокировки КБЖУ, пожалуйста, купите Premium подписку.
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="limitWrapper">
-        <div className="img">
-          <img src={warn} alt="" />
+      {!isPremium && (
+        <div className="limitWrapper">
+          <div className="img">
+            <img src={warn} alt="" />
+          </div>
+          <div>{limitReached ? "Free limit reached" : "Free views left"}</div>
+          <div className="limitText">
+            {limitReached
+              ? `You used ${freeKbjuViewsUsed}/${freeKbjuLimit} AI calorie calculations`
+              : `${remainingViews}/${freeKbjuLimit} free AI calorie calculations remaining`}
+          </div>
+          {limitReached && (
+            <button className="upgrade premiumCtaBtn" onClick={() => navigate("/premium")}>
+              Buy Premium
+            </button>
+          )}
         </div>
-        <div> Free limit reached</div>
-        <div className="limitText">
-          You used 3/3 AI calorie calculations
-        </div>
-        <div className="upgrade">
-          Upgrade to Premium
-        </div>
-        <div>
-          X
-        </div>
-      </div>
+      )}
 
       <div className="mainContent">
         <div className="firstRow">

@@ -2,6 +2,8 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import OpenAI from "openai";
+import User from "../models/userModels.js";
+import userAuth from "../middleware/userAuth.js";
 
 const router = express.Router();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -16,15 +18,54 @@ if (!fs.existsSync(CACHE_FILE)) {
   fs.writeFileSync(CACHE_FILE, JSON.stringify({}), "utf-8");
 }
 
-router.post("/:id", async (req, res) => {
+router.post("/:id", userAuth, async (req, res) => {
   const mealId = req.params.id;
   const { ingredients, mealName, instructions  } = req.body; // <-- получаем название блюда с фронта
 
   try {
+    const FREE_KBJU_LIMIT = 3;
+    let currentUser = await User.findById(req.user._id).select("premium freeKbjuViewsUsed");
+
+    if (!currentUser) {
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    if (!currentUser.premium && currentUser.freeKbjuViewsUsed >= FREE_KBJU_LIMIT) {
+      const remainingViews = Math.max(
+        0,
+        FREE_KBJU_LIMIT - currentUser.freeKbjuViewsUsed
+      );
+      return res.status(403).json({
+        success: false,
+        limitReached: true,
+        freeKbjuViewsUsed: currentUser.freeKbjuViewsUsed,
+        freeKbjuLimit: FREE_KBJU_LIMIT,
+        remainingViews,
+        message: "Free KBJU limit reached. Buy premium to continue.",
+      });
+    }
+
+    if (!currentUser.premium) {
+      currentUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { $inc: { freeKbjuViewsUsed: 1 } },
+        { new: true, select: "premium freeKbjuViewsUsed" }
+      );
+    }
+
     const cacheData = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
 
     if (cacheData[mealId]) {
-      return res.json(cacheData[mealId]);
+      return res.json({
+        ...cacheData[mealId],
+        premium: currentUser.premium,
+        freeKbjuViewsUsed: currentUser.freeKbjuViewsUsed,
+        freeKbjuLimit: FREE_KBJU_LIMIT,
+        remainingViews: Math.max(
+          0,
+          FREE_KBJU_LIMIT - currentUser.freeKbjuViewsUsed
+        ),
+      });
     }
 
     let nutrition = { calories: 0, protein: 0, fat: 0, carbs: 0 };
@@ -74,7 +115,13 @@ router.post("/:id", async (req, res) => {
     cacheData[mealId] = nutrition;
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cacheData, null, 2), "utf-8");
 
-    res.json(nutrition);
+    res.json({
+      ...nutrition,
+      premium: currentUser.premium,
+      freeKbjuViewsUsed: currentUser.freeKbjuViewsUsed,
+      freeKbjuLimit: FREE_KBJU_LIMIT,
+      remainingViews: Math.max(0, FREE_KBJU_LIMIT - currentUser.freeKbjuViewsUsed),
+    });
   } catch (err) {
     console.error("[Nutrition] Fatal error:", err);
     res.json({ calories: 0, protein: 0, fat: 0, carbs: 0 });

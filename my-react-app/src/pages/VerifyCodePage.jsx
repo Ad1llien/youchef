@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import logo from "../logos/logo.svg";
+import API_BASE_URL from "../config/api";
 
 function VerifyCodePage() {
   const location = useLocation();
@@ -43,7 +44,7 @@ function VerifyCodePage() {
     }
   
     try {
-      const res = await fetch("http://localhost:4000/api/auth/verify-reset-otp", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/verify-reset-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

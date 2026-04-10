@@ -8,6 +8,7 @@ import attach from "../icons/attachIcon.svg";
 import { useNavigate } from "react-router-dom";
 import more from "../icons/moreIcon.svg";
 import success from "../icons/clarity_success-standard-solid.svg"
+import API_BASE_URL from "../config/api";
 function RequestRecipe() {
   const [active, setActive] = useState(false);
   
@@ -16,7 +17,7 @@ function RequestRecipe() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   // form fields
   const [name, setName] = useState("");
-  const [video, setVideo] = useState("");ç
+  const [video, setVideo] = useState("");
   const [description, setDescription] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function RequestRecipe() {
 
   // получить данные пользователя
   useEffect(() => {
-    fetch("http://localhost:4000/api/user/data", {
+    fetch(`${API_BASE_URL}/api/user/data`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -72,7 +73,7 @@ function RequestRecipe() {
         formData.append("photo", fileInputRef.current.files[0]); // файл вместо base64
       }
   
-      const res = await fetch("http://localhost:4000/api/recipe-request", {
+      const res = await fetch(`${API_BASE_URL}/api/recipe-request`, {
         method: "POST",
         credentials: "include",
         body: formData, // тут FormData

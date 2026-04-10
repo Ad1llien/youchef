@@ -73,12 +73,37 @@ span{
 .calcInfos{
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .nutritionRow{
     display: flex;
     align-items: flex-start;
     
+}
+
+.nutritionBlurred {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.nutritionLockNotice {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #242D96;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #BBC8D8;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: Teachers;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    max-width: 280px;
+    z-index: 3;
 }
 
 .nutritionItem{
@@ -137,22 +162,26 @@ background: rgba(255, 237, 203, 0.50);
 
 .upgrade{
     color: #FF786D;
+    text-align: center;
+    font-family: Teachers;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: var(--Line-height-xs, 16px); /* 114.286% */
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+    margin-left: 8px;
+    justify-content: space-evenly
+}
 
-text-align: center;
-font-family: Teachers;
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: var(--Line-height-xs, 16px); /* 114.286% */
-text-decoration-line: underline;
-text-decoration-style: solid;
-text-decoration-skip-ink: none;
-text-decoration-thickness: auto;
-text-underline-offset: auto;
-text-underline-position: from-font;
-margin-left: 8px;
-justify-content: space-evenly
-
+.premiumCtaBtn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
 }
 
 .limitWrapper div:last-child{
