@@ -8,6 +8,24 @@ line-height: normal;
 margin-top: 100px;
 margin-bottom: 16px;
 }
+
+.potTitleRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.potBackIconBtn {
+  display: none;
+  border: none;
+  background: transparent;
+  color: #242D96;
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+}
 .backBtn{
     display: flex;
     font-family: Teachers;
@@ -88,6 +106,12 @@ margin-bottom: 16px;
     text-decoration: none;
     align-items: center;
     justify-content:end;
+  }
+
+  .deleteIcon {
+    display: none;
+    width: 20px;
+    height: 20px;
   }
  
   .potLine {
@@ -298,5 +322,89 @@ cursor: pointer;
     margin-bottom: 40px;   /* center under the line, как на странице результатов */
   }
 
-  @media (max-width: 390px) {
+  @media (max-width: 768px) {
+    .ingredientsWrapper {
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+
+    .potTitleRow {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .inYourPot {
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .potBackIconBtn {
+      display: inline-flex;
+    
+    }
+
+    .btnsWrapper {
+      display: none !important;
+    }
+
+    .Line36 {
+      margin-top: 8px;
+    }
+
+    .PotImage {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .potList {
+      width: 100%;
+      max-width: none;
+      height: auto;
+      max-height: none;
+      margin: 0 auto;
+      row-gap: 14px;
+      padding-right: 0;
+      overflow-y: visible;
+    }
+
+    .potRow {
+      width: 100%;
+      min-width: 155px;
+      gap: 10px;
+      grid-template-columns: minmax(86px, auto) 1fr auto;
+    }
+
+    .potName {
+      font-size: 22px;
+    }
+
+    .deleteBtn {
+      min-width: 24px;
+      justify-content: center;
+    }
+
+    .deleteText {
+      display: none;
+    }
+
+    .deleteIcon {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+
+    .searchWrapper {
+      margin-top: 28px;
+      margin-bottom: 0;
+    }
+
+    .searchBtn {
+      width: 243px;
+      font-size: 36px;
+      font-weight: 500;
+    }
   }

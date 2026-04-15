@@ -1,12 +1,17 @@
 .popularMealContent {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* выравнивание по верхнему краю */
-    gap: 48px;
+    flex-direction: column;
+    gap: 16px;
     flex: 1;
-     /* центрируем блок популярного меню */
-    margin: 48px 0 0 auto ; 
-    padding-left: 146px;    /* отступ сверху и выравнивание по центру */
+    margin: 48px 0 0 auto;
+    padding-left: 146px;
+}
+
+.popularMealBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
 }
 
 .photoContainer {
@@ -18,6 +23,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+}
+
+.photoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
 }
 
 .popularMealMainContainer {
@@ -27,6 +40,12 @@
     /* gap: 20px;              расстояние между фильтрами и списком блюд */
     flex: 1;                /* занимает всё оставшееся пространство слева */
     padding: 0px;
+}
+
+.popularMealPagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 /* LOADER */
@@ -56,23 +75,32 @@
     }
   }
 
-  @media (max-width: 393px) {
-
+  @media (max-width: 768px) {
     .popularMealContent {
-      flex-direction: row;          /* на мобильном тоже два блока: слева блюда, справа фото */
-      align-items: flex-start;
-      overflow-x: hidden;           /* без горизонтального скролла страницы */
+      margin: 32px 0 0;
+      padding-left: 0;
+      overflow: hidden;
+    }
+
+    .popularMealBody {
+      gap: 16px;
+      justify-content: space-between;
+      align-items: stretch;
     }
 
     .popularMealMainContainer {
-      width: 60%;                   /* слева блок с блюдами занимает ~60% */
+      flex: 1;
+      min-width: 0;
+      align-items: center;
     }
 
     .photoContainer {
-      width: 40%;                   /* справа контейнер под фото */
-      max-width: none;
-      height: 300px;
-      min-height: 150px;            /* чтобы была заметная область под картинку */
+      display: block;
+      flex: 0 0 110px;
+      width: full;
+      height: auto;
+      min-height: 0;
+      align-self: stretch;
     }
   }
 

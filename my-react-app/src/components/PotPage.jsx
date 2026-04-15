@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/inYourPot.css";
 import Line from "../icons/Line36.svg";
 import pot from "../icons/openPot.svg";
+import deleteIcon from "../icons/deleteIcon.svg";
+import backIcon from "../icons/back.svg";
 
 function PotPage({ checkPot = [], setCheckPot = () => {} }) {
   
@@ -26,7 +28,12 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
 
   return (
     <div className="ingredientsWrapper">
-      <h2 className="inYourPot">In your Pot</h2>
+      <div className="potTitleRow">
+        <button className="potBackIconBtn" onClick={() => navigate(-1)} aria-label="Go back">
+          <img src={backIcon} alt="" />
+        </button>
+        <h2 className="inYourPot text-[32px]">In your Pot</h2>
+      </div>
 
       <div className="Line36">
         <img src={Line} alt="" />
@@ -59,7 +66,7 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
                 onClick={() => handleDelete(item)}
               >
                 <span className="potName">{item}</span>
-                <svg className="potLine" width="100%" height="9" viewBox="0 0 511 9" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <svg className="potLine " width="100%" height="9" viewBox="0 0 511 9" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                   <g filter={`url(#filter_wavy_${index})`}>
                     <line x1="3.00065" y1="4" x2="508.001" y2="4.32665" stroke="currentColor" strokeWidth="2"/>
                   </g>
@@ -82,7 +89,8 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
                     handleDelete(item);
                   }}
                 >
-                  Delete
+                  <img className="deleteIcon" src={deleteIcon} alt="" />
+                  <span className="deleteText">Delete</span>
                 </span>
               </div>
             ))}
@@ -93,7 +101,8 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
               className="searchBtn"
               onClick={() => navigate("/search-results", { state: { checkPot } })}
             >
-              Search
+
+              <p className="font-teachers text-[22px] m-0">Search</p>
             </button>
           </div>
 

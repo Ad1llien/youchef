@@ -133,35 +133,35 @@ function SearchBar({
   };
 
   return (
-    <div className="flex justify-center mt-6">
+    <div className="mt-6 flex justify-center px-4">
       <div
         ref={containerRef}
-        className="relative w-[588px] h-10 transition-all duration-300 hover:w-[488px] focus-within:w-[488px]"
+        className="relative w-full max-w-[260px] transition-all duration-300 sm:max-w-[420px] lg:max-w-[588px] lg:hover:max-w-[488px] lg:focus-within:max-w-[488px]"
       >
-        <input
-          className="w-full h-full rounded-[30px] border border-[#ccc] px-5 text-[16px] text-[#242D96] outline-none"
-          placeholder={
-            mode === "ingredients"
-              ? "Search ingredient..."
-              : "Which meal you want? Search it"
-          }
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-
-        <button
-          type="button"
-          className="absolute right-[1px] top-1/2 -translate-y-[45%] border-none bg-transparent cursor-pointer p-1"
-        >
-          <img
-            src={searchIcon}
-            alt="Search"
-            className="w-5 h-5 transition-transform p-1 bg-[#242D96] rounded-[14px]"
+        <div className="relative">
+          <input
+            className="h-10 w-full box-border rounded-[30px] border border-[#ccc] bg-white pl-4 pr-11 text-[16px] text-[#242D96] outline-none sm:pl-5"
+            placeholder={
+              mode === "ingredients" ? "Search ingredient..." : "Search meal..."
+            }
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
-        </button>
+
+          <button
+            type="button"
+            className="absolute right-2 top-1/2 -translate-y-[45%] cursor-pointer border-none bg-transparent p-0 "
+          >
+            <img
+              src={searchIcon}
+              alt="Search"
+              className="h-5 w-5 rounded-full bg-[#242D96] p-1"
+            />
+          </button>
+        </div>
 
         {results.length > 0 && (
-          <div className="absolute top-full left-0 w-full bg-[#FFFEEB] rounded-xl mt-2 z-[999] max-h-[420px] overflow-y-auto shadow-md">
+          <div className="absolute left-0 top-full z-[999] mt-2 max-h-[420px] w-full overflow-y-auto rounded-xl bg-[#FFFEEB] shadow-md">
             {results.map((item, index) => (
               <div
                 key={mode === "meals" ? item.idMeal : index}
@@ -178,7 +178,7 @@ function SearchBar({
                     <img
                       src={item.strMealThumb}
                       alt={item.strMeal}
-                      className="w-12 h-12 rounded-[8px] object-cover"
+                      className="h-12 w-12 rounded-[8px] object-cover"
                     />
                     <span>{item.strMeal}</span>
                   </>
@@ -187,7 +187,7 @@ function SearchBar({
                     <img
                       src={`https://www.themealdb.com/images/ingredients/${item}.png`}
                       alt={item}
-                      className="w-12 h-12 rounded-[8px] object-cover"
+                      className="h-12 w-12 rounded-[8px] object-cover"
                       onError={(e) => (e.target.src = "/placeholder.png")}
                     />
                     <span>{item}</span>
@@ -199,7 +199,7 @@ function SearchBar({
         )}
 
         {loading && (
-          <div className="mt-2 text-sm text-center text-[#242D96]">
+          <div className="mt-2 text-center text-sm text-[#242D96]">
             Searching...
           </div>
         )}

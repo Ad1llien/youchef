@@ -75,44 +75,44 @@ function PopularMealContent() {
 
   return (
     <div className="popularMealContent">
-      <div className="popularMealMainContainer">
-
-        <CategoryFilter
-          activeValue={activeFilter}
-          onSelect={handleFilterSelect}
-          options={[
-            { label: "Breakfast", value: "Breakfast" },
-            { label: "Lunch", value: "Seafood" },
-            { label: "Dinner", value: "Beef" },
-            { label: "From Chef", value: "default" },
-          ]}
-        />
-
-        {/* MEALS */}
-        {loading ? (
-          <div className="loader"></div>
-        ) : (
-          <>
+      <CategoryFilter
+        activeValue={activeFilter}
+        onSelect={handleFilterSelect}
+        options={[
+          { label: "Breakfast", value: "Breakfast" },
+          { label: "Lunch", value: "Seafood" },
+          { label: "Dinner", value: "Beef" },
+          { label: "From Chef", value: "default" },
+        ]}
+      />
+      <div className="popularMealBody">
+        <div className="popularMealMainContainer">
+          {/* MEALS */}
+          {loading ? (
+            <div className="loader"></div>
+          ) : (
             <MealCardGrid
               meals={currentMeals}
               onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
               titleMaxLength={8}
               variant="popular"
             />
-        <div className="flex justify-center w-full">
-            <Pagination
-              currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          </>
-        )}
-      </div>
+          )}
+        </div>
 
-      <div className="photoContainer">
-      <img src={mealPhoto} alt="Meal preview" />
+        <div className="photoContainer">
+          <img src={mealPhoto} alt="Meal preview" />
+        </div>
       </div>
+      {!loading && (
+        <div className="popularMealPagination">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 }
