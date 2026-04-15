@@ -620,7 +620,7 @@ bot.on("message", async (msg) => {
 
   try {
     await transporter.sendMail({
-      from: process.env.SMTP_SENDER,
+      from: process.env.SENDER_EMAIL,
       to: email,
       subject: "📩 Message from YouChef moderator",
       text: msg.text,
