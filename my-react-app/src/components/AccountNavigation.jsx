@@ -1,3 +1,4 @@
+
 function ArrowIcon() {
   return (
     <svg
@@ -81,6 +82,7 @@ function AccountNavigation({
           onClick={onLogout}
         />
       </div>
+
     </div>
   );
 }
