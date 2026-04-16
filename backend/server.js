@@ -12,6 +12,7 @@ import translateRouter from "./routes/translate.js";
 import recipeRequestRouter from "./routes/recipeRequestRoutes.js";
 import { isAuthenticated } from "./controllers/authController.js";
 import "./bot.js";
+import contactRouter from "./routes/contactRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
@@ -46,6 +47,7 @@ app.use("/api/nutrition", nutritionRouter);
 app.use("/api/translate", translateRouter);
 app.use("/api/recipe-request", recipeRequestRouter);
 app.get("/api/auth/is-auth", isAuthenticated);
+app.use("/api/contact", contactRouter);
 
 // Тест
 app.get("/", (req, res) => res.send("API working fine"));

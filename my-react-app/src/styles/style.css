@@ -86,6 +86,21 @@ h2 { color: #1a237e; margin-bottom: 5px; }
     color: #999;
 }
 
+.policies{
+  display: flex;
+  gap:10px;  
+  justify-content: center;
+}
+.privacy-and-policy{
+  cursor: pointer;
+}
+.terms-and-conditions{
+  cursor: pointer;
+}
+.Refund-policy{
+  cursor: pointer;
+}
+
 .input-wrapper input {
     width: 100%;
     padding: 12px 12px 12px 35px;

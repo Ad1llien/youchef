@@ -44,6 +44,7 @@ function MyLikes() {
         <AccountNavigation
           activeItem="likes"
           onOpenPersonalInfo={() => navigate("/my-account")}
+          onSubscription={() => navigate("/premium")}
           onOpenPasswordManager={() => navigate("/password-manager")}
           onOpenLikes={() => navigate("/my-likes")}
           onLogout={() => setShowLogoutModal(true)}

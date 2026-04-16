@@ -26,28 +26,11 @@ function AccountNavigationItem({
   const baseClass =
     "shrink-0 border-b-2 pb-3 text-left font-['Teachers'] text-[18px] font-semibold leading-normal md:w-full md:pb-6";
 
-  if (onClick) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        className={`inline-block appearance-none border-0 ${borderColor} bg-transparent p-0 focus:outline-none md:block ${baseClass} ${textColor}`}
-      >
-        <div className="flex items-center justify-between">
-          <span className="font-semibold">{label}</span>
-          {showArrow && (
-            <span className="hidden md:inline-flex">
-              <ArrowIcon />
-            </span>
-          )}
-        </div>
-      </button>
-    );
-  }
-
   return (
-    <div
-      className={`inline-block md:block ${baseClass} ${borderColor} ${textColor}`}
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-block appearance-none border-0 ${borderColor} bg-transparent p-0 focus:outline-none md:block ${baseClass} ${textColor}`}
     >
       <div className="flex items-center justify-between">
         <span className="font-semibold">{label}</span>
@@ -57,13 +40,14 @@ function AccountNavigationItem({
           </span>
         )}
       </div>
-    </div>
+    </button>
   );
 }
 
 function AccountNavigation({
   activeItem = "personal",
   onOpenPersonalInfo,
+  onSubscription,
   onOpenPasswordManager,
   onOpenLikes,
   onLogout,
@@ -76,7 +60,11 @@ function AccountNavigation({
           active={activeItem === "personal"}
           onClick={onOpenPersonalInfo}
         />
-        <AccountNavigationItem label="Subscription" />
+        <AccountNavigationItem
+          label="Subscription"
+          active={activeItem === "subscription"}
+          onClick={onSubscription}
+        />
         <AccountNavigationItem
           label="Password Manager"
           active={activeItem === "password"}

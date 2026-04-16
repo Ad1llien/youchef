@@ -27,6 +27,8 @@ import Guides from "./components/Guides";
 import VerifyPage from "./pages/VerifyPage";
 import CheckEmailPage from "./pages/CheckEmailPage";
 import RequestRecipe from "./components/requestRecipe"; /* ================= APP WRAPPER ================= */
+import LegalPages from "./components/LegalPages";
+
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -177,6 +179,9 @@ function App() {
           <Route path="/verify" element={<VerifyPage />}></Route>
           <Route path="/check-email" element={<CheckEmailPage />} />
           <Route path="/request-recipe" element={<RequestRecipe />} />
+          <Route path="/terms" element={<LegalPages />} />
+          <Route path="/privacy" element={<LegalPages />} />
+          <Route path="/refund" element={<LegalPages />} />
         </Routes>
       </main>
 

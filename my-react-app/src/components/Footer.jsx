@@ -2,8 +2,11 @@ import instagramIcon from "../icons/instagram.svg";
 import telegramIcon from "../icons/telegram.svg";
 import tiktokIcon from "../icons/tik-tok.svg";
 import footlines from "../icons/footerlines.svg";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer>
       <img className="line5 max-w-full mx-auto" src={footlines} alt="" />
@@ -45,6 +48,17 @@ function Footer() {
         </div>
       </div>
 
+      <div className="policies">
+      <div className="privacy-and-policy" style={{ cursor: "pointer" }} onClick={() => navigate("/privacy")}>
+        Privacy and Policy
+      </div>
+      <div className="terms-and-conditions" style={{ cursor: "pointer" }} onClick={() => navigate("/terms")}>
+        Terms and conditions
+      </div>
+      <div className="Refund-policy" style={{ cursor: "pointer" }} onClick={() => navigate("/refund")}>
+        Refund policy
+      </div>
+    </div>
       <div className="footerCopyright">© ShaiQas company All Rights Reserved.</div>
     </footer>
   );

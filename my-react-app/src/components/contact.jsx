@@ -6,14 +6,44 @@ import telegramIcon from "../icons/telegram.svg";
 import tiktokIcon from "../icons/tik-tok.svg";
 import youtubeIcon from "../icons/youtube.svg";
 import "../styles/contact.css";
+import API_BASE_URL from "../config/api";
 
 function Contact() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(""); // добавь стейт
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    if (!fullName.trim() || !email.trim() || !message.trim()) {
+      setStatus("error");
+      return;
+    }
+  
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, email, message }),
+      });
+  
+      const data = await res.json();
+  
+      if (data.success) {
+        setStatus("success");
+        setFullName("");
+        setEmail("");
+        setMessage("");
+        setTimeout(() => setStatus(""), 4000);
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
   };
 
   return (
@@ -67,6 +97,12 @@ function Contact() {
         <button type="submit" className="contact-send-btn">
           Send
         </button>
+        {status === "success" && (
+  <p style={{ color: "green", marginTop: "8px" }}>✅ Сообщение отправлено!</p>
+)}
+{status === "error" && (
+  <p style={{ color: "red", marginTop: "8px" }}>❌ Заполните все поля</p>
+)}
       </form>
 
       <div className="contact-info-grid">

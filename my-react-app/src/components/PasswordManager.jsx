@@ -107,6 +107,7 @@ function PasswordManager() {
         <AccountNavigation
           activeItem="password"
           onOpenPersonalInfo={() => navigate("/my-account")}
+          onSubscription={() => navigate("/premium")}
           onOpenPasswordManager={() => navigate("/password-manager")}
           onOpenLikes={() => navigate("/my-likes")}
           onLogout={() => setShowLogoutModal(true)}

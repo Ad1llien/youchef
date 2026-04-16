@@ -58,6 +58,19 @@ function RequestRecipe() {
       alert("Сначала войдите в аккаунт");
       return;
     }
+
+    if (!name.trim()) {
+      alert("Please enter a name");
+      return;
+    }
+    if (addedIngredients.length === 0) {
+      alert("Please add at least one ingredient");
+      return;
+    }
+    if (!description.trim()) {
+      alert("Please enter a recipe description");
+      return;
+    }
   
     try {
       const formData = new FormData();
