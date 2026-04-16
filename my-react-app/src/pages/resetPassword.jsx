@@ -47,7 +47,7 @@ function ResetPasswordPage() {
         <h2>Reset your password</h2>
         <p className="subtitle">Enter your account email to reset password</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-3">
           <div className="input-group">
             <label>Email Address</label>
             <div className="input-wrapper">

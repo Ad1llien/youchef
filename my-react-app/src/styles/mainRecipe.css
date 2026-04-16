@@ -126,6 +126,12 @@
     margin-top: 48px;                     /* отступ сверху как у popular meals */
 }
 
+.mainRecipePagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 
 .sideRecipeFilter{
     display: flex;
@@ -295,4 +301,85 @@
         flex: 0 0 auto;
         white-space: nowrap;
     }
+}
+
+@media (max-width: 768px) {
+  .mainRecipeWrapper {
+    width: 100%;
+    max-width: none;
+    padding: 0 12px;
+    gap: 14px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+
+  .sideRecipeFilter {
+    width: 121px;
+    min-width: 121px;
+    gap: 28px;
+  }
+
+  .types {
+    width: 160px;
+    gap: 14px;
+  }
+
+  .q1st div,
+  .q2st div {
+    font-size: 16px;
+  }
+
+  .dishType img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .divider {
+    width: 100%;
+  }
+
+  .filterList {
+    max-height: 180px;
+    overflow-y: auto;
+    gap: 8px;
+    padding: 4px 0 12px;
+  }
+
+  .filterItem {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .specialFilterBox {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .halal {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .halal img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cardsWrapper {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    display: block;
+    padding-right: 0;
+    overflow: visible;
+  }
+
+  .mainRecipeTopFilters {
+    display: none;
+  }
+
+  .mainRecipePagination {
+    margin-top: 8px;
+  }
 }

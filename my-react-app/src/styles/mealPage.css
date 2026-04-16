@@ -30,6 +30,16 @@ height: 49px;
     margin-bottom: 30px;
 }
 
+.backIconMobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mealPage .headerBegin .backBtn {
+    display: none !important;
+  }
+}
+
 
 .youtubeLink{
     display: flex;
@@ -213,9 +223,6 @@ font-style: normal;
 font-weight: 500;
 line-height: var(--Line-height-xs, 16px); /* 114.286% */
 }
-.caloriesCalculator{
-
-}
 .image img{
     border-radius: 5px;
 background: #D9D9D9;
@@ -326,113 +333,196 @@ gap: 10px;
 
     /* ===== PAGE BASE ===== */
     .mealPage {
-      width: 1148px;
-      padding: 0 16px;
+      width: 100%;
+      max-width: 393px;
+      margin: 0 auto;
+      padding: 0 16px 24px;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
   
     /* ===== HEADER ===== */
     .headerBegin {
-      margin: 80px 0 16px 0;
+      margin: 64px 0 16px 0;
       gap: 12px;
     }
   
+    .backBtn {
+      display: none;
+    }
+
+    .backIconMobile {
+      width: auto;
+      min-width: 28px;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .backIconMobile img {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
   
     .nameFoodTitle {
       font-size: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
     }
   
     .favoriteIcon img {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 24px;
     }
   
     /* ===== INFO TOP (youtube + calories) ===== */
     .infoWrapper {
       flex-direction: column;
-      gap: 24px;
-      margin-top: 32px;
+      align-items: flex-start;
+      gap: 20px;
+      margin-top: 28px;
     }
   
     .youtubeLink {
       gap: 16px;
       font-size: 16px;
-      line-height: 24px;
+      line-height: 26px;
+      width: 100%;
+    }
+
+    .youtubeLink > img {
+      width: 58px;
+      height: 42px;
+      margin-top: 2px;
     }
   
     .youtubeText {
       width: auto;
     }
-  
-    .topCalc {
-      gap: 16px;
-      height: auto;
+
+    .youtubeRecipeLink {
+      display: inline-block;
+      margin-top: 2px;
     }
   
-    .digits div,
-    .categories div {
-      width: 64px;
+    .topCalc {
+      gap: 14px;
+      height: auto;
+      align-items: flex-start;
+    }
+
+    .caloriesCalculator {
+      width: 55px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .nutritionRow {
+      width: 100%;
+      gap: 0;
+    }
+
+    .nutritionItem {
+      padding: 0 10px;
+    }
+
+    .nutritionValue {
+      font-size: 34px;
+      line-height: 32px;
+      white-space: nowrap;
+    }
+
+    .nutritionLabel {
       font-size: 14px;
+      line-height: 18px;
     }
   
     /* ===== LIMIT WARNING ===== */
     .limitWrapper {
-      margin: 24px auto 0;
+      margin: 20px 0 0;
       width: 100%;
-      justify-content: space-between;
+      height: auto;
+      justify-content: flex-start;
       flex-wrap: wrap;
+      padding: 8px 10px;
+      box-sizing: border-box;
+      margin-left: 0;
     }
   
     .limitText {
       font-size: 12px;
+      line-height: 16px;
     }
   
     /* ===== MAIN CONTENT ===== */
     .mainContent {
-      flex-direction: column;
-      gap: 32px;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
       margin-top: 32px;
     }
   
     .firstRow {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 12px;
+      width: 48%;
+      flex-shrink: 0;
     }
   
     /* ===== IMAGE ===== */
     .image img {
       width: 100%;
-      height: auto;
-      aspect-ratio: 1 / 1;
+      height: 165px;
       object-fit: cover;
-      border-radius: 12px;
+      border-radius: 5px;
     }
   
     /* ===== INGREDIENTS ===== */
     .ingredientsList {
       margin-top: 0;
-      padding: 20px;
+      padding: 14px 10px 16px;
+      width: 100%;
+      box-sizing: border-box;
     }
   
     .ingredientsTitle {
-      font-size: 20px;
-      margin: 16px 0;
+      font-size: 12px;
+      margin: 2px 0 10px;
+      color: #343B1B;
     }
   
     .ingredientRow {
       margin-left: 0;
       font-size: 16px;
+      margin-top: 10px;
+      line-height: 20px;
+      gap: 6px;
     }
   
     .ingredientName,
     .ingredientMeasure {
-      font-size: 16px;
+      font-size: 13px;
+      line-height: 18px;
     }
   
     /* ===== INSTRUCTIONS ===== */
     .secondRow {
-      font-size: 16px;
-      line-height: 26px;
+      width: 48%;
+      max-width: 48%;
+      font-size: 15px;
+      line-height: 22px;
     }
   
     /* ===== FOOTER CTA ===== */
@@ -479,13 +569,5 @@ gap: 10px;
   }
 
   @media (max-width: 393px) {
-    .headerBegin {
-      margin: 64px 0 16px 0;   /* ❗ убрали 100px */
-      padding: 0 16px;
-    }
-  
-    .favoriteIcon img {
-      width: 32px;
-      height: 32px;
-    }
+    .headerBegin { padding: 0; }
   }

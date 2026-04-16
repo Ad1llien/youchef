@@ -10,8 +10,6 @@ const LoginPage = () => {
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
- 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -31,18 +29,16 @@ const LoginPage = () => {
         } else {
           sessionStorage.setItem("token", data.token);
         }
-      
+
         navigate("/");
-      }
-      else {
+      } else {
         alert("Login failed: " + data.message);
       }
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
+
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
@@ -50,7 +46,7 @@ const LoginPage = () => {
         <h2>Login to your account</h2>
         <p className="subtitle">Welcome back, please enter your details</p>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className="p-3">
           <div className="input-group">
             <label>Email Address *</label>
             <div className="input-wrapper">
@@ -100,7 +96,8 @@ const LoginPage = () => {
           onClick={() => navigate("/signup")}
           style={{ marginTop: "15px" }}
         >
-          Don't have an account? <span style={{cursor: "pointer"}}>Sign Up</span>
+          Don't have an account?{" "}
+          <span style={{ cursor: "pointer" }}>Sign Up</span>
         </div>
       </div>
     </div>

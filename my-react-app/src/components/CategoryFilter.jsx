@@ -1,7 +1,7 @@
 function CategoryFilter({ options, activeValue, onSelect }) {
   return (
     
-      <div className="flex gap-10 w-full overflow-x-auto  pb-12 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-6 sm:gap-10 w-full overflow-x-auto  pb-12 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden px-4">
         {options.map((option) => {
           const isActive = activeValue === option.value;
 

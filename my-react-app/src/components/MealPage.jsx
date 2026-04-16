@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import "../styles/popularMeal.css";
 import blueFav from '../icons/blueFav.svg';
+import backIcon from "../icons/back.svg";
 import "../styles/mealPage.css";
 import youtubeLogo from '../icons/youtube.svg';
 import line from '../icons/Line36.svg';
@@ -211,7 +212,14 @@ function MealPage() {
     <div className="mealPage">
       <div className="headerBegin">
         <button className="backBtn" onClick={() => navigate(-1)}>
-          ← Back
+          Back
+        </button>
+        <button
+          className="backIconMobile"
+          onClick={() => navigate(-1)}
+          aria-label="Back"
+        >
+          <img src={backIcon} alt="" aria-hidden="true" />
         </button>
         <div className="nameFoodTitle">{meal.strMeal}</div>
         <div className="favoriteIcon" onClick={toggleFavorite}>

@@ -1,23 +1,18 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useNavigate
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Contact from "./components/contact";
-import OfflinePage from "./components/OfflinePage";
-import PasswordManager  from "./components/PasswordManager";
+import PasswordManager from "./components/PasswordManager";
 import HelpCenter from "./components/HelpCenter";
-import MyAccount from "../src/components/myAccount"
+import MyAccount from "../src/components/myAccount";
 import { useLocation } from "react-router-dom";
-import MyLikes from "./components/MyLikes"
+import MyLikes from "./components/MyLikes";
 import LoginPage from "./pages/loginPage";
-import SignUpPage from "./pages/SignUpPage"
+import SignUpPage from "./pages/SignUpPage";
 import "./App.css";
-import ResetPasswordPage from "./pages/resetPassword"
-import VerifyCodePage from "./pages/VerifyCodePage"
+import ResetPasswordPage from "./pages/resetPassword";
+import VerifyCodePage from "./pages/VerifyCodePage";
 import SetNewPasswordPage from "./pages/SetNewPassword";
+import Premium from "./components/premium";
 import MealPage from "./components/MealPage";
 import PotPage from "./components/PotPage";
 import PopularMealContent from "./components/PopularMealContent";
@@ -26,15 +21,12 @@ import CreateOwnMealContent from "./components/CreateOwnMealContent";
 import SearchResultsPage from "./components/SearchResultsPage";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
-import Guides from "./components/Guides"
-import Premium from "./components/premium";
-import instagramIcon from "./icons/instagram.svg";
-import telegramIcon from "./icons/telegram.svg";
-import tiktokIcon from "./icons/tik-tok.svg";
-import footlines from "./icons/footerlines.svg";
+import MainNav from "./components/MainNav";
+import Footer from "./components/Footer";
+import Guides from "./components/Guides";
 import VerifyPage from "./pages/VerifyPage";
-import CheckEmailPage from "./pages/CheckEmailPage"
-import RequestRecipe from "./components/requestRecipe";/* ================= APP WRAPPER ================= */
+import CheckEmailPage from "./pages/CheckEmailPage";
+import RequestRecipe from "./components/requestRecipe"; /* ================= APP WRAPPER ================= */
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -45,10 +37,9 @@ function AppWrapper() {
 
 /* ================= APP ================= */
 function App() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const navigate = useNavigate();
   const location = useLocation();
-  const [tgUser, setTgUser] = useState(null);
+
   /* 🍔 mobile menu */
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   /* 🫕 кастрюля */
@@ -58,116 +49,98 @@ function App() {
   });
 
   useEffect(() => {
-    const updateStatus = () => {
-      setIsOnline(navigator.onLine);
-    };
-
-    window.addEventListener("online", updateStatus);
-    window.addEventListener("offline", updateStatus);
-
-    // initial check
-    updateStatus();
-
-    return () => {
-      window.removeEventListener("online", updateStatus);
-      window.removeEventListener("offline", updateStatus);
-    };
-  }, []);
-
-  if (!isOnline) {
-    return <OfflinePage />;
-  }
-
-  
-
-  useEffect(() => {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
   }, [checkPot]);
 
-  useEffect(() => {
-    if (window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
-  
-      tg.onEvent("themeChanged", () => {}); // чтобы WebApp точно инициализировался
-      tg.ready();
-      tg.expand();
-  
-      console.log("Telegram initData:", tg.initData); // полные данные
-      console.log("Telegram unsafe user:", tg.initDataUnsafe?.user);
-  
-      setTgUser(tg.initDataUnsafe?.user || null);
-    }
-  }, []);
   /* 📂 вкладки */
   const [activeTab, setActiveTab] = useState("popular");
-  const isAuthPage = ["/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword"].includes(location.pathname);
+  const isAuthPage = [
+    "/login",
+    "/signup",
+    "/reset-password",
+    "/verify-account",
+    "/setNewPassword",
+  ].includes(location.pathname);
 
-  
   /* 🔍 поиск */
   // поиск теперь живет внутри компонента SearchBar
 
   return (
     <div className="App overflow-x-hidden">
       {!isAuthPage && (
-      <Header onBurgerClick={() => setMobileMenuOpen((prev) => !prev)} />
+        <div className={mobileMenuOpen ? "relative z-50" : "relative"}>
+          <Header onBurgerClick={() => setMobileMenuOpen((prev) => !prev)} />
+          {/* MOBILE SLIDE MENU */}
+          {mobileMenuOpen && (
+            <div
+              className="absolute left-0 right-0 top-full z-50 flex items-center justify-center gap-8 bg-[#FFFEEB] p-4 font-normal sm:hidden text-[20px]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers"
+                onClick={() => {
+                  navigate("/");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Recipe
+              </button>
+              <button
+                type="button"
+                className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers"
+                onClick={() => {
+                  navigate("/premium");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Premium
+              </button>
+              <button
+                type="button"
+                className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers"
+                onClick={() => {
+                  navigate("/contact");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Contact
+              </button>
+            </div>
+          )}
+        </div>
       )}
-      {/* MOBILE SLIDE MENU */}
+
       {mobileMenuOpen && (
         <div
-          className="mobile-slide-menu"
+          className="fixed inset-0 z-40 bg-black/45 sm:hidden"
           onClick={() => setMobileMenuOpen(false)}
-        >
-          <div>Recipe</div>
-          <div>Premium</div>
-          <div>Contact</div>
-        </div>
+        />
       )}
 
       {/* ================= MAIN ================= */}
       <main>
         <Routes>
-
           <Route
             path="/"
             element={
               <div className="main1stChild">
-
                 <div className="recipeEmpty">Recipes</div>
 
-                <div className="mainNavBtns">
-                  <div
-                    className={activeTab === "main" ? "active" : ""}
-                    onClick={() => setActiveTab("main")}
-                  >
-                    Main Recipe
-                  </div>
-
-                  <div
-                    className={activeTab === "popular" ? "active" : ""}
-                    onClick={() => setActiveTab("popular")}
-                  >
-                    Popular Meals
-                  </div>
-
-                  <div
-                    className={activeTab === "create" ? "active" : ""}
-                    onClick={() => setActiveTab("create")}
-                  >
-                    Create Own Meal
-                  </div>
-                </div>
+                <MainNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
                 <SearchBar
-  mode={activeTab === "create" ? "ingredients" : "meals"}
-  selectedIngredients={checkPot}
-  onIngredientSelect={(ingredient) => {
-    setCheckPot((prev) =>
-      prev.includes(ingredient)
-        ? prev.filter((i) => i !== ingredient) // toggle OFF
-        : [...prev, ingredient] // toggle ON
-    );
-  }}
-/>
+                  mode={activeTab === "create" ? "ingredients" : "meals"}
+                  selectedIngredients={checkPot}
+                  onIngredientSelect={(ingredient) => {
+                    setCheckPot(
+                      (prev) =>
+                        prev.includes(ingredient)
+                          ? prev.filter((i) => i !== ingredient) // toggle OFF
+                          : [...prev, ingredient], // toggle ON
+                    );
+                  }}
+                />
 
                 {activeTab === "popular" && <PopularMealContent />}
                 {activeTab === "main" && <MainRecipeContent />}
@@ -183,62 +156,32 @@ function App() {
 
           <Route
             path="/pot"
-            element={
-              <PotPage
-                checkPot={checkPot}
-                setCheckPot={setCheckPot}
-              />
-            }
+            element={<PotPage checkPot={checkPot} setCheckPot={setCheckPot} />}
           />
 
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} /> 
-          <Route path="/verify-account" element={<VerifyCodePage />} /> 
-          <Route path="/setNewPassword" element={<SetNewPasswordPage />} /> 
-          <Route path="/my-account" element={<MyAccount/>}/>
-          <Route path="/my-likes" element={<MyLikes/>}/>
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-account" element={<VerifyCodePage />} />
+          <Route path="/setNewPassword" element={<SetNewPasswordPage />} />
+          <Route path="/my-account" element={<MyAccount />} />
+          <Route path="/my-likes" element={<MyLikes />} />
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/premium" element={<Premium />}></Route>
-          <Route path="/help-center" element={<HelpCenter/>}></Route>
+          <Route path="/help-center" element={<HelpCenter />}></Route>
           <Route path="/guide" element={<Guides />}></Route>
-          <Route path="/password-manager" element={< PasswordManager/>}></Route>
+          <Route path="/password-manager" element={<PasswordManager />}></Route>
+
+          <Route path="/premium" element={<Premium />}></Route>
           <Route path="/verify" element={<VerifyPage />}></Route>
           <Route path="/check-email" element={<CheckEmailPage />} />
           <Route path="/request-recipe" element={<RequestRecipe />} />
-          
-          </Routes>
+        </Routes>
       </main>
 
       {/* ================= FOOTER ================= */}
-      <footer>
-        <img className="line5 max-w-full mx-auto" src={footlines} alt="" />
-
-        <div className="footerContent">
-          <div className="footerLeft">
-            <div className="makeUs">Make us a part of your lifestyle</div>
-            <div className="socialLogos">
-              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Instagram">
-                <img src={instagramIcon} alt="" />
-              </a>
-              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Telegram">
-                <img src={telegramIcon} alt="" />
-              </a>
-              <a href="#" onClick={(e) => e.preventDefault()} aria-label="TikTok">
-                <img src={tiktokIcon} alt="" />
-              </a>
-            </div>
-          </div>
-          <div className="tasteIn">
-            A taste of home <br /> in every dish
-          </div>
-        </div>
-
-        <div className="footerCopyright">© ShaiQas company All Rights Reserved.</div>
-      </footer>
-
+      <Footer />
     </div>
   );
 }

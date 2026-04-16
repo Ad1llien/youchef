@@ -5,6 +5,24 @@
   padding: 40px 0;
 }
 
+.resultsTopBar {
+  display: none;
+}
+
+.resultsBackIconBtn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.resultsBackIconBtn img {
+  width: 20px;
+  height: 20px;
+}
+
 .backBtnWrapper {
   width: 80%;
   display: flex;
@@ -95,6 +113,12 @@ align-items: center;
   height: 26px;
   border-radius: 10px;
   background: #EFF2D4;}
+
+.topMatchedRow {
+  border: 1px solid rgba(52, 59, 27, 0.18);
+  border-radius: 10px;
+  background: #EFF2D4;
+}
 .mealName{
   width: 705px;
 }
@@ -261,22 +285,102 @@ justify-content: center;
 
 /* Адаптивка для мобильных */
 @media (max-width: 768px) {
+  .searchResultsPageWrapper {
+    padding: 20px 0 28px;
+  }
+
+  .resultsTopBar {
+    width: 100%;
+    max-width: 420px;
+    display: grid;
+    grid-template-columns: 28px 1fr 28px;
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+  }
+
+  .resultsTitleDesktop,
+  .backBtnWrapper {
+    display: none;
+  }
+
+  .resultsTopBar .resultsTitle {
+    margin: 0;
+    text-align: center;
+    font-size: 30px;
+  }
+
+  .lineFull img {
+    margin-bottom: 20px;
+  }
+
   .mealsContainer {
-    width: 95%;               /* почти весь экран */
-    padding: 12px;
+    width: calc(100% - 24px);
+    max-width: 420px;
+    padding: 0;
+    border-radius: 16px;
+    overflow: hidden;
   }
 
-  .mealsHeader, .mealRow {
-    grid-template-columns: 1fr 3fr 1fr; /* подстраиваем колонки под меньший экран */
-    
+  .mealsHeader {
+    width: 100%;
+    height: 64px;
+    grid-template-columns: 56px 1fr 116px;
     font-size: 18px;
+    border-radius: 16px 16px 0 0;
+    padding: 0 8px;
+    box-sizing: border-box;
   }
 
-  .mealName, .mealMatch {
-    font-size: 18px;
+  .mealHeaderNames {
+    width: auto;
+    font-size: 16px;
+    justify-content: center;
   }
 
-  .resultsTitle {
-    font-size: 24px;
+  .mealsList {
+    width: 100%;
+    max-height: 620px;
+    margin-top: 0;
+  }
+
+  .mealRow {
+    width: 100%;
+    height: 60px;
+    grid-template-columns: 56px 1fr 116px;
+    align-items: center;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-bottom: none;
+    border-radius: 0;
+  }
+
+  .mealIndex,
+  .mealName,
+  .mealMatch {
+    font-size: 16px;
+  }
+
+  .mealIndex {
+    width: auto;
+    color: #9aa3b2;
+  }
+
+  .mealName {
+    width: auto;
+    color: #242D96;
+  }
+
+  .mealMatch {
+    justify-content: center;
+    color: #242D96;
+  }
+
+  .lineWrapper,
+  .searchingQuestion,
+  .expandTitle,
+  .requestRecipe {
+    display: none;
   }
 }

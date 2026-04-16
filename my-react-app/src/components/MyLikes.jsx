@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MealCardGrid from "./MealCardGrid.jsx"; // карточки блюд
 import Pagination from "./Pagination.jsx"; // твой компонент Pagination
-import "../styles/style.css";
 import API_BASE_URL from "../config/api";
+import AccountNavigation from "./AccountNavigation";
 
 function MyLikes() {
   const navigate = useNavigate();
-  const [favorites, setFavorites] = useState([]);
+  const [favorites] = useState(() => {
+    const saved = localStorage.getItem("favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8); // сколько карточек на странице
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -16,19 +19,13 @@ function MyLikes() {
     try {
       await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
       navigate("/login");
     } catch (error) {
       console.error(error);
     }
   };
-
-  // Загружаем избранное из localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("favorites");
-    setFavorites(saved ? JSON.parse(saved) : []);
-  }, []);
 
   // Определяем карточки для текущей страницы
   const indexOfLast = currentPage * itemsPerPage;
@@ -38,67 +35,26 @@ function MyLikes() {
   const totalPages = Math.ceil(favorites.length / itemsPerPage);
 
   return (
-    <div className="myAccountWrapper">
-      <div className="recipeEmpty">My Favorites</div>
+    <div className="mx-auto mt-[102px] w-full max-w-6xl px-4 md:px-6">
+      <h1 className="mb-6 text-center font-['Taviraj'] text-[32px] font-normal leading-normal text-[#242D96] md:mb-[80px]">
+        My Favorites
+      </h1>
 
-      <div className="accountMenu">
-        <div className="account-page">
-          {/* Левое меню */}
-          <div className="left-side">
-            <div className="menuwrapper">
-              <div className="personalInfo" onClick={() => navigate("/my-account")}>
-                <div className="rp">
-                  <div>Personal Info</div>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <hr />
-              </div>
+      <div className="flex flex-col gap-11 md:gap-20 md:flex-row md:items-start">
+        <AccountNavigation
+          activeItem="likes"
+          onOpenPersonalInfo={() => navigate("/my-account")}
+          onOpenPasswordManager={() => navigate("/password-manager")}
+          onOpenLikes={() => navigate("/my-likes")}
+          onLogout={() => setShowLogoutModal(true)}
+        />
 
-              <div className="personalInfo">
-                <div className="rp">
-                  <div>Subscription</div>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <hr />
-              </div>
-
-              <div className="personalInfo" onClick={()=> navigate("/password-manager")}>
-                <div className="rp">
-                  <div>Password Manager</div>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <hr />
-              </div>
-
-              <div className="personalInfo active_MenuPage" onClick={() => navigate("/my-likes")}>
-                <div className="rp">
-                  <div>Favorites</div>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-                <hr />
-              </div>
-
-              <div className="personalInfo" onClick={() => setShowLogoutModal(true)}>
-                <div className="rp">
-                  <div>Logout</div>
-                </div>
-                <hr />
-              </div>
-            </div>
-          </div>
-
-          {/* Правая часть – карточки избранных блюд */}
-          <div className="right-side">
+        <div className="w-full md:flex-1">
+          <div className="w-[300px] md:w-full max-w-[560px] min-w-0">
             {favorites.length === 0 ? (
-              <div className="emptyFavorites">No favorite recipes yet</div>
+              <div className="rounded-xl border border-[#BBC8D8] bg-white/50 px-5 py-8 text-center font-['Teachers'] text-[18px] text-[#343B1B]">
+                No favorite recipes yet
+              </div>
             ) : (
               <>
                 <MealCardGrid
@@ -111,11 +67,13 @@ function MyLikes() {
 
                 {/* Пагинация */}
                 {totalPages > 1 && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
+                  <div className="mt-6">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  </div>
                 )}
               </>
             )}
@@ -123,15 +81,28 @@ function MyLikes() {
         </div>
       </div>
 
-      {/* Модалка логаута */}
       {showLogoutModal && (
-        <div className="logoutModalOverlay">
-          <div className="logoutModal">
-            <h3>Logout</h3>
-            <p>Are you sure you want to log out of your account?</p>
-            <div className="logoutButtons">
-              <button className="cancelBtn" onClick={() => setShowLogoutModal(false)}>Cancel</button>
-              <button className="logoutBtn" onClick={handleLogout}>Logout</button>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/45 px-4">
+          <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
+            <h3 className="mb-2 text-xl font-semibold text-[#13151A]">
+              Logout
+            </h3>
+            <p className="mb-6 text-sm text-[#555]">
+              Are you sure you want to log out of your account?
+            </p>
+            <div className="flex justify-between gap-3">
+              <button
+                className="flex-1 rounded-lg bg-[#eee] px-4 py-2.5 text-sm font-medium text-[#333]"
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex-1 rounded-lg bg-[#e53935] px-4 py-2.5 text-sm font-medium text-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>

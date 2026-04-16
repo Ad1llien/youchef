@@ -2,6 +2,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/searchResults.css";
 import lineSVG from "../icons/Line36.svg";
+import backIcon from "../icons/back.svg";
 import hybridMeals from "../mealsDB.json"; // путь поправь под свой проект
 function SearchResultsPage() {
   const navigate = useNavigate();
@@ -82,6 +83,17 @@ function SearchResultsPage() {
 
   return (
     <div className="searchResultsPageWrapper">
+      <div className="resultsTopBar">
+        <button
+          className="resultsBackIconBtn"
+          onClick={() => navigate(-1)}
+          aria-label="Go back"
+        >
+          <img src={backIcon} alt="" />
+        </button>
+        <h2 className="resultsTitle">Result</h2>
+      </div>
+
       {/* Back button слева */}
       <div className="backBtnWrapper">
         <button className="backBtn" onClick={() => navigate(-1)}>
@@ -93,7 +105,7 @@ function SearchResultsPage() {
       </div>
 
       {/* Заголовок по центру */}
-      <h2 className="resultsTitle">Result</h2>
+      <h2 className="resultsTitle resultsTitleDesktop">Result</h2>
 
       {/* Линия на всю ширину */}
       <div className="lineFull">
@@ -103,7 +115,7 @@ function SearchResultsPage() {
       {/* Большой контейнер */}
       <div className="mealsContainer">
         {/* Шапка */}
-        <div className="mealHeader">
+        <div className="mealsHeader">
           <span className="mealHeaderNames">ID</span>
           <span className="mealHeaderNames">Name</span>
           <span className="mealHeaderNames">Matching %</span>
@@ -119,7 +131,7 @@ function SearchResultsPage() {
             meals.map((meal, idx) => (
               <div
                 key={meal.idMeal}
-                className="mealRow"
+                className={`mealRow ${idx === 0 ? "topMatchedRow" : ""}`}
                 onClick={() => navigate(`/meal/${meal.idMeal}`)}
               >
                 <span className="mealIndex">{idx + 1}</span>

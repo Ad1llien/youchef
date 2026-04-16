@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import checkLine from "../icons/checkbox-circle-fill.svg"
-import "../styles/style.css"
+import checkLine from "../icons/checkbox-circle-fill.svg";
 import API_BASE_URL from "../config/api";
+import AccountNavigation from "./AccountNavigation";
 
 function PasswordManager() {
-
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState(""); // ✅ добавил
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState(null);
+  const [_user, setUser] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -22,20 +21,20 @@ function PasswordManager() {
       method: "GET",
       credentials: "include",
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.success) {
           setUser(data.userData);
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }, []);
 
   const handleLogout = async () => {
     try {
       await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
       navigate("/login");
     } catch (err) {
@@ -63,7 +62,7 @@ function PasswordManager() {
         credentials: "include",
         body: JSON.stringify({
           oldPassword,
-          newPassword: password
+          newPassword: password,
         }),
       });
 
@@ -74,11 +73,10 @@ function PasswordManager() {
         setOldPassword("");
         setPassword("");
         setConfirmPassword("");
-        navigate("/login")
+        navigate("/login");
       } else {
         setMessage(data.message);
       }
-
     } catch (err) {
       console.error(err);
       setMessage("Something went wrong");
@@ -95,189 +93,172 @@ function PasswordManager() {
     return score;
   };
 
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasMinLength = password.length >= 8;
+
   return (
-    <div className="myAccountWrapper">
-      <div className="recipeEmpty">My Account</div>
+    <div className="mx-auto mt-[102px] w-full max-w-6xl px-4 md:px-6">
+      <h1 className="mb-6 text-center font-['Taviraj'] text-[32px] font-normal leading-normal text-[#242D96] md:mb-[80px]">
+        My Account
+      </h1>
 
-      <div className="accountMenu">
-        <div className="account-page">
-          
-          {/* LEFT SIDE */}
-          <div className="left-side">
-            <div className="menuwrapper">
+      <div className="flex flex-col gap-11 md:gap-20 md:flex-row md:items-start">
+        <AccountNavigation
+          activeItem="password"
+          onOpenPersonalInfo={() => navigate("/my-account")}
+          onOpenPasswordManager={() => navigate("/password-manager")}
+          onOpenLikes={() => navigate("/my-likes")}
+          onLogout={() => setShowLogoutModal(true)}
+        />
 
-              <div className="personalInfo " onClick={() => navigate("/my-account")}>
-                <div className="rp">
-                  <div>Personal Info</div>
-                </div>
-                <hr />
-              </div>
+        <div className="w-full md:flex-1">
+          <div className="w-[270px] md:w-full max-w-[560px] min-w-0 space-y-5">
+            <div>
+              <label className="mb-2 block font-['Teachers'] text-[14px] font-medium leading-[20px] tracking-[-0.14px] text-[#242D96]">
+                Enter old password
+              </label>
+              <input
+                type="password"
+                placeholder="Old password"
+                required
+                value={oldPassword}
+                className="h-14 w-full rounded-[8px] border border-[#BBC8D8] bg-white/70 px-4 font-['Teachers'] text-[16px] text-[#13151A] outline-none transition focus:border-[#242D96]"
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+            </div>
 
-              <div className="personalInfo">
-                <div className="rp">
-                  <div>Subscription</div>
-                </div>
-                <hr />
-              </div>
+            <div>
+              <label className="mb-2 block font-['Teachers'] text-[14px] font-medium leading-[20px] tracking-[-0.14px] text-[#242D96]">
+                Enter New password
+              </label>
+              <input
+                type="password"
+                placeholder="New password"
+                required
+                value={password}
+                className="h-14 w-full rounded-[8px] border border-[#BBC8D8] bg-white/70 px-4 font-['Teachers'] text-[16px] text-[#13151A] outline-none transition focus:border-[#242D96]"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordStrength(checkPasswordStrength(e.target.value));
+                }}
+              />
+            </div>
 
-              <div className="personalInfo active_MenuPage">
-                <div className="rp">
-                  <div>Password Manager</div>
-                </div>
-                <hr />
-              </div>
+            <div>
+              <label className="mb-2 block font-['Teachers'] text-[14px] font-medium leading-[20px] tracking-[-0.14px] text-[#242D96]">
+                Confirm New password
+              </label>
+              <input
+                type="password"
+                placeholder="Repeat new password"
+                required
+                value={confirmPassword}
+                className="h-14 w-full rounded-[8px] border border-[#BBC8D8] bg-white/70 px-4 font-['Teachers'] text-[16px] text-[#13151A] outline-none transition focus:border-[#242D96]"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
 
-              <div className="personalInfo" onClick={() => navigate("/my-likes")}>
-                <div className="rp">
-                  <div>Favorites</div>
-                </div>
-                <hr />
-              </div>
-
+            <div className="mt-3 h-[6px] w-full rounded-full bg-[#E5E7EB]">
               <div
-                className="personalInfo"
-                onClick={() => setShowLogoutModal(true)}
-              >
-                <div className="rp">
-                  <div>Logout</div>
-                </div>
-                <hr />
-              </div>
-
-            </div>
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="right-side">
-
-            <div className="input-group">
-              <label>Enter old password</label>
-              <div className="input-wrapper">
-                <input
-                  type="password"
-                  placeholder="Old password"
-                  required
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* ✅ ЭТО НОВЫЙ ПАРОЛЬ (исправил) */}
-            <div className="input-group">
-              <label>Enter New password</label>
-              <div className="input-wrapper">
-                <input
-                  type="password"
-                  placeholder="New password"
-                  required
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setPasswordStrength(checkPasswordStrength(e.target.value));
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* ✅ ЭТО CONFIRM (исправил) */}
-            <div className="input-group">
-              <label>Confirm New password</label>
-              <div className="input-wrapper">
-                <input
-                  type="password"
-                  placeholder="Repeat new password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-
-              {/* strength bar */}
-              <div className="password-strength">
-                <div
-                  className="strength-bar"
-                  style={{
-                    width: `${passwordStrength * 25}%`,
-                    background:
-                      passwordStrength === 1
-                        ? "red"
-                        : passwordStrength === 2
+                style={{
+                  width: `${passwordStrength * 25}%`,
+                  background:
+                    passwordStrength === 1
+                      ? "red"
+                      : passwordStrength === 2
                         ? "orange"
                         : passwordStrength === 3
-                        ? "yellow"
-                        : passwordStrength === 4
-                        ? "green"
-                        : "transparent",
-                    height: "5px",
-                    marginTop: "5px",
-                    borderRadius: "3px"
-                  }}
-                ></div>
-              </div>
-
-              {password && passwordStrength < 3 && (
-                <p style={{ color: "red", marginTop: "5px" }}>
-                  Password is too weak
-                </p>
-              )}
-
-              {passwordStrength >= 3 && (
-                <p style={{ color: "green", marginTop: "5px" }}>
-                  Strong password
-                </p>
-              )}
+                          ? "yellow"
+                          : passwordStrength === 4
+                            ? "green"
+                            : "transparent",
+                  height: "100%",
+                  borderRadius: "999px",
+                  transition: "width 0.3s ease",
+                }}
+              />
             </div>
 
-            <div className="passwordStrengthIndicator">
-              <div className="passwS">Password Strength</div>
-              <div>Must contain at least:</div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>1 uppercase</div>
-              </div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>1 number</div>
-              </div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>At least 8 characters</div>
-              </div>
-            </div>
+            {password && passwordStrength < 3 && (
+              <p className="mt-2 text-sm text-red-600">Password is too weak</p>
+            )}
 
-            <button
-              className="searchBtn btn_center"
-              onClick={handleUpdate}>
-              Change
-            </button>
-
-            {message && (
-              <p className="errorMessagePassword_"> {/* ✅ исправил classname */}
-                {message}
-              </p>
+            {passwordStrength >= 3 && (
+              <p className="mt-2 text-sm text-green-600">Strong password</p>
             )}
           </div>
+
+          <div className="space-y-2 pt-2">
+            <div className="font-['Teachers'] text-[14px] font-medium leading-[20px] tracking-[-0.14px] text-[#242D96]">
+              Password Strength
+            </div>
+            <div className="font-['Teachers'] text-[14px] font-medium leading-[20px] tracking-[-0.14px] text-[#242D96]">
+              Must contain at least:
+            </div>
+            <div className="flex items-center gap-2">
+              <img src={checkLine} alt="" />
+              <div
+                className={`font-['Teachers'] text-[14px] ${hasUppercase ? "font-medium text-[#16A34A]" : "text-[#838B9E]"}`}
+              >
+                1 uppercase
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <img src={checkLine} alt="" />
+              <div
+                className={`font-['Teachers'] text-[14px] ${hasNumber ? "font-medium text-[#16A34A]" : "text-[#838B9E]"}`}
+              >
+                1 number
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <img src={checkLine} alt="" />
+              <div
+                className={`font-['Teachers'] text-[14px] ${hasMinLength ? "font-medium text-[#16A34A]" : "text-[#838B9E]"}`}
+              >
+                At least 8 characters
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="mt-6 w-full max-w-[300px] rounded-full bg-[#242D96] px-6 py-3 font-['Teachers'] text-[24px] font-medium leading-none text-white transition hover:bg-[#1d2577]"
+            onClick={handleUpdate}
+            type="button"
+          >
+            Change
+          </button>
+
+          {message && (
+            <p className="mt-4 max-w-[420px] text-center text-sm text-red-600">
+              {message}
+            </p>
+          )}
         </div>
       </div>
 
       {/* LOGOUT MODAL */}
       {showLogoutModal && (
-        <div className="logoutModalOverlay">
-          <div className="logoutModal">
-            <h3>Logout</h3>
-            <p>Are you sure you want to log out of your account?</p>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/45 px-4">
+          <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
+            <h3 className="mb-2 text-xl font-semibold text-[#13151A]">
+              Logout
+            </h3>
+            <p className="mb-6 text-sm text-[#555]">
+              Are you sure you want to log out of your account?
+            </p>
 
-            <div className="logoutButtons">
+            <div className="flex justify-between gap-3">
               <button
-                className="cancelBtn"
+                className="flex-1 rounded-lg bg-[#eee] px-4 py-2.5 text-sm font-medium text-[#333]"
                 onClick={() => setShowLogoutModal(false)}
               >
                 Cancel
               </button>
 
               <button
-                className="logoutBtn"
+                className="flex-1 rounded-lg bg-[#e53935] px-4 py-2.5 text-sm font-medium text-white"
                 onClick={handleLogout}
               >
                 Logout

@@ -159,6 +159,7 @@ function MainRecipeContent() {
   };
 
   return (
+    <>
     <div className="mainRecipeWrapper">
 
       {/* LEFT FILTER PANEL */}
@@ -197,7 +198,7 @@ function MainRecipeContent() {
           {/* COUNTRIES */}
           <div className="religions">
             <div className="q2st" onClick={() => setCountryOpen(!countryOpen)}>
-              <div>Countries</div>
+              <div>Region</div>
               <img
                 src={arrowDown}
                 className={countryOpen ? "arrow open" : "arrow"}
@@ -243,7 +244,7 @@ function MainRecipeContent() {
 
       {/* MAIN CONTENT */}
       <div className="cardsWrapper">
-        <div className="flex justify-end w-full ">
+        <div className="mainRecipeTopFilters flex justify-end w-full ">
         <CategoryFilter
           activeValue={activeFilter}
           onSelect={handleTopFilterSelect}
@@ -258,25 +259,26 @@ function MainRecipeContent() {
         {loading ? (
           <div className="loader"></div>
         ) : (
-          <>
-            <MealCardGrid
-              meals={currentMeals}
-              onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
-              titleMaxLength={15}
-              variant="mainRecipe"
-              useLongTitle
-            />
-            <div className="flex justify-center w-full">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-            </div>
-          </>
+          <MealCardGrid
+            meals={currentMeals}
+            onCardClick={(meal) => navigate(`/meal/${meal.idMeal}`)}
+            titleMaxLength={15}
+            variant="mainRecipe"
+            useLongTitle
+          />
         )}
       </div>
     </div>
+    {!loading && (
+      <div className="mainRecipePagination">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+    )}
+    </>
   );
 }
 

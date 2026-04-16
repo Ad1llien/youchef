@@ -6,6 +6,7 @@ import likes from "../icons/likes.svg"
 import vipCrown from "../icons/crown.svg"
 import qaa from "../icons/question-line.svg"
 import guide from "../icons/news-line.svg"
+import menuLine from "../icons/menu-line.svg";
 import API_BASE_URL from "../config/api";
 
 function Header({ onBurgerClick }) {
@@ -69,16 +70,16 @@ function Header({ onBurgerClick }) {
   }, []);
 
   return (
-    <header className="flex justify-between items-end pt-12 px-[146px] max-w-[1148px] mx-auto bg-[#FFFEEB]">
+    <header className="flex justify-between items-center sm:items-end sm:flex-row pt-4 sm:pt-12 px-4 sm:px-[146px] max-w-[1148px] mx-auto bg-[#FFFEEB]">
    
-      <img
+      <img 
         src={youChefLogo}
         alt="YouChef Logo"
-        className="w-[245px] h-[74px] block cursor-pointer"
+        className="w-[110px] h-auto sm:w-[245px] sm:h-[74px] block cursor-pointer"
         onClick={() => navigate("/")}
       />
 
-      <nav className="flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center max-[393px]:hidden">
+      <nav className="hidden sm:flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center">
 
         <div className="cursor-pointer" onClick={() => navigate("/")}>Recipes</div>
         <div className="cursor-pointer" onClick={() => navigate("/premium")}>Premium</div>
@@ -220,23 +221,23 @@ function Header({ onBurgerClick }) {
         )}
       </nav>
 
-      <div className="hidden max-[393px]:flex max-[393px]:gap-3 max-[393px]:items-center">
+      <div className="flex sm:hidden gap-3 items-center">
         {user ? (
           <div className="text-[#242D96] font-medium">{user.name}</div>
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="flex w-32 h-10 py-2.5 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-lg font-medium"
+            className="flex w-[104px] h-10 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[20px] font-medium border-none"
           >
             login
           </button>
         )}
 
         <button
-          className="text-[28px] bg-transparent border-none cursor-pointer text-[#242D96]"
+          className="bg-transparent border-none cursor-pointer w-7 h-7"
           onClick={onBurgerClick}
         >
-          ☰
+          <img src={menuLine} alt="menu" className="w-7 h-7" />
         </button>
       </div>
     </header>
