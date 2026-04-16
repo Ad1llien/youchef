@@ -22,13 +22,13 @@
     "screenshots": [
         {
           "src": "/icons/screenshot1.jpg",
-          "sizes": "390x844",
+          "sizes": "591x1280",
           "type": "image/jpg",
           "form_factor": "narrow"
         },
         {
           "src": "/icons/screenshot3.jpg",
-          "sizes": "1280x800",
+          "sizes": "1920x896",
           "type": "image/jpg",
           "form_factor": "wide"
         }
