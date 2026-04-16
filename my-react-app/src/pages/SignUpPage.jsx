@@ -52,13 +52,13 @@ const SignUpPage = () => {
       if (data.success) {
         setUserId(data.userId);
         navigate("/check-email", { state: { userId: data.userId } }); // сразу на проверку email
-    } else {
+      } else {
         setModal({
-            open: true,
-            text: data.message || "Registration failed",
-            type: "error",
+          open: true,
+          text: data.message || "Registration failed",
+          type: "error",
         });
-    }
+      }
     } catch (err) {
       console.error(err);
       setModal({
@@ -74,11 +74,9 @@ const SignUpPage = () => {
       <div className="auth-card signup">
         <img src={logo} alt="YouChef Logo" className="main-logo" />
         <h2>Create your account</h2>
-        <p className="subtitle">
-          Please enter your details to get started
-        </p>
+        <p className="subtitle">Please enter your details to get started</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-3">
           <div className="input-group">
             <label>Full Name *</label>
             <div className="input-wrapper">
@@ -130,12 +128,12 @@ const SignUpPage = () => {
                     passwordStrength === 1
                       ? "red"
                       : passwordStrength === 2
-                      ? "orange"
-                      : passwordStrength === 3
-                      ? "yellow"
-                      : passwordStrength === 4
-                      ? "green"
-                      : "transparent",
+                        ? "orange"
+                        : passwordStrength === 3
+                          ? "yellow"
+                          : passwordStrength === 4
+                            ? "green"
+                            : "transparent",
                   height: "5px",
                   marginTop: "5px",
                   borderRadius: "3px",

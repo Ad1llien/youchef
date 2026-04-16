@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/style.css";
 import API_BASE_URL, { API_ORIGIN } from "../config/api";
+import AccountNavigation from "./AccountNavigation";
+import AccountProfileSection from "./AccountProfileSection";
 
 function MyAccount() {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
-const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [user, setUser] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
@@ -14,36 +15,36 @@ const [avatarPreview, setAvatarPreview] = useState(null);
       method: "GET",
       credentials: "include",
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.success) {
           setUser(data.userData);
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }, []);
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     // превью
     const previewUrl = URL.createObjectURL(file);
     setAvatarPreview(previewUrl);
-  
+
     // отправка на сервер
     const formData = new FormData();
     formData.append("avatar", file);
-  
+
     try {
       const res = await fetch(`${API_BASE_URL}/api/user/avatar`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
-  
+
       const data = await res.json();
-  
+
       if (data.success) {
         console.log("Avatar updated");
       }
@@ -56,232 +57,96 @@ const [avatarPreview, setAvatarPreview] = useState(null);
     try {
       await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
-  
+
       navigate("/login");
     } catch (err) {
       console.error(err);
     }
   };
 
-    return (
-        
-      <div className="myAccountWrapper">
-        <div className="recipeEmpty">My Account</div>
-        <div className="accountMenu">
-          <div className="account-page">
-            <div className="left-side">
-            <div className="menuwrapper">
-              <div className="personalInfo active_MenuPage">
-                <div className="rp">
-                  <div>Personal Info</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-[#242D96]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                  <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7" // стрелка направо
-                   />
-                   </svg>
-                </div>
-                
-                <hr />
-              </div>
-              <div className="personalInfo">
-                <div className="rp">
-                  <div>Subscription</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-[#242D96]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                  <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7" // стрелка направо
-                   />
-                   </svg>
-                </div>
-                
-                <hr />
-              </div>
-              <div className="personalInfo" onClick={()=> navigate("/password-manager")}>
-                <div className="rp">
-                  <div>Password Manager</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-[#242D96]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                  <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7" // стрелка направо
-                   />
-                   </svg>
-                </div>
-                
-                <hr />
-              </div>
-              <div className="personalInfo" onClick={() => navigate("/my-likes")}>
-                <div className="rp">
-                  <div >Favourites</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-[#242D96]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                  <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7" // стрелка направо
-                   />
-                   </svg>
-                </div>
-                
-                <hr />
-              </div>
-              <div className="personalInfo" onClick={() => setShowLogoutModal(true)}>
-  <div className="rp">
-    <div>Logout</div>
-  </div>
-  <hr />
-</div>
+  return (
+    <div className="mx-auto mt-[102px] w-full max-w-6xl px-4 md:mt-[102px] md:px-6">
+      <h1 className="mb-6 text-center font-['Taviraj'] text-[32px] font-normal leading-normal text-[#242D96] md:mb-[80px]">
+        My Account
+      </h1>
 
-            </div>
-            </div>
+      <div className="flex flex-col gap-11 md:gap-20 md:flex-row md:items-start">
+        <AccountNavigation
+          activeItem="personal"
+          onOpenPersonalInfo={() => navigate("/my-account")}
+          onOpenPasswordManager={() => navigate("/password-manager")}
+          onOpenLikes={() => navigate("/my-likes")}
+          onLogout={() => setShowLogoutModal(true)}
+        />
 
-            <input
-            type="file"
-            accept="image/*"
-            id="avatarInput"
-            style={{ display: "none" }}
-            onChange={handleAvatarChange}
-            />
+        <input
+          type="file"
+          accept="image/*"
+          id="avatarInput"
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
 
-            <div className="right-side">
-            <div className="avatar">
-  <div className="avatar-wrapper">
+        <AccountProfileSection
+          user={user}
+          setUser={setUser}
+          avatarPreview={avatarPreview}
+          apiOrigin={API_ORIGIN}
+          onOpenAvatar={() => setIsAvatarOpen(true)}
+          onOpenAvatarPicker={() =>
+            document.getElementById("avatarInput").click()
+          }
+        />
+      </div>
 
-    {/* 👇 КЛИК = УВЕЛИЧЕНИЕ */}
-    <div
-      className="avatar"
-      onClick={() => setIsAvatarOpen(true)}
-      style={{ cursor: "pointer" }}
-    >
-      {avatarPreview ? (
-        <img src={avatarPreview} alt="avatar" />
-      ) : user?.avatar ? (
-        <img src={avatarPreview || `${API_ORIGIN}${user?.avatar}`} alt="avatar" />
-      ) : (
-        user?.name?.charAt(0).toUpperCase()
-      )}
-    </div>
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/45 px-4">
+          <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
+            <h3 className="mb-2 text-xl font-semibold text-[#13151A]">
+              Logout
+            </h3>
+            <p className="mb-6 text-sm text-[#555]">
+              Are you sure you want to log out of your account?
+            </p>
 
-    {/* 👇 КЛИК = ВЫБОР ФАЙЛА */}
-    <div
-      className="edit-avatar"
-      onClick={() => document.getElementById("avatarInput").click()}
-      style={{ cursor: "pointer" }}
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#242D96" strokeWidth="2" viewBox="0 0 24 24">
-        <path d="M12 20h9"/>
-        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-      </svg>
-    </div>
+            <div className="flex justify-between gap-3">
+              <button
+                className="flex-1 rounded-lg bg-[#eee] px-4 py-2.5 text-sm font-medium text-[#333]"
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Cancel
+              </button>
 
-  </div>
-</div>
-
-<form className="profileForm">
-  <div className="input-group shorter">
-    <label>Full Name *</label>
-    <div className="input-wrapper">
-      <input
-        type="text"
-        placeholder="Full Name"
-        value={user?.name || ""}
-        onChange={(e) => setUser({ ...user, name: e.target.value })}
-      />
-    </div>
-  </div>
-
-  <div className="input-group shorter">
-    <label>Email Address *</label>
-    <div className="input-wrapper">
-      <input
-        type="email"
-        placeholder="Email"
-        value={user?.email || ""}
-        onChange={(e) => setUser({ ...user, email: e.target.value })}
-      />
-    </div>
-  </div>         
-</form>
-        <div className="searchWrapper leeft">
-            <button
-              className="searchBtn">
-              Update
-            </button>
-          </div>
+              <button
+                className="flex-1 rounded-lg bg-[#e53935] px-4 py-2.5 text-sm font-medium text-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
-        {showLogoutModal && (
-  <div className="logoutModalOverlay">
-    <div className="logoutModal">
-      <h3>Logout</h3>
-      <p>Are you sure you want to log out of your account?</p>
-
-      <div className="logoutButtons">
-        <button
-          className="cancelBtn"
-          onClick={() => setShowLogoutModal(false)}
+      )}
+      {isAvatarOpen && (
+        <div
+          className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 px-4"
+          onClick={() => setIsAvatarOpen(false)}
         >
-          Cancel
-        </button>
+          <div className="max-h-[90vh] max-w-[90vw]">
+            <img
+              src={
+                avatarPreview || (user?.avatar && `${API_ORIGIN}${user.avatar}`)
+              }
+              alt="big avatar"
+              className="block max-h-[90vh] max-w-[90vw] object-contain"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
-        <button
-          className="logoutBtn"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-{isAvatarOpen && (
-  <div
-    className="avatarModal"
-    onClick={() => setIsAvatarOpen(false)}
-  >
-    <div className="avatarModalContent">
-    <img
-  src={avatarPreview || (user?.avatar && `${API_ORIGIN}${user.avatar}`)}
-  alt="big avatar"
-/>
-    </div>
-  </div>
-)}
-      </div>
-    );
-  }
-  
-  export default MyAccount;
+export default MyAccount;

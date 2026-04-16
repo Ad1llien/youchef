@@ -35,7 +35,7 @@ const VerifyPage = () => {
       <div className="auth-card">
         <h2>Verify Email</h2>
 
-        <form onSubmit={handleVerify}>
+        <form onSubmit={handleVerify} className="p-3">
           <input
             type="text"
             placeholder="Enter OTP"

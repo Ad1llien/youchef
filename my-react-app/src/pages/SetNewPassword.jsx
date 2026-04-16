@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import checkLine from "../icons/checkbox-circle-fill.svg"
+import checkLine from "../icons/checkbox-circle-fill.svg";
 import API_BASE_URL from "../config/api";
 
 function SetNewPasswordPage() {
@@ -79,7 +79,7 @@ function SetNewPasswordPage() {
         <h2>Set a new password</h2>
         <p className="subtitle">Set a new password for your account</p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-3">
           {/* New Password */}
           <div className="input-group">
             <label>New Password *</label>
@@ -112,40 +112,40 @@ function SetNewPasswordPage() {
             </div>
           </div>
           <div className="password-strength">
-              <div
-                className="strength-bar"
-                style={{
-                  width: `${passwordStrength * 25}%`,
-                  background:
-                    passwordStrength === 1
-                      ? "red"
-                      : passwordStrength === 2
+            <div
+              className="strength-bar"
+              style={{
+                width: `${passwordStrength * 25}%`,
+                background:
+                  passwordStrength === 1
+                    ? "red"
+                    : passwordStrength === 2
                       ? "orange"
                       : passwordStrength === 3
-                      ? "yellow"
-                      : passwordStrength === 4
-                      ? "green"
-                      : "transparent",
-                }}
-              ></div>
-            </div>
+                        ? "yellow"
+                        : passwordStrength === 4
+                          ? "green"
+                          : "transparent",
+              }}
+            ></div>
+          </div>
 
-            <div className="passwordStrengthIndicator">
-              <div className="passwS">Password Strength</div>
-              <div>Must contain at least:</div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>1 uppercase</div>
-              </div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>1 number</div>
-              </div>
-              <div className="try">
-                <img src={checkLine} alt="" />
-                <div>At least 8 characters</div>
-              </div>
+          <div className="passwordStrengthIndicator">
+            <div className="passwS">Password Strength</div>
+            <div>Must contain at least:</div>
+            <div className="try">
+              <img src={checkLine} alt="" />
+              <div>1 uppercase</div>
             </div>
+            <div className="try">
+              <img src={checkLine} alt="" />
+              <div>1 number</div>
+            </div>
+            <div className="try">
+              <img src={checkLine} alt="" />
+              <div>At least 8 characters</div>
+            </div>
+          </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? "Updating..." : "Update password"}

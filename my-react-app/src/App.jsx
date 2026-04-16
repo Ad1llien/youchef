@@ -1,22 +1,18 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useNavigate
-} from "react-router-dom";
-import Contact from "./components/contact"
-import PasswordManager  from "./components/PasswordManager";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import Contact from "./components/contact";
+import PasswordManager from "./components/PasswordManager";
 import HelpCenter from "./components/HelpCenter";
-import MyAccount from "../src/components/myAccount"
+import MyAccount from "../src/components/myAccount";
 import { useLocation } from "react-router-dom";
-import MyLikes from "./components/MyLikes"
+import MyLikes from "./components/MyLikes";
 import LoginPage from "./pages/loginPage";
-import SignUpPage from "./pages/SignUpPage"
+import SignUpPage from "./pages/SignUpPage";
 import "./App.css";
-import ResetPasswordPage from "./pages/resetPassword"
-import VerifyCodePage from "./pages/VerifyCodePage"
+import ResetPasswordPage from "./pages/resetPassword";
+import VerifyCodePage from "./pages/VerifyCodePage";
 import SetNewPasswordPage from "./pages/SetNewPassword";
+import Premium from "./components/premium";
 import MealPage from "./components/MealPage";
 import PotPage from "./components/PotPage";
 import PopularMealContent from "./components/PopularMealContent";
@@ -27,10 +23,10 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MainNav from "./components/MainNav";
 import Footer from "./components/Footer";
-import Guides from "./components/Guides"
+import Guides from "./components/Guides";
 import VerifyPage from "./pages/VerifyPage";
-import CheckEmailPage from "./pages/CheckEmailPage"
-import RequestRecipe from "./components/requestRecipe";/* ================= APP WRAPPER ================= */
+import CheckEmailPage from "./pages/CheckEmailPage";
+import RequestRecipe from "./components/requestRecipe"; /* ================= APP WRAPPER ================= */
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -51,7 +47,6 @@ function App() {
     const saved = localStorage.getItem("checkPot");
     return saved ? JSON.parse(saved) : [];
   });
-  
 
   useEffect(() => {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
@@ -59,7 +54,13 @@ function App() {
 
   /* 📂 вкладки */
   const [activeTab, setActiveTab] = useState("popular");
-  const isAuthPage = ["/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword"].includes(location.pathname);
+  const isAuthPage = [
+    "/login",
+    "/signup",
+    "/reset-password",
+    "/verify-account",
+    "/setNewPassword",
+  ].includes(location.pathname);
 
   /* 🔍 поиск */
   // поиск теперь живет внутри компонента SearchBar
@@ -120,12 +121,10 @@ function App() {
       {/* ================= MAIN ================= */}
       <main>
         <Routes>
-
           <Route
             path="/"
             element={
               <div className="main1stChild">
-
                 <div className="recipeEmpty">Recipes</div>
 
                 <MainNav activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -134,10 +133,11 @@ function App() {
                   mode={activeTab === "create" ? "ingredients" : "meals"}
                   selectedIngredients={checkPot}
                   onIngredientSelect={(ingredient) => {
-                    setCheckPot((prev) =>
-                      prev.includes(ingredient)
-                        ? prev.filter((i) => i !== ingredient) // toggle OFF
-                        : [...prev, ingredient] // toggle ON
+                    setCheckPot(
+                      (prev) =>
+                        prev.includes(ingredient)
+                          ? prev.filter((i) => i !== ingredient) // toggle OFF
+                          : [...prev, ingredient], // toggle ON
                     );
                   }}
                 />
@@ -156,36 +156,32 @@ function App() {
 
           <Route
             path="/pot"
-            element={
-              <PotPage
-                checkPot={checkPot}
-                setCheckPot={setCheckPot}
-              />
-            }
+            element={<PotPage checkPot={checkPot} setCheckPot={setCheckPot} />}
           />
 
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} /> 
-          <Route path="/verify-account" element={<VerifyCodePage />} /> 
-          <Route path="/setNewPassword" element={<SetNewPasswordPage />} /> 
-          <Route path="/my-account" element={<MyAccount/>}/>
-          <Route path="/my-likes" element={<MyLikes/>}/>
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-account" element={<VerifyCodePage />} />
+          <Route path="/setNewPassword" element={<SetNewPasswordPage />} />
+          <Route path="/my-account" element={<MyAccount />} />
+          <Route path="/my-likes" element={<MyLikes />} />
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/help-center" element={<HelpCenter/>}></Route>
+          <Route path="/help-center" element={<HelpCenter />}></Route>
           <Route path="/guide" element={<Guides />}></Route>
-          <Route path="/password-manager" element={< PasswordManager/>}></Route>
+          <Route path="/password-manager" element={<PasswordManager />}></Route>
+
+          <Route path="/premium" element={<Premium />}></Route>
           <Route path="/verify" element={<VerifyPage />}></Route>
           <Route path="/check-email" element={<CheckEmailPage />} />
-          <Route path="/request-recipe" element={<RequestRecipe />} />          
-          </Routes>
+          <Route path="/request-recipe" element={<RequestRecipe />} />
+        </Routes>
       </main>
 
       {/* ================= FOOTER ================= */}
       <Footer />
-
     </div>
   );
 }
