@@ -35,17 +35,27 @@ function AccountNavigationItem({
       >
         <div className="flex items-center justify-between">
           <span className="font-semibold">{label}</span>
-          {showArrow && <span className="hidden md:inline-flex"><ArrowIcon /></span>}
+          {showArrow && (
+            <span className="hidden md:inline-flex">
+              <ArrowIcon />
+            </span>
+          )}
         </div>
       </button>
     );
   }
 
   return (
-    <div className={`inline-block md:block ${baseClass} ${borderColor} ${textColor}`}>
+    <div
+      className={`inline-block md:block ${baseClass} ${borderColor} ${textColor}`}
+    >
       <div className="flex items-center justify-between">
         <span className="font-semibold">{label}</span>
-        {showArrow && <span className="hidden md:inline-flex"><ArrowIcon /></span>}
+        {showArrow && (
+          <span className="hidden md:inline-flex">
+            <ArrowIcon />
+          </span>
+        )}
       </div>
     </div>
   );
