@@ -28,11 +28,18 @@ import VerifyPage from "./pages/VerifyPage";
 import CheckEmailPage from "./pages/CheckEmailPage";
 import RequestRecipe from "./components/requestRecipe"; /* ================= APP WRAPPER ================= */
 import LegalPages from "./components/LegalPages";
+import NotFound from "./components/NotFound";
+import OfflineDetector from "./components/OfflineDetector";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function AppWrapper() {
   return (
     <BrowserRouter>
-      <App />
+      <ErrorBoundary>
+        <OfflineDetector>
+          <App />
+        </OfflineDetector>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
@@ -182,6 +189,7 @@ function App() {
           <Route path="/terms" element={<LegalPages />} />
           <Route path="/privacy" element={<LegalPages />} />
           <Route path="/refund" element={<LegalPages />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
