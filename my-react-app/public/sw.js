@@ -8,6 +8,16 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  // Не трогаем API запросы и внешние ресурсы
+  if (
+    e.request.url.includes("/api/") ||
+    e.request.url.includes("onrender.com") ||
+    e.request.url.includes("themealdb.com") ||
+    !e.request.url.startsWith(self.location.origin)
+  ) {
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
