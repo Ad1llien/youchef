@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import aiRouter from "./routes/aiRoute.js";
+
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import path from "path";
@@ -39,6 +41,7 @@ app.use(cookieParser());
 
 // Статика для фото
 app.use("/uploads", express.static(path.resolve("backend/uploads")));
+app.use("/api/ai", aiRouter);
 
 // Роуты
 app.use("/api/auth", authRouter);

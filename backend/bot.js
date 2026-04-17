@@ -538,6 +538,62 @@ bot.on("callback_query", async (query) => {
       }
 
       await RecipeRequest.findByIdAndUpdate(id, { status });
+
+      try {
+        await transporter.sendMail({
+          from: process.env.SENDER_EMAIL,
+          to: request.userEmail,
+          subject: action === "accept"
+            ? "✅ Ваш рецепт принят — YouChef"
+            : "❌ Ваш рецепт отклонён — YouChef",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+              
+              <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+                <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+                <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+                <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Recipe Review</div>
+              </div>
+      
+              <div style="padding: 28px 24px; background: #ffffff;">
+                <p style="color: #333; font-size: 15px; margin: 0 0 16px;">Hello, <strong>${request.userName}</strong>!</p>
+                
+                ${action === "accept" ? `
+                  <p style="color: #333; font-size: 15px; margin: 0 0 24px;">
+                    Great news! Your recipe has been <strong style="color: #2e7d32;">accepted</strong> and is now live on YouChef. 🎉
+                  </p>
+                  <div style="background: #f0fff4; border-left: 4px solid #2e7d32; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px;">
+                    <p style="color: #2e7d32; font-size: 15px; margin: 0;"><strong>${request.name}</strong> is now available for everyone to see.</p>
+                  </div>
+                ` : `
+                  <p style="color: #333; font-size: 15px; margin: 0 0 24px;">
+                    Unfortunately, your recipe was <strong style="color: #c62828;">not accepted</strong> this time.
+                  </p>
+                  <div style="background: #fff5f5; border-left: 4px solid #c62828; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px;">
+                    <p style="color: #c62828; font-size: 15px; margin: 0;">Recipe: <strong>${request.name}</strong></p>
+                  </div>
+                  <p style="color: #555; font-size: 14px; margin: 0 0 16px;">
+                    You can submit an improved version anytime. If you have questions, contact our support team.
+                  </p>
+                `}
+      
+                <p style="color: #888; font-size: 13px; margin: 0;">
+                  Visit us at <a href="https://youchef.kz" style="color: #242D96; text-decoration: none;">youchef.kz</a> or reach us via the 
+                  <a href="https://youchef.kz/contact" style="color: #242D96; text-decoration: none;">Contact page</a>.
+                </p>
+              </div>
+      
+              <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+                <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+              </div>
+      
+            </div>
+          `
+        });
+        console.log(`📧 Email уведомление отправлено на ${request.userEmail}`);
+      } catch (emailErr) {
+        console.error("Ошибка отправки email уведомления:", emailErr.message);
+      }
       page.requests = page.requests.filter((r) => r._id != id);
 
       if (page.index >= page.requests.length) {
@@ -759,10 +815,40 @@ bot.on("message", async (msg) => {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: email,
-      subject: "📩 Message from YouChef moderator",
-      text: msg.text,
+      subject: "📩 Message from YouChef Support",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+          
+          <!-- HEADER -->
+          <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+            <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+            <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Support Team</div>
+          </div>
+    
+          <!-- BODY -->
+          <div style="padding: 28px 24px; background: #ffffff;">
+            <p style="color: #333; font-size: 15px; margin: 0 0 16px;">Hello,</p>
+            <p style="color: #333; font-size: 15px; margin: 0 0 24px;">You have received a message from the YouChef support team:</p>
+    
+            <div style="background: #f5f7ff; border-left: 4px solid #242D96; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px;">
+              <p style="color: #242D96; font-size: 15px; line-height: 1.6; margin: 0;">${msg.text}</p>
+            </div>
+    
+            <p style="color: #888; font-size: 13px; margin: 0;">
+              If you have further questions, feel free to reply to this email or visit our 
+              <a href="https://youchef.kz/contact" style="color: #242D96; text-decoration: none;">Contact page</a>.
+            </p>
+          </div>
+    
+          <!-- FOOTER -->
+          <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+            <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+          </div>
+    
+        </div>
+      `
     });
-
     await bot.sendMessage(userId, `✅ Сообщение отправлено на ${email}`);
   } catch (err) {
     console.error("Ошибка email:", err.message);

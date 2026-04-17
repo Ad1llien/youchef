@@ -29,8 +29,33 @@ export const register = async (req, res) => {
         await transporter.sendMail({
           from: process.env.SENDER_EMAIL,
           to: existingUser.email,
-          subject: "Verify your account",
-          text: `Welcome back ${existingUser.name}! Your OTP for account verification is: ${otp}`,
+          subject: "Verify your YouChef account",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+              
+              <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+                <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+                <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+                <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Account Verification</div>
+              </div>
+        
+              <div style="padding: 28px 24px; background: #ffffff;">
+                <p style="color: #333; font-size: 15px; margin: 0 0 8px;">Welcome back, <strong>${existingUser.name}</strong>!</p>
+                <p style="color: #555; font-size: 14px; margin: 0 0 24px;">Use the code below to verify your YouChef account. The code expires in <strong>10 minutes</strong>.</p>
+        
+                <div style="background: #f5f7ff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px;">
+                  <div style="font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #242D96;">${otp}</div>
+                </div>
+        
+                <p style="color: #888; font-size: 13px; margin: 0;">If you didn't try to log in to YouChef, you can safely ignore this email.</p>
+              </div>
+        
+              <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+                <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+              </div>
+        
+            </div>
+          `
         });
 
         return res.json({ success: true, userId: existingUser._id });
@@ -55,8 +80,33 @@ export const register = async (req, res) => {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: user.email,
-      subject: "Verify your account",
-      text: `Welcome ${user.name}! Your OTP for account verification is: ${otp}`,
+      subject: "Verify your YouChef account",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+          
+          <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+            <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+            <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Account Verification</div>
+          </div>
+    
+          <div style="padding: 28px 24px; background: #ffffff;">
+            <p style="color: #333; font-size: 15px; margin: 0 0 8px;">Hello, <strong>${user.name}</strong>!</p>
+            <p style="color: #555; font-size: 14px; margin: 0 0 24px;">Use the code below to verify your YouChef account. The code expires in <strong>10 minutes</strong>.</p>
+    
+            <div style="background: #f5f7ff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px;">
+              <div style="font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #242D96;">${otp}</div>
+            </div>
+    
+            <p style="color: #888; font-size: 13px; margin: 0;">If you didn't create a YouChef account, you can safely ignore this email.</p>
+          </div>
+    
+          <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+            <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+          </div>
+    
+        </div>
+      `
     });
 
     return res.json({ success: true, userId: user._id });
@@ -134,8 +184,32 @@ export const sendVerifyOtp = async (req, res) => {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: user.email,
-      subject: "Verify your account",
-      text: `Your OTP for account verification is ${otp}`
+      subject: "Verify your YouChef account",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+          
+          <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+            <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+            <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+            <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Account Verification</div>
+          </div>
+    
+          <div style="padding: 28px 24px; background: #ffffff;">
+            <p style="color: #555; font-size: 14px; margin: 0 0 24px;">Use the code below to verify your YouChef account. The code expires in <strong>10 minutes</strong>.</p>
+    
+            <div style="background: #f5f7ff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px;">
+              <div style="font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #242D96;">${otp}</div>
+            </div>
+    
+            <p style="color: #888; font-size: 13px; margin: 0;">If you didn't create a YouChef account, you can safely ignore this email.</p>
+          </div>
+    
+          <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+            <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+          </div>
+    
+        </div>
+      `
     });
 
     return res.json({ success: true, message: "OTP sent to your email", userId: user._id });
@@ -189,12 +263,36 @@ export const sendResetOtp = async (req, res) => {
         user.resetOtp = otp;
         user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
         await user.save();
-        const mailOption ={ 
-            from: process.env.SENDER_EMAIL,
-        to: user.email,
-        subject: 'Password Reset OTP',
-        text: `Your OTP for resetting your password is ${otp}. Use this password to proceed with resetting your password.`
-        }
+const mailOption = {
+  from: process.env.SENDER_EMAIL,
+  to: user.email,
+  subject: "Reset your YouChef password",
+  html: `
+    <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+      
+      <div style="background: #242D96; padding: 28px 24px; text-align: center;">
+        <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius: 14px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;" alt="YouChef" />
+        <div style="color: white; font-size: 22px; font-weight: 600; letter-spacing: 1px;">YouChef</div>
+        <div style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px;">Password Reset</div>
+      </div>
+
+      <div style="padding: 28px 24px; background: #ffffff;">
+        <p style="color: #555; font-size: 14px; margin: 0 0 24px;">We received a request to reset your password. Use the code below to proceed. The code expires in <strong>10 minutes</strong>.</p>
+
+        <div style="background: #f5f7ff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px;">
+          <div style="font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #242D96;">${otp}</div>
+        </div>
+
+        <p style="color: #888; font-size: 13px; margin: 0;">If you did not request a password reset, you can safely ignore this email.</p>
+      </div>
+
+      <div style="background: #f9f9f9; padding: 16px 24px; text-align: center; border-top: 1px solid #eee;">
+        <p style="color: #aaa; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color: #aaa; text-decoration: none;">youchef.kz</a></p>
+      </div>
+
+    </div>
+  `
+};
         
         await transporter.sendMail(mailOption);
         return res.json({success: true , message: "Otp sent to your email."})

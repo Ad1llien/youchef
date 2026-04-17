@@ -1,8 +1,110 @@
 {
-  "53329": {
-    "calories": 3795,
-    "protein": 248,
-    "fat": 248,
-    "carbs": 174
+  "52802": {
+    "calories": 475,
+    "protein": 36,
+    "fat": 15,
+    "carbs": 47
+  },
+  "52821": {
+    "calories": 390,
+    "protein": 15,
+    "fat": 25,
+    "carbs": 25
+  },
+  "52834": {
+    "calories": 480,
+    "protein": 38,
+    "fat": 29,
+    "carbs": 14
+  },
+  "52904": {
+    "calories": 650,
+    "protein": 45,
+    "fat": 35,
+    "carbs": 25
+  },
+  "52977": {
+    "calories": 180,
+    "protein": 9,
+    "fat": 1,
+    "carbs": 34
+  },
+  "53103": {
+    "calories": 380,
+    "protein": 42,
+    "fat": 20,
+    "carbs": 6
+  },
+  "53133": {
+    "calories": 650,
+    "protein": 70,
+    "fat": 40,
+    "carbs": 1
+  },
+  "53144": {
+    "calories": 230,
+    "protein": 18,
+    "fat": 15,
+    "carbs": 3
+  },
+  "53147": {
+    "calories": 520,
+    "protein": 34,
+    "fat": 12,
+    "carbs": 65
+  },
+  "53154": {
+    "calories": 420,
+    "protein": 27,
+    "fat": 16,
+    "carbs": 38
+  },
+  "53180": {
+    "calories": 285,
+    "protein": 25,
+    "fat": 14,
+    "carbs": 4
+  },
+  "53238": {
+    "calories": 410,
+    "protein": 27,
+    "fat": 8,
+    "carbs": 55
+  },
+  "53239": {
+    "calories": 380,
+    "protein": 18,
+    "fat": 15,
+    "carbs": 40
+  },
+  "53281": {
+    "calories": 320,
+    "protein": 22,
+    "fat": 24,
+    "carbs": 4
+  },
+  "53317": {
+    "calories": 518,
+    "protein": 24,
+    "fat": 25,
+    "carbs": 46
+  },
+  "53334": {
+    "calories": 650,
+    "protein": 35,
+    "fat": 25,
+    "carbs": 70
+  },
+  "53349": {
+    "calories": 220,
+    "protein": 35,
+    "fat": 3,
+    "carbs": 9
+  },
+  "53366": {
+    "calories": 315,
+    "protein": 31,
+    "fat": 14,
+    "carbs": 15
   }
 }
