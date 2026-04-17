@@ -7,25 +7,44 @@ function HelpCenter() {
   const faqItems = useMemo(
     () => [
       {
-        question: "How can I contact customer support?",
-        answer: "",
+        question: "How do I create an account?",
+        answer: "Click the 'Login' button in the top right corner, then select 'Create account'. Enter your name, email and password. You will receive a verification email — confirm it and your account is ready.",
       },
       {
-        question: "What services do you offer?",
-        answer:
-          "We provide a range of services, including digital banking solutions, payment processing, risk management, and compliance tools.",
+        question: "What is Premium and what does it include?",
+        answer: "Premium gives you access to exclusive recipes, the ability to submit your own recipes, and AI-powered food analysis. You can purchase Premium via Telegram Stars or Kaspi QR on the Premium page.",
       },
       {
-        question: "How secure are your digital banking solutions?",
-        answer: "",
+        question: "How do I pay for Premium?",
+        answer: "We support two payment methods: Telegram Stars (automatic activation after payment) and Kaspi QR (manual activation — send us a payment screenshot via Contact page).",
       },
       {
-        question: "What types of payment methods do you support?",
-        answer: "",
+        question: "How does the ingredient search work?",
+        answer: "Go to the 'Create' tab on the main page, select the ingredients you have at home, and the app will show you all dishes you can make with them.",
       },
       {
-        question: "Can your software integrate with existing systems?",
-        answer: "",
+        question: "How do I submit my own recipe?",
+        answer: "Go to 'Request Recipe' page, fill in the name, ingredients, description and optionally a video link. After review by our moderators, your recipe will appear on the site.",
+      },
+      {
+        question: "How long does recipe moderation take?",
+        answer: "We review submitted recipes within 1–3 business days. You will receive an email notification about the decision.",
+      },
+      {
+        question: "I paid via Kaspi but Premium is not activated.",
+        answer: "Kaspi payments are activated manually. Please send us a payment screenshot via the Contact page or email youchef@gmail.com. We will activate your Premium within a few hours.",
+      },
+      {
+        question: "How do I cancel or get a refund?",
+        answer: "We offer a full refund within 7 days of purchase if you have not extensively used Premium features. Contact us at youchef@gmail.com with your transaction details.",
+      },
+      {
+        question: "How do I change my password?",
+        answer: "Go to My Account → Password Manager. Enter your current password and set a new one. If you forgot your password, use the 'Forgot password' link on the login page.",
+      },
+      {
+        question: "How do I link my Telegram account?",
+        answer: "Open our Telegram bot @youchefBot, send /login, and enter your YouChef email and password. After linking, you can purchase Premium directly in Telegram.",
       },
     ],
     []

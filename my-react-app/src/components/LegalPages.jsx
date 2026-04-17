@@ -222,7 +222,13 @@ const CONTENT = {
 function LegalPages() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
 
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("youchef.app@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   const pathToTab = {
     "/terms": "terms",
     "/privacy": "privacy",
@@ -242,7 +248,6 @@ function LegalPages() {
 
   return (
     <div className="mx-auto mt-[80px] w-full max-w-4xl px-4 pb-20 md:px-6">
-
       {/* Page title */}
       <div className="mb-10 text-center">
         <h1 className="font-['Taviraj'] text-[32px] font-normal text-[#242D96] md:text-[40px]">
@@ -315,12 +320,13 @@ function LegalPages() {
         <p className="mb-4 text-[14px] text-white/70">
           We're happy to help with any legal inquiries.
         </p>
-        <a
-          href="mailto:youchef@gmail.com"
-          className="inline-block rounded-full border border-white/30 bg-white/10 px-6 py-2.5 text-[14px] font-medium text-white no-underline hover:bg-white/20 transition"
+        <button
+          onClick={handleCopyEmail}
+          className="inline-block rounded-full border border-white/30 bg-white/10 px-6 py-2.5 text-[14px] font-medium text-white cursor-pointer transition hover:bg-white/20"
+          style={{ border: "1px solid rgba(255,255,255,0.3)" }}
         >
-          youchef@gmail.com
-        </a>
+          {copied ? "Copied!" : "youchef.app@gmail.com"}
+        </button>
       </div>
     </div>
   );

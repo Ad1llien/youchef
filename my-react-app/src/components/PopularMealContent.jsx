@@ -6,6 +6,9 @@ import CategoryFilter from "./CategoryFilter.jsx";
 import MealCardGrid from "./MealCardGrid.jsx";
 import Pagination from "./Pagination.jsx";
 import API_BASE_URL from "../config/api";
+import AIAssistant from "./AIAssistant";
+import OnboardingTour from "./OnboardingTour";
+
 const STORAGE_KEY = "popularMealFilter";
 const MEALS_PER_PAGE = 6;
 
@@ -16,8 +19,10 @@ function PopularMealContent() {
   const [user, setUser] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [userLoading, setUserLoading] = useState(true);
   const navigate = useNavigate();
+
+  // 🔹 Загрузка при открытии страницы
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
@@ -27,9 +32,9 @@ function PopularMealContent() {
       .then(data => {
         if (data.success) setUser(data.userData);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => setUserLoading(false));
   }, []);
-  // 🔹 Загрузка при открытии страницы
   useEffect(() => {
     const savedFilter = localStorage.getItem(STORAGE_KEY);
     if (savedFilter) {
@@ -105,6 +110,7 @@ function PopularMealContent() {
             <MealCardGrid
               meals={currentMeals}
               onCardClick={(meal) => {
+                if (userLoading) return; // ждём пока загрузится
                 if (!user) {
                   setShowLoginModal(true);
                 } else {
@@ -168,8 +174,12 @@ function PopularMealContent() {
       </div>
     </div>
   </div>
+  
 )}
+    <AIAssistant />
+    <OnboardingTour />
     </div>
+    
   );
 }
 

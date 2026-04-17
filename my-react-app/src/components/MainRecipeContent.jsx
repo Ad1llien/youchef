@@ -11,6 +11,7 @@ import CategoryFilter from "./CategoryFilter.jsx";
 import MealCardGrid from "./MealCardGrid.jsx";
 import Pagination from "./Pagination.jsx";
 import API_BASE_URL from "../config/api";
+import AIAssistant from "./AIAssistant";
 
 function MainRecipeContent() {
   const navigate = useNavigate();
@@ -29,6 +30,21 @@ function MainRecipeContent() {
 
   const [categories, setCategories] = useState([]);
   const [countries, setCountries] = useState([]);
+
+  const [userLoading, setUserLoading] = useState(true);
+
+useEffect(() => {
+  fetch(`${API_BASE_URL}/api/user/data`, {
+    method: "GET",
+    credentials: "include",
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) setUser(data.userData);
+    })
+    .catch(err => console.error(err))
+    .finally(() => setUserLoading(false));
+}, []);
 
   // 🔹 Загрузка блюд по дефолту
   useEffect(() => {
@@ -108,17 +124,7 @@ function MainRecipeContent() {
       .then(res => res.json())
       .then(data => setCategories(data.meals || []));
   }, []);
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) setUser(data.userData);
-      })
-      .catch(err => console.error(err));
-  }, []);
+ 
   // 🔹 Страны (Countries)
   useEffect(() => {
     fetch("https://www.themealdb.com/api/json/v2/65232507/list.php?a=list")
@@ -275,6 +281,8 @@ function MainRecipeContent() {
           <MealCardGrid
             meals={currentMeals}
             onCardClick={(meal) => {
+              if (userLoading) return; // ждём пока загрузится
+
               if (!user) {
                 setShowLoginModal(true);
               } else {
@@ -336,7 +344,11 @@ function MainRecipeContent() {
     </div>
   </div>
 )}
+
+    <AIAssistant />
+
     </>
+
   );
 }
 

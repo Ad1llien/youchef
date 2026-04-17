@@ -76,14 +76,14 @@ function Header({ onBurgerClick }) {
       <img 
         src={youChefLogo}
         alt="YouChef Logo"
-        className="w-[110px] h-auto sm:w-[245px] sm:h-[74px] block cursor-pointer"
+        className="youchef-logo w-[110px] h-auto sm:w-[245px] sm:h-[74px] block cursor-pointer"
         onClick={() => navigate("/")}
       />
 
       <nav className="hidden sm:flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center">
 
         <div className="cursor-pointer" onClick={() => navigate("/")}>Recipes</div>
-        <div className="cursor-pointer" onClick={() => {
+        <div className=" premium-nav-link cursor-pointer" onClick={() => {
   if (!user) {
     setShowLoginModal(true);
   } else {
@@ -194,11 +194,12 @@ function Header({ onBurgerClick }) {
                 </div>
 
                 <div className="modal-logo" onClick={() => navigate("/premium")}>
-                  <img className="accLogo" src={vipCrown} alt="" />
-                  <div >premium</div>
-                  <div className="pr">Free</div>
-                </div>
-
+  <img className="accLogo" src={vipCrown} alt="" />
+  <div>premium</div>
+  <div className="pr" style={{ color: user?.premium ? "#FFB800" : undefined }}>
+    {user?.premium ? "Premium" : "Free"}
+  </div>
+</div>
                 <hr className="hr"/>
 
                 <div className="account-modal">
@@ -240,12 +241,18 @@ function Header({ onBurgerClick }) {
           </button>
         )}
 
-        <button
-          className="bg-transparent border-none cursor-pointer w-7 h-7"
-          onClick={onBurgerClick}
-        >
-          <img src={menuLine} alt="menu" className="w-7 h-7" />
-        </button>
+<button
+  className=" bg-transparent border-none cursor-pointer w-7 h-7"
+  onClick={() => {
+    if (!user) {
+      setShowLoginModal(true);
+    } else {
+      onBurgerClick();
+    }
+  }}
+>
+  <img src={menuLine} alt="menu" className="w-7 h-7" />
+</button>
       </div>
       {showLoginModal && (
   <div

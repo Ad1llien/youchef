@@ -6,7 +6,7 @@ function MainNav({ activeTab, setActiveTab }) {
   ];
 
   return (
-    <div className="relative grid grid-cols-2 justify-items-center gap-x-8 gap-y-3 sm:flex sm:justify-center sm:gap-8">
+    <div className="main-nav-tabs relative grid grid-cols-2 justify-items-center gap-x-8 gap-y-3 sm:flex sm:justify-center sm:gap-8">
       {tabs.map((tab) => (
         <button
           key={tab.id}

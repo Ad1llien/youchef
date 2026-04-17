@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import AccountNavigation from "./AccountNavigation";
 import API_BASE_URL from "../config/api";
 import telegram from "../icons/telegram-app.svg";
 import kaspi from "../icons/kaspi.svg";
-import paypal from "../icons/paypal.svg";
 import step1 from "../icons/step1-bot.png";
 import step2 from "../icons/step2-auth.png";
 import step3 from "../icons/step3-buy.png";
 import step4 from "../icons/step4-pay.png";
 import kaspiQr from "../icons/kaspi-qr.jpg";
+import vipCrown from "../icons/crown.svg";
 
 const TG_STEPS = [
   {
     title: "Open Telegram bot",
     desc: "Go to @youchefBot and press START BOT",
-    tip: "If you've already messaged the bot — just move to the next step",
+    tip: "If you've already messaged the bot - just move to the next step",
     step: "Step 1 of 4",
     img: step1,
   },
@@ -29,14 +29,14 @@ const TG_STEPS = [
   },
   {
     title: "Buy Premium with Stars",
-    desc: "Tap «Buy Premium — 100 Stars» in the bot menu",
+    desc: "Tap Buy Premium - 100 Stars in the bot menu",
     tip: "100 Stars = KZT 989. You can buy Stars directly in Telegram",
     step: "Step 3 of 4",
     img: step3,
   },
   {
     title: "Card payment",
-    desc: "Telegram will show a checkout — choose a payment method and confirm",
+    desc: "Telegram will show a checkout - choose a payment method and confirm",
     tip: "Premium will be activated automatically after payment",
     step: "Step 4 of 4",
     img: step4,
@@ -45,20 +45,36 @@ const TG_STEPS = [
 
 const KASPI_STEPS = [
   "Open the Kaspi app on your phone",
-  "Tap «Payments» → «Scan QR»",
+  "Tap Payments - Scan QR",
   "Scan the code and confirm payment of 1500 KZT",
-  "Message us via Contact — we will activate Premium manually",
+  "Message us via Contact - we will activate Premium manually",
 ];
 
-function BuyPremium({ tgUser }) {
+function BuyPremium() {
   const navigate = useNavigate();
   const userContext = useUser();
   const user = userContext?.user ?? null;
+
+  const [freshUser, setFreshUser] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showTgModal, setShowTgModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [showKaspiModal, setShowKaspiModal] = useState(false);
   const [tgStep, setTgStep] = useState(0);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/user/data`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setFreshUser(data.userData);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  const isPremium = freshUser?.premium;
 
   const handleLogout = async () => {
     try {
@@ -89,11 +105,37 @@ function BuyPremium({ tgUser }) {
         />
 
         <div className="w-full min-w-0 md:flex-1">
-          <div style={{ marginBottom: "8px", color: "#242D96", fontSize: "18px" }}>
-            Status: {user?.premium ? "💎 Premium active" : "🔒 Free"}
+
+          {/* Status badge */}
+          <div className="flex items-center gap-3 mb-6">
+            <img
+              src={vipCrown}
+              className="w-6 h-6"
+              style={{
+                filter: isPremium
+                  ? "invert(74%) sepia(98%) saturate(400%) hue-rotate(0deg) brightness(105%)"
+                  : "grayscale(1) opacity(0.4)",
+              }}
+              alt=""
+            />
+            <div style={{ color: "#242D96", fontSize: "18px" }}>Status:</div>
+            <div
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "3px 12px",
+                borderRadius: "20px",
+                background: isPremium ? "#FFF3CC" : "#F0F0F0",
+                color: isPremium ? "#B8860B" : "#888",
+                border: `1px solid ${isPremium ? "#FFD700" : "#ddd"}`,
+              }}
+            >
+              {isPremium ? "Premium" : "Free"}
+            </div>
           </div>
+
           <div style={{ marginBottom: "24px", color: "#666", fontSize: "14px" }}>
-            Выберите способ оплаты:
+            Choose payment method:
           </div>
 
           <div className="flex flex-col gap-3 max-w-[360px]">
@@ -104,7 +146,7 @@ function BuyPremium({ tgUser }) {
               <img src={telegram} alt="Telegram" className="w-8 h-8 object-contain" />
               <div className="text-left">
                 <div className="text-[#242D96] font-semibold text-[16px]">Telegram Stars</div>
-                <div className="text-gray-400 text-[13px]"> Pay using Telegram</div>
+                <div className="text-gray-400 text-[13px]">Pay using Telegram</div>
               </div>
             </button>
 
@@ -115,15 +157,7 @@ function BuyPremium({ tgUser }) {
               <img src={kaspi} alt="Kaspi" className="w-8 h-8 object-contain" />
               <div className="text-left">
                 <div className="text-[#242D96] font-semibold text-[16px]">Kaspi QR</div>
-                <div className="text-gray-400 text-[13px]">pay using Kaspi QR</div>
-              </div>
-            </button>
-
-            <button className="flex items-center gap-4 px-5 py-4 border border-[#BBC8D8] rounded-2xl bg-white hover:border-[#242D96] transition cursor-pointer">
-              <img src={paypal} alt="PayPal" className="w-8 h-8 object-contain" />
-              <div className="text-left">
-                <div className="text-[#242D96] font-semibold text-[16px]">PayPal</div>
-                <div className="text-gray-400 text-[13px]">Pay using PayPal</div>
+                <div className="text-gray-400 text-[13px]">Pay using Kaspi QR</div>
               </div>
             </button>
           </div>
@@ -202,7 +236,7 @@ function BuyPremium({ tgUser }) {
 
             <div className="px-6 py-5">
               <div className="bg-[#E6F1FB] rounded-xl p-3 flex gap-2.5 items-start mb-5">
-                <span className="text-[#185FA5] text-sm mt-0.5">ℹ</span>
+                <span className="text-[#185FA5] text-sm mt-0.5">i</span>
                 <p className="text-[13px] text-[#0C447C] leading-relaxed m-0">
                   {TG_STEPS[tgStep].tip}
                 </p>
@@ -213,7 +247,7 @@ function BuyPremium({ tgUser }) {
                     onClick={() => setTgStep(tgStep - 1)}
                     className="flex-1 py-2.5 rounded-full border border-[#BBC8D8] bg-transparent text-gray-500 text-sm cursor-pointer"
                   >
-                    Назад
+                    Back
                   </button>
                 )}
                 {tgStep < TG_STEPS.length - 1 ? (
@@ -221,14 +255,14 @@ function BuyPremium({ tgUser }) {
                     onClick={() => setTgStep(tgStep + 1)}
                     className="flex-1 py-2.5 rounded-full bg-[#242D96] text-white text-sm font-medium border-none cursor-pointer"
                   >
-                    Далее →
+                    Next
                   </button>
                 ) : (
                   <button
                     onClick={() => setShowExitModal(true)}
                     className="flex-1 py-2.5 rounded-full bg-[#242D96] text-white text-sm font-medium border-none cursor-pointer"
                   >
-                    Открыть бота →
+                    Open bot
                   </button>
                 )}
               </div>
@@ -254,16 +288,16 @@ function BuyPremium({ tgUser }) {
                 <line x1="10" y1="14" x2="21" y2="3"/>
               </svg>
             </div>
-            <h3 className="text-[16px] font-semibold text-[#13151A] mb-2">Переход на внешний ресурс</h3>
+            <h3 className="text-[16px] font-semibold text-[#13151A] mb-2">Leaving YouChef</h3>
             <p className="text-[13px] text-gray-500 mb-6 leading-relaxed">
-              Вы покидаете YouChef и переходите в Telegram. После оплаты вернитесь на сайт и обновите страницу.
+              You are leaving YouChef and opening Telegram. After payment return to the site and refresh the page.
             </p>
             <div className="flex gap-2.5">
               <button
                 onClick={() => setShowExitModal(false)}
                 className="flex-1 py-2.5 rounded-full border border-[#BBC8D8] bg-transparent text-gray-500 text-sm cursor-pointer"
               >
-                Отмена
+                Cancel
               </button>
               <button
                 onClick={() => {
@@ -274,7 +308,7 @@ function BuyPremium({ tgUser }) {
                 }}
                 className="flex-1 py-2.5 rounded-full bg-[#242D96] text-white text-sm font-medium border-none cursor-pointer"
               >
-                Перейти →
+                Open Telegram
               </button>
             </div>
           </div>
@@ -291,7 +325,6 @@ function BuyPremium({ tgUser }) {
             className="bg-white rounded-2xl w-full max-w-[420px] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Хедер — компактный как TG */}
             <div className="px-6 pt-6 pb-5 text-center" style={{ background: "#F14635" }}>
               <p className="text-[11px] font-medium text-white/60 tracking-widest uppercase mb-2">
                 Kaspi QR
@@ -304,7 +337,6 @@ function BuyPremium({ tgUser }) {
               </p>
             </div>
 
-            {/* QR код — такой же блок как картинка в TG */}
             <div style={{ position: "relative", background: "#fff5f4", height: "220px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <img
                 src={kaspiQr}
@@ -316,7 +348,6 @@ function BuyPremium({ tgUser }) {
               <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "40px", zIndex: 2, background: "linear-gradient(to top, #fff5f4, transparent)" }} />
             </div>
 
-            {/* Body — такой же как TG */}
             <div className="px-6 py-5">
               <div className="flex flex-col gap-2.5 mb-4">
                 {KASPI_STEPS.map((s, i) => (
@@ -333,9 +364,9 @@ function BuyPremium({ tgUser }) {
               </div>
 
               <div className="rounded-xl p-3 flex gap-2.5 items-start mb-5" style={{ background: "#FFF0EE" }}>
-                <span className="text-sm mt-0.5" style={{ color: "#F14635" }}>ℹ</span>
+                <span className="text-sm mt-0.5" style={{ color: "#F14635" }}>i</span>
                 <p className="text-[13px] leading-relaxed m-0" style={{ color: "#C0392B" }}>
-                  After payment write an email to <strong>youchef@gmail.com</strong> and attach a file with payment.
+                  After payment write an email to <strong>youchef@gmail.com</strong> and attach a screenshot of the payment.
                 </p>
               </div>
 
@@ -344,7 +375,7 @@ function BuyPremium({ tgUser }) {
                 className="w-full py-2.5 rounded-full text-white text-sm font-medium border-none cursor-pointer"
                 style={{ background: "#F14635" }}
               >
-                Закрыть
+                Close
               </button>
             </div>
           </div>

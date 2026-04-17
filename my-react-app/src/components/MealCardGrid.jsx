@@ -2,9 +2,9 @@ import MealCard from "./MealCard.jsx";
 
 const GRID_VARIANTS = {
   popular:
-    "grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 sm:justify-start sm:gap-x-12 sm:gap-y-[48px]",
+    "meal-cards-grid grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 sm:justify-start sm:gap-x-12 sm:gap-y-[48px]",
   mainRecipe:
-    "grid grid-cols-2 justify-start gap-4 sm:grid-cols-3 sm:gap-x-12 sm:gap-y-[48px] sm:max-w-[684px]",
+    "meal-cards-grid grid grid-cols-2 justify-start gap-4 sm:grid-cols-3 sm:gap-x-12 sm:gap-y-[48px] sm:max-w-[684px]",
 };
 
 function MealCardGrid({

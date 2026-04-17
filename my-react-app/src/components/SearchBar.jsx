@@ -140,7 +140,7 @@ function SearchBar({
       >
         <div className="relative">
           <input
-            className="h-10 w-full box-border rounded-[30px] border border-[#ccc] bg-white pl-4 pr-11 text-[16px] text-[#242D96] outline-none sm:pl-5"
+            className="search-bar-input h-10 w-full box-border rounded-[30px] border border-[#ccc] bg-white pl-4 pr-11 text-[16px] text-[#242D96] outline-none sm:pl-5"
             placeholder={
               mode === "ingredients" ? "Search ingredient..." : "Search meal..."
             }
