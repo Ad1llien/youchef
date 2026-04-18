@@ -82,7 +82,7 @@ function Header({ onBurgerClick }) {
 
       <nav className="hidden sm:flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center">
 
-        <div className="cursor-pointer" onClick={() => navigate("/")}>Recipes</div>
+        <div className="cursor-pointer" onClick={() => navigate("/MealPlanner")}>youCart</div>
         <div className=" premium-nav-link cursor-pointer" onClick={() => {
   if (!user) {
     setShowLoginModal(true);

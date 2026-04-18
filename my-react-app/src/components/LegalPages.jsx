@@ -80,7 +80,7 @@ const CONTENT = {
       {
         num: "11",
         title: "Contact",
-        body: "For questions about these Terms, contact us at: youchef@gmail.com",
+        body: "For questions about these Terms, contact us at: youchef.app@gmail.com",
       },
     ],
   },
@@ -158,7 +158,7 @@ const CONTENT = {
       {
         num: "12",
         title: "Contact",
-        body: "For privacy-related questions, contact us at: youchef@gmail.com",
+        body: "For privacy-related questions, contact us at: youchef.app@gmail.com",
       },
     ],
   },
@@ -179,7 +179,7 @@ const CONTENT = {
       {
         num: "03",
         title: "How to Request a Refund",
-        body: "To request a refund, contact us at youchef@gmail.com with your account email, date of purchase, reason for the refund request, and transaction ID or receipt. We will respond within 3 business days.",
+        body: "To request a refund, contact us at youchef.app@gmail.com with your account email, date of purchase, reason for the refund request, and transaction ID or receipt. We will respond within 3 business days.",
       },
       {
         num: "04",
@@ -213,7 +213,7 @@ const CONTENT = {
       {
         num: "08",
         title: "Contact",
-        body: "For refund requests or questions, contact us at: youchef@gmail.com",
+        body: "For refund requests or questions, contact us at: youchef.app@gmail.com",
       },
     ],
   },

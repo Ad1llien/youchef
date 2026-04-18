@@ -32,11 +32,11 @@ function HelpCenter() {
       },
       {
         question: "I paid via Kaspi but Premium is not activated.",
-        answer: "Kaspi payments are activated manually. Please send us a payment screenshot via the Contact page or email youchef@gmail.com. We will activate your Premium within a few hours.",
+        answer: "Kaspi payments are activated manually. Please send us a payment screenshot via the Contact page or email youchef.app@gmail.com. We will activate your Premium within a few hours.",
       },
       {
         question: "How do I cancel or get a refund?",
-        answer: "We offer a full refund within 7 days of purchase if you have not extensively used Premium features. Contact us at youchef@gmail.com with your transaction details.",
+        answer: "We offer a full refund within 7 days of purchase if you have not extensively used Premium features. Contact us at youchef.app@gmail.com with your transaction details.",
       },
       {
         question: "How do I change my password?",

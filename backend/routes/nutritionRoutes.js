@@ -22,20 +22,27 @@ router.post("/:id", userAuth, async (req, res) => {
 
   try {
     const FREE_KBJU_LIMIT = 10;
-    let currentUser = await User.findById(req.user._id).select("premium freeKbjuViewsUsed");
+
+    let currentUser = await User.findById(req.user._id).select(
+      "premium freeKbjuViewsUsed viewedMeals"
+    );
 
     if (!currentUser) {
       return res.status(401).json({ success: false, message: "User not found" });
     }
 
-    // 1️⃣ Сначала проверяем кэш
+    // Проверяем видел ли этот пользователь это блюдо раньше
+    const alreadyViewed = currentUser.viewedMeals?.includes(mealId);
+
+    // Читаем кэш КБЖУ (общий для всех)
     const cacheData = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
     const cached = cacheData[mealId];
 
-    // 2️⃣ Если блюдо в кэше — возвращаем без инкремента
-    if (cached) {
+    // Если блюдо уже было просмотрено этим пользователем — возвращаем без инкремента
+    if (alreadyViewed) {
+      const nutrition = cached || { calories: 0, protein: 0, fat: 0, carbs: 0 };
       return res.json({
-        ...cached,
+        ...nutrition,
         premium: currentUser.premium,
         freeKbjuViewsUsed: currentUser.freeKbjuViewsUsed,
         freeKbjuLimit: FREE_KBJU_LIMIT,
@@ -43,7 +50,7 @@ router.post("/:id", userAuth, async (req, res) => {
       });
     }
 
-    // 3️⃣ Проверяем лимит только если блюда НЕТ в кэше
+    // Блюдо новое для этого пользователя — проверяем лимит
     if (!currentUser.premium && currentUser.freeKbjuViewsUsed >= FREE_KBJU_LIMIT) {
       return res.status(403).json({
         success: false,
@@ -55,16 +62,35 @@ router.post("/:id", userAuth, async (req, res) => {
       });
     }
 
-    // 4️⃣ Инкрементируем счётчик только для новых блюд
+    // Инкрементируем счётчик и добавляем блюдо в viewedMeals
     if (!currentUser.premium) {
       currentUser = await User.findByIdAndUpdate(
         req.user._id,
-        { $inc: { freeKbjuViewsUsed: 1 } },
-        { new: true, select: "premium freeKbjuViewsUsed" }
+        {
+          $inc: { freeKbjuViewsUsed: 1 },
+          $addToSet: { viewedMeals: mealId }, // addToSet — не дублирует
+        },
+        { new: true, select: "premium freeKbjuViewsUsed viewedMeals" }
       );
+    } else {
+      // Для премиум тоже добавляем в viewedMeals (без инкремента счётчика)
+      await User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { viewedMeals: mealId },
+      });
     }
 
-    // 5️⃣ Запрос к OpenAI с улучшенным промптом
+    // Если КБЖУ уже в кэше — возвращаем из кэша
+    if (cached) {
+      return res.json({
+        ...cached,
+        premium: currentUser.premium,
+        freeKbjuViewsUsed: currentUser.freeKbjuViewsUsed,
+        freeKbjuLimit: FREE_KBJU_LIMIT,
+        remainingViews: Math.max(0, FREE_KBJU_LIMIT - currentUser.freeKbjuViewsUsed),
+      });
+    }
+
+    // КБЖУ нет в кэше — запрашиваем у OpenAI
     let nutrition = { calories: 0, protein: 0, fat: 0, carbs: 0 };
 
     try {
@@ -106,7 +132,7 @@ Return ONLY this JSON with no extra text, no markdown, no explanation:
       const clean = raw.replace(/```json|```/g, "").trim();
       nutrition = JSON.parse(clean);
 
-      // Санитизация — не допускаем абсурдных значений
+      // Санитизация
       nutrition.calories = Math.min(Math.max(Math.round(nutrition.calories), 50), 1500);
       nutrition.protein = Math.min(Math.max(Math.round(nutrition.protein), 1), 150);
       nutrition.fat = Math.min(Math.max(Math.round(nutrition.fat), 1), 100);
@@ -116,7 +142,7 @@ Return ONLY this JSON with no extra text, no markdown, no explanation:
       console.warn("[Nutrition] OpenAI request failed:", openAiErr.message);
     }
 
-    // 6️⃣ Сохраняем в кэш
+    // Сохраняем в общий кэш
     cacheData[mealId] = nutrition;
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cacheData, null, 2), "utf-8");
 

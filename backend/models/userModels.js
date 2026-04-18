@@ -7,13 +7,14 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["user", "admin"], default: "user" },
   premium: { type: Boolean, default: false },
   freeKbjuViewsUsed: { type: Number, default: 0 },
+  viewedMeals: { type: [String], default: [] }, // ID блюд которые уже видел пользователь
   telegramId: { type: String, unique: true, sparse: true },
   verifyOtp: { type: String, default: "" },
   verifyOtpExpireAt: { type: Number, default: 0 },
   isAccountVerified: { type: Boolean, default: false },
   resetOtp: { type: String, default: "" },
   resetOtpExpireAt: { type: Number, default: 0 },
-  avatar: {type: String,default: ""},
+  avatar: { type: String, default: "" },
   verifyToken: { type: String, default: "" },
   verifyTokenExpireAt: { type: Number, default: 0 },
 });
