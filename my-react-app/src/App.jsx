@@ -89,6 +89,16 @@ function App() {
                 type="button"
                 className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers"
                 onClick={() => {
+                  navigate("/MealPlanner");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                youCart
+              </button>
+              <button
+                type="button"
+                className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers"
+                onClick={() => {
                   navigate("/");
                   setMobileMenuOpen(false);
                 }}
