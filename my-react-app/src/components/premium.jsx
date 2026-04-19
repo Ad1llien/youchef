@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import AccountNavigation from "./AccountNavigation";
-import API_BASE_URL from "../config/api";
 import telegram from "../icons/telegram-app.svg";
 import kaspi from "../icons/kaspi.svg";
 import step1 from "../icons/step1-bot.png";
@@ -11,6 +10,7 @@ import step3 from "../icons/step3-buy.png";
 import step4 from "../icons/step4-pay.png";
 import kaspiQr from "../icons/kaspi-qr.jpg";
 import vipCrown from "../icons/crown.svg";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 const TG_STEPS = [
   {
@@ -63,9 +63,8 @@ function BuyPremium() {
   const [tgStep, setTgStep] = useState(0);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -78,9 +77,8 @@ function BuyPremium() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      await apiFetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include",
       });
       navigate("/login");
     } catch (err) {

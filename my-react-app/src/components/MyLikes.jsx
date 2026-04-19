@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MealCardGrid from "./MealCardGrid.jsx"; // карточки блюд
 import Pagination from "./Pagination.jsx"; // твой компонент Pagination
-import API_BASE_URL from "../config/api";
 import AccountNavigation from "./AccountNavigation";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function MyLikes() {
   const navigate = useNavigate();
@@ -17,9 +17,8 @@ function MyLikes() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      await apiFetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include",
       });
       navigate("/login");
     } catch (error) {

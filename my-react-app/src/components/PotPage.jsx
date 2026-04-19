@@ -4,8 +4,8 @@ import Line from "../icons/Line36.svg";
 import pot from "../icons/openPot.svg";
 import deleteIcon from "../icons/deleteIcon.svg";
 import backIcon from "../icons/back.svg";
-import API_BASE_URL from "../config/api";
 import { useState, useEffect } from "react";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function PotPage({ checkPot = [], setCheckPot = () => {} }) {
   
@@ -29,9 +29,8 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
     setCheckPot((prev) => prev.filter((i) => i !== item));
   };
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then(res => res.json())
       .then(data => {

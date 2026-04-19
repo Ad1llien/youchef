@@ -4,7 +4,7 @@ import searchIcon from "../icons/search-2-line.svg";
 import hybridMeals from "../mealsDB.json";
 import ingredientsData from "../../classified_ingredients.json";
 import { mealDictionary } from "../../../backend/backend/utils/mealDictionary.js";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function SearchBar({
   mode = "meals",
@@ -26,7 +26,7 @@ function SearchBar({
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/translate`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/translate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),

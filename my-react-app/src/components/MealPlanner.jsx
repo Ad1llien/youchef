@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import hybridMeals from "../mealsDB.json";
 import searchIcon from "../icons/search-2-line.svg";
 import Pagination from "./Pagination.jsx";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 const MEALS_PER_PAGE = 15;
 const CATEGORIES = [
@@ -186,11 +187,10 @@ function MealPlanner() {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 12000);
-        const res = await fetch(server, {
+        const res = await apiFetch(server, {
           method: "POST",
           body: query,
           signal: controller.signal,
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         });
         clearTimeout(timeoutId);
         if (!res.ok) continue;

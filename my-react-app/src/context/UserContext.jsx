@@ -1,7 +1,6 @@
 // src/context/UserContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import API_BASE_URL from "../config/api";
-
+import API_BASE_URL, { apiFetch } from "../config/api";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -9,8 +8,7 @@ export const UserProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/user/data`, {
-        credentials: "include",
+      const res = await apiFetch(`${API_BASE_URL}/api/user/data`, {
       });
       const data = await res.json();
       if (data.success) {

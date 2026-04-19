@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ toast, onClose }) {
@@ -106,9 +106,8 @@ function SetNewPasswordPage() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/reset-password`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword }),
       });
       const data = await res.json();

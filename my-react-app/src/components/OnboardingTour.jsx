@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 const TOUR_KEY = "youchef_tour_done";
 
@@ -62,9 +62,8 @@ function OnboardingTour() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {

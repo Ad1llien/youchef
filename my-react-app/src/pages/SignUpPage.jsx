@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ toast, onClose }) {
@@ -91,10 +91,8 @@ const SignUpPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 

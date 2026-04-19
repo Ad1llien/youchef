@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL, { API_ORIGIN } from "../config/api";
-import AccountNavigation from "./AccountNavigation";
+import API_BASE_URL, { API_ORIGIN, apiFetch } from "../config/api";import AccountNavigation from "./AccountNavigation";
 import AccountProfileSection from "./AccountProfileSection";
 
 function MyAccount() {
@@ -11,9 +10,8 @@ function MyAccount() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -37,9 +35,8 @@ function MyAccount() {
     formData.append("avatar", file);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/user/avatar`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/user/avatar`, {
         method: "POST",
-        credentials: "include",
         body: formData,
       });
 
@@ -55,9 +52,8 @@ function MyAccount() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      await apiFetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
-        credentials: "include",
       });
 
       navigate("/login");

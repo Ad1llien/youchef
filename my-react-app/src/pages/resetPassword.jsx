@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Toast({ toast, onClose }) {
   useEffect(() => {
@@ -63,9 +63,8 @@ function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/send-reset-otp`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/send-reset-otp`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 

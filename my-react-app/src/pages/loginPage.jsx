@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import logo from "../logos/logo.svg";
 import { Link } from "react-router-dom";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 // ─── Toast notification ───────────────────────────────────────────────────────
 function Toast({ toast, onClose }) {
@@ -71,11 +71,9 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        credentials: "include",
       });
 
       const data = await res.json();

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import hybridMeals from "../mealsDB.json"
 import "../styles/mainRecipe.css";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 import halalLogo from "../icons/hugeicons_halal.svg";
 import veganLogo from "../icons/lucide_vegan.svg";
@@ -10,7 +11,6 @@ import arrowDown from "../icons/arrow-down-s-line.svg";
 import CategoryFilter from "./CategoryFilter.jsx";
 import MealCardGrid from "./MealCardGrid.jsx";
 import Pagination from "./Pagination.jsx";
-import API_BASE_URL from "../config/api";
 import AIAssistant from "./AIAssistant";
 
 function MainRecipeContent() {
@@ -34,9 +34,8 @@ function MainRecipeContent() {
   const [userLoading, setUserLoading] = useState(true);
 
 useEffect(() => {
-  fetch(`${API_BASE_URL}/api/user/data`, {
+  apiFetch(`${API_BASE_URL}/api/user/data`, {
     method: "GET",
-    credentials: "include",
   })
     .then(res => res.json())
     .then(data => {

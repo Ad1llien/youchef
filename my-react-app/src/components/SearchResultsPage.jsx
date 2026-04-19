@@ -4,6 +4,8 @@ import "../styles/searchResults.css";
 import lineSVG from "../icons/Line36.svg";
 import backIcon from "../icons/back.svg";
 import hybridMeals from "../mealsDB.json"; // путь поправь под свой проект
+import API_BASE_URL, { apiFetch } from "../config/api";
+
 function SearchResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();

@@ -9,8 +9,8 @@ import line from '../icons/Line36.svg';
 import Calculator from '../icons/Group135.svg';
 import warn from '../icons/information-fill.svg';
 import hybridMeals from "../mealsDB.json";
-import API_BASE_URL from "../config/api";
 import { useUser } from "../context/UserContext";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 // ─── PDF Download ─────────────────────────────────────────────────────────────
 function downloadMealAsPDF(meal, ingredients, nutrition) {
@@ -239,9 +239,8 @@ function MealPage() {
   }, [id]);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then(res => res.json())
       .then(data => {
@@ -273,10 +272,8 @@ function MealPage() {
     const fetchNutrition = async () => {
       setNutritionLoading(true);
       try {
-        const res = await fetch(`${API_BASE_URL}/api/nutrition/${meal.idMeal}`, {
+        const res = await apiFetch(`${API_BASE_URL}/api/nutrition/${meal.idMeal}`, {
           method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ingredients,
             mealName: meal.strMeal,

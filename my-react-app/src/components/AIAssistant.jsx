@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import API_BASE_URL from "../config/api";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 // ─── PDF Download ────────────────────────────────────────────────────────────
 function downloadPlanAsPDF(planData) {
@@ -406,7 +406,7 @@ function AIAssistant() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, { method: "GET", credentials: "include" })
+    apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET"})
       .then(res => res.json())
       .then(data => { if (data.success) setUser(data.userData); })
       .catch(err => console.error(err));
@@ -427,10 +427,8 @@ function AIAssistant() {
       const base64 = event.target.result.split(",")[1];
       const mediaType = file.type;
       try {
-        const res = await fetch(`${API_BASE_URL}/api/ai/analyze-food`, {
+        const res = await apiFetch(`${API_BASE_URL}/api/ai/analyze-food`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
           body: JSON.stringify({ imageBase64: base64, mediaType }),
         });
         const data = await res.json();
@@ -469,10 +467,9 @@ function AIAssistant() {
     setLoading(true);
     setResult(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/ai/meal-plan`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/ai/meal-plan`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        
         body: JSON.stringify({ preferences: trimmed }),
       });
       const data = await res.json();

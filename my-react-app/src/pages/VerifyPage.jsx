@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Toast({ toast, onClose }) {
   useEffect(() => {
@@ -111,9 +111,8 @@ const VerifyPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/verify-Account`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/verify-Account`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, otp }),
       });
 

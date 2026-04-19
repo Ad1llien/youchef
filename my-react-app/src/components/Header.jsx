@@ -7,7 +7,7 @@ import vipCrown from "../icons/crown.svg"
 import qaa from "../icons/question-line.svg"
 import guide from "../icons/news-line.svg"
 import menuLine from "../icons/menu-line.svg";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Header({ onBurgerClick }) {
 
@@ -59,9 +59,8 @@ function Header({ onBurgerClick }) {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {

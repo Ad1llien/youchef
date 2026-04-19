@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Toast({ toast, onClose }) {
   useEffect(() => {
@@ -110,9 +110,8 @@ function VerifyCodePage() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/verify-reset-otp`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/verify-reset-otp`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
       });
       const data = await res.json();

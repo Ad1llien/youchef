@@ -5,9 +5,9 @@ import mealPhoto from "../icons/BAU.svg";
 import CategoryFilter from "./CategoryFilter.jsx";
 import MealCardGrid from "./MealCardGrid.jsx";
 import Pagination from "./Pagination.jsx";
-import API_BASE_URL from "../config/api";
 import AIAssistant from "./AIAssistant";
 import OnboardingTour from "./OnboardingTour";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 const STORAGE_KEY = "popularMealFilter";
 const MEALS_PER_PAGE = 6;
@@ -24,9 +24,8 @@ function PopularMealContent() {
 
   // 🔹 Загрузка при открытии страницы
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, {
+    apiFetch(`${API_BASE_URL}/api/user/data`, {
       method: "GET",
-      credentials: "include",
     })
       .then(res => res.json())
       .then(data => {

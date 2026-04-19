@@ -6,7 +6,7 @@ import telegramIcon from "../icons/telegram.svg";
 import tiktokIcon from "../icons/tik-tok.svg";
 import youtubeIcon from "../icons/youtube.svg";
 import "../styles/contact.css";
-import API_BASE_URL from "../config/api";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Contact() {
   const [fullName, setFullName] = useState("");
@@ -23,9 +23,8 @@ function Contact() {
     }
   
     try {
-      const res = await fetch(`${API_BASE_URL}/api/contact`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, email, message }),
       });
   

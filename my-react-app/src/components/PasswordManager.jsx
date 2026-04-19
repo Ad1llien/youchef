@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../config/api";
 import AccountNavigation from "./AccountNavigation";
+import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Toast({ toast, onClose }) {
   useEffect(() => {
@@ -61,7 +61,7 @@ function PasswordManager() {
   const showToast = (message, type = "error") => setToast({ message, type });
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/user/data`, { method: "GET", credentials: "include" })
+    apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET"})
       .then(res => res.json())
       .then(data => { if (data.success) setUser(data.userData); })
       .catch(err => console.error(err));
@@ -69,7 +69,7 @@ function PasswordManager() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST", credentials: "include" });
+      await apiFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" });
       navigate("/login");
     } catch (err) { console.error(err); }
   };
@@ -88,10 +88,9 @@ function PasswordManager() {
     if (password !== confirmPassword) { showToast("Passwords do not match."); return; }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
+      const res = await apiFetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        
         body: JSON.stringify({ oldPassword, newPassword: password }),
       });
       const data = await res.json();
