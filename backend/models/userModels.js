@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["user", "admin"], default: "user" },
   premium: { type: Boolean, default: false },
   freeKbjuViewsUsed: { type: Number, default: 0 },
-  viewedMeals: { type: [String], default: [] }, // ID блюд которые уже видел пользователь
+  viewedMeals: { type: [String], default: [] },
   telegramId: { type: String, unique: true, sparse: true },
   verifyOtp: { type: String, default: "" },
   verifyOtpExpireAt: { type: Number, default: 0 },
@@ -17,6 +17,29 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String, default: "" },
   verifyToken: { type: String, default: "" },
   verifyTokenExpireAt: { type: Number, default: 0 },
+
+  // AI запросы — последние 20
+  aiHistory: {
+    type: [{
+      type: { type: String, enum: ["plan", "photo"], default: "plan" },
+      query: { type: String, default: "" },       // текст запроса или название блюда
+      result: { type: mongoose.Schema.Types.Mixed }, // весь план или КБЖУ
+      createdAt: { type: Date, default: Date.now },
+    }],
+    default: [],
+  },
+
+  // История просмотров блюд — последние 10
+  mealHistory: {
+    type: [{
+      idMeal: { type: String, required: true },
+      strMeal: { type: String, default: "" },
+      strMealThumb: { type: String, default: "" },
+      strCategory: { type: String, default: "" },
+      viewedAt: { type: Date, default: Date.now },
+    }],
+    default: [],
+  },
 });
 
 const userModel = mongoose.models.user || mongoose.model("user", userSchema);

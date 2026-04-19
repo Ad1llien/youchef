@@ -148,6 +148,8 @@ function PasswordManager() {
           onOpenPasswordManager={() => navigate("/password-manager")}
           onOpenLikes={() => navigate("/my-likes")}
           onLogout={() => setShowLogoutModal(true)}
+          onHistory={() => navigate("/history")}
+
         />
 
         <div className="w-full md:flex-1">

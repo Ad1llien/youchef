@@ -1,31 +1,18 @@
-
 function ArrowIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-5 w-5 text-[#242D96]"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#242D96]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
     </svg>
   );
 }
 
-function AccountNavigationItem({
-  label,
-  active = false,
-  showArrow = true,
-  onClick,
-}) {
+// Иконка истории — часы со стрелкой назад
+
+
+function AccountNavigationItem({ label, active = false, showArrow = true, onClick, icon }) {
   const textColor = active ? "text-[#242D96]" : "text-[#343B1B]";
-  const borderColor = active
-    ? "border-[#242D96]"
-    : "border-transparent md:border-[#BBC8D8]";
-  const baseClass =
-    "shrink-0 border-b-2 pb-3 text-left font-['Teachers'] text-[18px] font-semibold leading-normal md:w-full md:pb-6";
+  const borderColor = active ? "border-[#242D96]" : "border-transparent md:border-[#BBC8D8]";
+  const baseClass = "shrink-0 border-b-2 pb-3 text-left font-['Teachers'] text-[18px] font-semibold leading-normal md:w-full md:pb-6";
 
   return (
     <button
@@ -34,7 +21,10 @@ function AccountNavigationItem({
       className={`inline-block appearance-none border-0 ${borderColor} bg-transparent p-0 focus:outline-none md:block ${baseClass} ${textColor}`}
     >
       <div className="flex items-center justify-between">
-        <span className="font-semibold">{label}</span>
+        <span className="flex items-center gap-2 font-semibold">
+          {icon && <span className="hidden md:inline-flex">{icon}</span>}
+          {label}
+        </span>
         {showArrow && (
           <span className="hidden md:inline-flex">
             <ArrowIcon />
@@ -51,6 +41,8 @@ function AccountNavigation({
   onSubscription,
   onOpenPasswordManager,
   onOpenLikes,
+  onHistory,
+  
   onLogout,
 }) {
   return (
@@ -72,6 +64,11 @@ function AccountNavigation({
           onClick={onOpenPasswordManager}
         />
         <AccountNavigationItem
+          label="History"
+          active={activeItem === "history"}
+          onClick={onHistory}
+        />
+        <AccountNavigationItem
           label="Likes"
           active={activeItem === "likes"}
           onClick={onOpenLikes}
@@ -82,7 +79,6 @@ function AccountNavigation({
           onClick={onLogout}
         />
       </div>
-
     </div>
   );
 }

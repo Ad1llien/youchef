@@ -335,6 +335,16 @@ function MealPage() {
         if (localMeal) {
           setMeal(localMeal);
           if (localMeal.strYoutube) setVideoId(localMeal.strYoutube.split("v=")[1]);
+          // ✅ Сохраняем просмотр в историю
+          apiFetch(`${API_BASE_URL}/api/user/history/meal`, {
+            method: "POST",
+            body: JSON.stringify({
+              idMeal: localMeal.idMeal,
+              strMeal: localMeal.strMeal,
+              strMealThumb: localMeal.strMealThumb,
+              strCategory: localMeal.strCategory,
+            }),
+          }).catch(() => {});
           setLoading(false);
           return;
         }
@@ -343,6 +353,17 @@ function MealPage() {
         const currentMeal = mealData.meals?.[0] || null;
         setMeal(currentMeal);
         if (currentMeal?.strYoutube) setVideoId(currentMeal.strYoutube.split("v=")[1]);
+        if (currentMeal) {
+          apiFetch(`${API_BASE_URL}/api/user/history/meal`, {
+            method: "POST",
+            body: JSON.stringify({
+              idMeal: currentMeal.idMeal,
+              strMeal: currentMeal.strMeal,
+              strMealThumb: currentMeal.strMealThumb,
+              strCategory: currentMeal.strCategory,
+            }),
+          }).catch(() => {});
+        }
       } catch (err) {
         console.error(err);
       } finally {

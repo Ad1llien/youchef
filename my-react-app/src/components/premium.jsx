@@ -100,6 +100,8 @@ function BuyPremium() {
           onOpenPasswordManager={() => navigate("/password-manager")}
           onOpenLikes={() => navigate("/my-likes")}
           onLogout={() => setShowLogoutModal(true)}
+          onHistory={() => navigate("/history")}
+
         />
 
         <div className="w-full min-w-0 md:flex-1">

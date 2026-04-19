@@ -32,6 +32,8 @@ import NotFound from "./components/NotFound";
 import OfflineDetector from "./components/OfflineDetector";
 import ErrorBoundary from "./components/ErrorBoundary";
 import MealPlanner from "./components/MealPlanner"
+import HistoryPage from "./components/HistoryPage";
+
 function AppWrapper() {
   return (
     <BrowserRouter>
@@ -200,6 +202,7 @@ function App() {
           <Route path="/privacy" element={<LegalPages />} />
           <Route path="/refund" element={<LegalPages />} />
           <Route path="/MealPlanner" element={<MealPlanner />}></Route>
+          <Route path="/history" element={<HistoryPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
