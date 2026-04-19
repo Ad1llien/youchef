@@ -2,8 +2,54 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
-import checkLine from "../icons/checkbox-circle-fill.svg";
 import API_BASE_URL from "../config/api";
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function Toast({ toast, onClose }) {
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(onClose, 3500);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  if (!toast) return null;
+  const isError = toast.type === "error";
+
+  return (
+    <div style={{
+      position: "fixed", top: 24, left: "50%", transform: "translateX(-50%)",
+      zIndex: 2000, display: "flex", alignItems: "center", gap: 12,
+      background: "white", borderRadius: 14, padding: "14px 20px",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+      border: `1.5px solid ${isError ? "#FFD5D1" : "#C8F2D8"}`,
+      minWidth: 280, maxWidth: 400,
+      animation: "toastIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards",
+    }}>
+      <style>{`
+        @keyframes toastIn {
+          from { opacity: 0; transform: translateX(-50%) translateY(-16px) scale(0.95); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+      `}</style>
+      <div style={{
+        width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
+        background: isError ? "#FFF0EE" : "#E6FAF0",
+        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16,
+      }}>
+        {isError ? "⚠️" : "✓"}
+      </div>
+      <div style={{ flex: 1 }}>
+        <p style={{ margin: 0, fontWeight: 600, fontSize: 14, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>
+          {isError ? "Error" : "Password updated!"}
+        </p>
+        <p style={{ margin: "2px 0 0", fontSize: 13, color: "#788CA5", fontFamily: "Teachers, sans-serif" }}>
+          {toast.message}
+        </p>
+      </div>
+      <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#BBC8D8", fontSize: 18, padding: 0, lineHeight: 1 }}>×</button>
+    </div>
+  );
+}
 
 function SetNewPasswordPage() {
   const location = useLocation();
@@ -13,147 +59,213 @@ function SetNewPasswordPage() {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "error") => setToast({ message, type });
 
   useEffect(() => {
-    if (!email) {
-      navigate("/reset-password");
-    }
+    if (!email) navigate("/reset-password");
   }, [email, navigate]);
 
-  const checkPasswordStrength = (password) => {
+  const checkPasswordStrength = (pw) => {
     let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
     return score;
   };
 
+  const strengthLabel = ["", "Weak", "Fair", "Good", "Strong"][passwordStrength];
+  const strengthColor = ["transparent", "#FF786D", "#ED8B07", "#f0c040", "#029663"][passwordStrength];
+
+  const checks = [
+    { label: "8+ characters", pass: newPassword.length >= 8 },
+    { label: "Uppercase", pass: /[A-Z]/.test(newPassword) },
+    { label: "Number", pass: /[0-9]/.test(newPassword) },
+  ];
+
+  const passwordsMatch = confirmPassword.length > 0 && newPassword === confirmPassword;
+  const passwordsMismatch = confirmPassword.length > 0 && newPassword !== confirmPassword;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
 
     if (passwordStrength < 3) {
-      setMessage("Password is too weak.");
+      showToast("Please use a stronger password.");
       return;
     }
-
     if (newPassword !== confirmPassword) {
-      setMessage("Passwords do not match.");
+      showToast("Passwords do not match.");
       return;
     }
 
     setLoading(true);
-
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword }),
       });
-
       const data = await res.json();
 
       if (data.success) {
-        setMessage("Password updated! Redirecting to login...");
+        showToast("Redirecting to login...", "success");
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        setMessage(data.message);
+        showToast(data.message || "Something went wrong.");
       }
     } catch (error) {
       console.error(error);
-      setMessage("Server error. Try again later.");
+      showToast("Server error. Try again later.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+
+  const EyeIcon = ({ open }) => open ? (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+      <line x1="1" y1="1" x2="23" y2="23"/>
+    </svg>
+  ) : (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  );
 
   return (
     <div className="auth-wrapper">
+      <Toast toast={toast} onClose={() => setToast(null)} />
+
+      <style>{`
+        .yc-input {
+          width: 100%; padding: 11px 14px; border-radius: 10px;
+          border: 1.5px solid #BBC8D8; font-size: 15px;
+          font-family: Teachers, sans-serif; outline: none;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          box-sizing: border-box; background: white; color: #242D96;
+        }
+        .yc-input:focus { border-color: #242D96; box-shadow: 0 0 0 3px rgba(36,45,150,0.08); }
+        .yc-input::placeholder { color: #BBC8D8; }
+        .yc-input.match { border-color: #029663; }
+        .yc-input.mismatch { border-color: #FF786D; }
+        .pw-wrapper { position: relative; }
+        .pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #BBC8D8; padding: 0; display: flex; align-items: center; transition: color 0.15s; }
+        .pw-toggle:hover { color: #242D96; }
+        .submit-btn {
+          width: 100%; padding: 13px; border-radius: 50px;
+          background: #242D96; color: white; border: none;
+          font-size: 15px; font-weight: 600; font-family: Teachers, sans-serif;
+          cursor: pointer; transition: background 0.2s, transform 0.1s;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          margin-top: 4px;
+        }
+        .submit-btn:hover:not(:disabled) { background: #1e2580; }
+        .submit-btn:active:not(:disabled) { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        @keyframes spinBtn { to { transform: rotate(360deg); } }
+        .btn-spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; animation: spinBtn 0.7s linear infinite; flex-shrink: 0; }
+      `}</style>
+
       <div className="auth-card">
         <img src={logo} alt="YouChef Logo" className="main-logo" />
-
         <h2>Set a new password</h2>
         <p className="subtitle">Set a new password for your account</p>
 
         <form onSubmit={handleSubmit} className="p-3">
+
           {/* New Password */}
           <div className="input-group">
             <label>New Password *</label>
-            <div className="input-wrapper">
+            <div className="input-wrapper pw-wrapper">
               <input
-                type="password"
+                className="yc-input"
+                type={showNew ? "text" : "password"}
                 placeholder="Enter new password"
                 value={newPassword}
+                style={{ paddingRight: 42 }}
                 onChange={(e) => {
-                  const value = e.target.value;
-                  setNewPassword(value);
-                  setPasswordStrength(checkPasswordStrength(value));
+                  const v = e.target.value;
+                  setNewPassword(v);
+                  setPasswordStrength(checkPasswordStrength(v));
                 }}
                 required
               />
+              <button type="button" className="pw-toggle" onClick={() => setShowNew(v => !v)}>
+                <EyeIcon open={showNew} />
+              </button>
             </div>
+
+            {/* Strength bar */}
+            {newPassword.length > 0 && (
+              <div style={{ marginTop: 8 }}>
+                <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
+                  {[1,2,3,4].map(i => (
+                    <div key={i} style={{
+                      flex: 1, height: 4, borderRadius: 4,
+                      background: i <= passwordStrength ? strengthColor : "#f0f0f0",
+                      transition: "background 0.3s",
+                    }} />
+                  ))}
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    {checks.map(({ label, pass }) => (
+                      <span key={label} style={{ fontSize: 11, color: pass ? "#029663" : "#BBC8D8", display: "flex", alignItems: "center", gap: 3, fontFamily: "Teachers, sans-serif" }}>
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                          <path d={pass ? "M2 6l3 3 5-5" : "M3 3l6 6M9 3l-6 6"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: strengthColor, fontFamily: "Teachers, sans-serif", flexShrink: 0 }}>
+                    {strengthLabel}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Confirm Password */}
           <div className="input-group">
             <label>Confirm Password *</label>
-            <div className="input-wrapper">
+            <div className="input-wrapper pw-wrapper">
               <input
-                type="password"
+                className={`yc-input ${passwordsMatch ? "match" : passwordsMismatch ? "mismatch" : ""}`}
+                type={showConfirm ? "text" : "password"}
                 placeholder="Confirm new password"
                 value={confirmPassword}
+                style={{ paddingRight: 42 }}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <button type="button" className="pw-toggle" onClick={() => setShowConfirm(v => !v)}>
+                <EyeIcon open={showConfirm} />
+              </button>
             </div>
-          </div>
-          <div className="password-strength">
-            <div
-              className="strength-bar"
-              style={{
-                width: `${passwordStrength * 25}%`,
-                background:
-                  passwordStrength === 1
-                    ? "red"
-                    : passwordStrength === 2
-                      ? "orange"
-                      : passwordStrength === 3
-                        ? "yellow"
-                        : passwordStrength === 4
-                          ? "green"
-                          : "transparent",
-              }}
-            ></div>
+            {passwordsMismatch && (
+              <p style={{ margin: "6px 0 0", fontSize: 12, color: "#FF786D", fontFamily: "Teachers, sans-serif" }}>
+                Passwords do not match
+              </p>
+            )}
+            {passwordsMatch && (
+              <p style={{ margin: "6px 0 0", fontSize: 12, color: "#029663", fontFamily: "Teachers, sans-serif" }}>
+                ✓ Passwords match
+              </p>
+            )}
           </div>
 
-          <div className="passwordStrengthIndicator">
-            <div className="passwS">Password Strength</div>
-            <div>Must contain at least:</div>
-            <div className="try">
-              <img src={checkLine} alt="" />
-              <div>1 uppercase</div>
-            </div>
-            <div className="try">
-              <img src={checkLine} alt="" />
-              <div>1 number</div>
-            </div>
-            <div className="try">
-              <img src={checkLine} alt="" />
-              <div>At least 8 characters</div>
-            </div>
-          </div>
-
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? "Updating..." : "Update password"}
+          <button type="submit" className="submit-btn" disabled={loading || passwordsMismatch}>
+            {loading ? <><span className="btn-spinner" /> Updating...</> : "Update Password"}
           </button>
-
-          {message && (
-            <p style={{ marginTop: "10px", color: "red" }}>{message}</p>
-          )}
         </form>
       </div>
     </div>

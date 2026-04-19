@@ -2,7 +2,10 @@ import User from "../models/userModels.js";
 import RecipeRequest from "../models/recipeRequest.js";
 import { bot, MODERATORS } from "../bot.js";
 import { sendRecipeToModerators } from "../bot.js";
-// Получение данных пользователя
+import fs from "fs";
+import path from "path";
+
+// ─── Получение данных пользователя ───────────────────────────────────────────
 export const getUserData = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -27,15 +30,27 @@ export const getUserData = async (req, res) => {
   }
 };
 
-
-// Загрузка аватара
+// ─── Загрузка аватара ─────────────────────────────────────────────────────────
 export const uploadAvatar = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ success: false, message: "Unauthorized" });
     if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
 
-    const avatarUrl = `/uploads/${req.file.filename}`;
-    await User.findByIdAndUpdate(req.user._id, { avatar: avatarUrl }, { returnDocument: "after" });
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    // Удаляем старый аватар если есть и это не дефолтный
+    if (user.avatar && user.avatar.startsWith("/uploads/")) {
+      const oldPath = path.join("backend", user.avatar);
+      if (fs.existsSync(oldPath)) {
+        try { fs.unlinkSync(oldPath); } catch (e) { console.warn("Could not delete old avatar:", e.message); }
+      }
+    }
+
+    // Путь для хранения в БД
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+
+    await User.findByIdAndUpdate(req.user._id, { avatar: avatarUrl });
 
     res.json({ success: true, avatar: avatarUrl });
   } catch (error) {
@@ -44,12 +59,11 @@ export const uploadAvatar = async (req, res) => {
   }
 };
 
-// Отправка рецепта в Telegram
+// ─── Отправка рецепта в Telegram ─────────────────────────────────────────────
 export const sendRecipeToTelegram = async (req, res) => {
   try {
     const recipeData = req.body;
 
-    // Сохраняем заявку в Mongo
     const newRequest = await RecipeRequest.create({
       ...recipeData,
       ingredients: JSON.parse(recipeData.ingredients || "[]"),
@@ -57,7 +71,6 @@ export const sendRecipeToTelegram = async (req, res) => {
       photo: req.file ? req.file.buffer : null,
     });
 
-    // Отправка модерам через телеграм
     await sendRecipeToModerators(recipeData, req.file);
 
     res.status(200).json({ success: true, message: "Заявка отправлена", id: newRequest._id });

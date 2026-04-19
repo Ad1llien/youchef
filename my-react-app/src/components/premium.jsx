@@ -366,7 +366,7 @@ function BuyPremium() {
               <div className="rounded-xl p-3 flex gap-2.5 items-start mb-5" style={{ background: "#FFF0EE" }}>
                 <span className="text-sm mt-0.5" style={{ color: "#F14635" }}>i</span>
                 <p className="text-[13px] leading-relaxed m-0" style={{ color: "#C0392B" }}>
-                  After payment write an email to <strong>youchef@gmail.com</strong> and attach a screenshot of the payment.
+                  After payment write an email to <strong>youchef.app@gmail.com</strong> and attach a screenshot of the payment.
                 </p>
               </div>
 
