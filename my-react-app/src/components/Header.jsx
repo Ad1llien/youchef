@@ -1,22 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import youChefLogo from "../logos/logo.svg";
-import accountLogo from "../icons/account-circle-line.svg"
-import likes from "../icons/likes.svg"
-import vipCrown from "../icons/crown.svg"
-import qaa from "../icons/question-line.svg"
-import guide from "../icons/news-line.svg"
+import accountLogo from "../icons/account-circle-line.svg";
+import likes from "../icons/likes.svg";
+import vipCrown from "../icons/crown.svg";
+import qaa from "../icons/question-line.svg";
+import guide from "../icons/news-line.svg";
 import menuLine from "../icons/menu-line.svg";
 import API_BASE_URL, { apiFetch } from "../config/api";
 
 function Header({ onBurgerClick }) {
-
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileProfileOpen, setMobileProfileOpen] = useState(false);
+  const [mobileProfileVisible, setMobileProfileVisible] = useState(false);
   const [currentLang, setCurrentLang] = useState("EN");
-
-  // ✅ новый state для languages
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -44,86 +43,69 @@ function Header({ onBurgerClick }) {
     setLangMenuOpen(false);
   };
 
-  // закрытие профиля
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false);
-      }
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) {
-        setLangMenuOpen(false);
-      }
+      if (menuRef.current && !menuRef.current.contains(event.target)) setMenuOpen(false);
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) setLangMenuOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
-    apiFetch(`${API_BASE_URL}/api/user/data`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setUser(data.userData);
-      })
-      .catch((err) => console.error(err));
+    apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET" })
+      .then(res => res.json())
+      .then(data => { if (data.success) setUser(data.userData); })
+      .catch(err => console.error(err));
   }, []);
+
+  // Open mobile profile bottom sheet
+  const openMobileProfile = () => {
+    setMobileProfileOpen(true);
+    setTimeout(() => setMobileProfileVisible(true), 10);
+  };
+
+  const closeMobileProfile = () => {
+    setMobileProfileVisible(false);
+    setTimeout(() => setMobileProfileOpen(false), 350);
+  };
+
+  const handleMobileNav = (path) => {
+    closeMobileProfile();
+    setTimeout(() => navigate(path), 350);
+  };
 
   return (
     <header className="flex justify-between items-center sm:items-end sm:flex-row pt-4 sm:pt-12 px-4 sm:px-[146px] max-w-[1148px] mx-auto bg-[#FFFEEB]">
-   
-      <img 
+
+      <img
         src={youChefLogo}
         alt="YouChef Logo"
         className="youchef-logo w-[110px] h-auto sm:w-[245px] sm:h-[74px] block cursor-pointer"
         onClick={() => navigate("/")}
       />
 
+      {/* ── DESKTOP NAV ── */}
       <nav className="hidden sm:flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center">
-
         <div className="cursor-pointer" onClick={() => navigate("/MealPlanner")}>youCart</div>
-        <div className=" premium-nav-link cursor-pointer" onClick={() => {
-  if (!user) {
-    setShowLoginModal(true);
-  } else {
-    navigate("/premium");
-  }
-}}>Premium</div>
+        <div className="premium-nav-link cursor-pointer" onClick={() => { if (!user) setShowLoginModal(true); else navigate("/premium"); }}>Premium</div>
+        <div className="cursor-pointer" onClick={() => navigate("/contact")}>Contact</div>
 
-        <div
-          className="cursor-pointer"
-          onClick={()=> {navigate("/contact")}}
-        >
-          Contact
-        </div>
-
+        {/* Language */}
         <div className="relative ml-4 text-sm" ref={langMenuRef}>
-          <div
-            onClick={() => setLangMenuOpen((prev) => !prev)}
-            className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium"
-          >
+          <div onClick={() => setLangMenuOpen(prev => !prev)} className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium">
             <span className="text-[20px] leading-none tracking-tight">{currentLang}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                stroke="#242D96"
-                strokeWidth="1.8"
-              />
-              <path d="M3 12H21" stroke="#242D96" strokeWidth="1.8" />
-              <path d="M12 3C14.5 5.7 15.9 8.8 15.9 12C15.9 15.2 14.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8" />
-              <path d="M12 3C9.5 5.7 8.1 8.8 8.1 12C8.1 15.2 9.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8" />
+              <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M3 12H21" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M12 3C14.5 5.7 15.9 8.8 15.9 12C15.9 15.2 14.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M12 3C9.5 5.7 8.1 8.8 8.1 12C8.1 15.2 9.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8"/>
             </svg>
           </div>
-
           {langMenuOpen && (
             <div className="absolute top-full mt-2 w-[60px] flex flex-col bg-white border border-[#BBC8D8] rounded-[8px] shadow-md z-50">
-              {languageOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-[#242D96] text-[20px] text-left border-none bg-transparent"
-                  onClick={() => handleLanguageChange(option)}
-                >
+              {languageOptions.map(option => (
+                <button key={option.value} type="button" className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-[#242D96] text-[20px] text-left border-none bg-transparent" onClick={() => handleLanguageChange(option)}>
                   {option.label}
                 </button>
               ))}
@@ -131,172 +113,162 @@ function Header({ onBurgerClick }) {
           )}
         </div>
 
+        {/* Desktop user menu */}
         {user ? (
-          <div className="relative " ref={menuRef}>
-            <div
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="flex items-center gap-2 text-[#50576B] font-medium bg-white rounded-[30px] border border-[#242D96] w-[128px] px-1 py-1 cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-
+          <div className="relative" ref={menuRef}>
+            <div onClick={() => setMenuOpen(prev => !prev)} className="flex items-center gap-2 text-[#50576B] font-medium bg-white rounded-[30px] border border-[#242D96] w-[128px] px-1 py-1 cursor-pointer">
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">{user.name.charAt(0).toUpperCase()}</div>
               <span className="truncate text-[20px]">{user.name}</span>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 text-[#242D96] ml-auto transition-transform ${
-                  menuOpen ? "rotate-180" : "rotate-0"
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 text-[#242D96] ml-auto transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
-
             {menuOpen && (
-              <div
-                className="absolute top-full mt-2 w-[210px] min-w-[180px] flex flex-col items-start gap-2 p-2 border border-[#BBC8D8] rounded-[5px] bg-white shadow-md z-50"
-              >
+              <div className="absolute top-full mt-2 w-[210px] min-w-[180px] flex flex-col items-start gap-2 p-2 border border-[#BBC8D8] rounded-[5px] bg-white shadow-md z-50">
                 <div className="profile-modal">
                   <div className="relative w-8 h-8">
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">{user.name.charAt(0).toUpperCase()}</div>
                     <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
                   </div>
-
                   <div className="nameWrapper">
                     <div className="name">{user.name}</div>
                     <div className="email">{user.email}</div>
                   </div>
                 </div>
-
-                <hr className="hr" />
-
-                <div className="account-modal">
-                  account
-                </div>
-
-                <div className="modal-logo" onClick={() => {navigate("/my-account")}}>
-                  <img className="accLogo" src={accountLogo} alt="" />
-                  <div>account</div>
-                </div>
-
-                <div className="modal-logo" onClick={()=> {navigate("/my-likes")}}>
-                  <img className="accLogo" src={likes} alt="" />
-                  <div>Favorites</div>
-                </div>
-
-                <div className="modal-logo" onClick={() => navigate("/premium")}>
-  <img className="accLogo" src={vipCrown} alt="" />
-  <div>premium</div>
-  <div className="pr" style={{ color: user?.premium ? "#FFB800" : undefined }}>
-    {user?.premium ? "Premium" : "Free"}
-  </div>
-</div>
                 <hr className="hr"/>
-
-                <div className="account-modal">
-                  support
+                <div className="account-modal">account</div>
+                <div className="modal-logo" onClick={() => { navigate("/my-account"); setMenuOpen(false); }}><img className="accLogo" src={accountLogo} alt=""/><div>account</div></div>
+                <div className="modal-logo" onClick={() => { navigate("/my-likes"); setMenuOpen(false); }}><img className="accLogo" src={likes} alt=""/><div>Favorites</div></div>
+                <div className="modal-logo" onClick={() => { navigate("/premium"); setMenuOpen(false); }}>
+                  <img className="accLogo" src={vipCrown} alt=""/>
+                  <div>premium</div>
+                  <div className="pr" style={{ color: user?.premium ? "#FFB800" : undefined }}>{user?.premium ? "Premium" : "Free"}</div>
                 </div>
-
-                <div className="modal-logo" onClick={()=> {navigate("/help-center")}}>
-                  <img className="accLogo" src={qaa} alt="" />
-                  <div>helpCenter</div>
-                </div>
-
-                <div className="modal-logo" onClick={()=> {navigate("/guide")}}>
-                  <img className="accLogo" src={guide} alt="" />
-                  <div>guides</div>
-                </div>
-
+                <hr className="hr"/>
+                <div className="account-modal">support</div>
+                <div className="modal-logo" onClick={() => { navigate("/help-center"); setMenuOpen(false); }}><img className="accLogo" src={qaa} alt=""/><div>helpCenter</div></div>
+                <div className="modal-logo" onClick={() => { navigate("/guide"); setMenuOpen(false); }}><img className="accLogo" src={guide} alt=""/><div>guides</div></div>
               </div>
             )}
           </div>
         ) : (
-          <button
-            onClick={() => navigate("/login")}
-            className="flex w-32 h-10 py-2.5 px-3 justify-center items-center gap-1 border-none cursor-pointer rounded-full bg-[#242D96] ml-16 text-white font-teachers text-lg font-medium"
-          >
+          <button onClick={() => navigate("/login")} className="flex w-32 h-10 py-2.5 px-3 justify-center items-center gap-1 border-none cursor-pointer rounded-full bg-[#242D96] ml-16 text-white font-teachers text-lg font-medium">
             login
           </button>
         )}
       </nav>
 
+      {/* ── MOBILE RIGHT SIDE ── */}
       <div className="flex sm:hidden gap-3 items-center">
-      {user ? (
-  <div
-    className="text-[#242D96] font-medium cursor-pointer"
-    onClick={() => setMenuOpen(prev => !prev)}
-  >
-    {user.name}
-  </div>
-) : (
-          <button
-            onClick={() => navigate("/login")}
-            className="flex w-[104px] h-10 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[20px] font-medium border-none"
-          >
+        {user ? (
+          <div className="text-[#242D96] font-medium cursor-pointer text-[16px]" onClick={openMobileProfile}>
+            {user.name}
+          </div>
+        ) : (
+          <button onClick={() => navigate("/login")} className="flex w-[104px] h-10 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[20px] font-medium border-none">
             login
           </button>
         )}
+        <button className="bg-transparent border-none cursor-pointer w-7 h-7" onClick={() => { if (!user) setShowLoginModal(true); else onBurgerClick(); }}>
+          <img src={menuLine} alt="menu" className="w-7 h-7"/>
+        </button>
+      </div>
 
-<button
-  className=" bg-transparent border-none cursor-pointer w-7 h-7"
-  onClick={() => {
-    if (!user) {
-      setShowLoginModal(true);
-    } else {
-      onBurgerClick();
-    }
-  }}
->
-  <img src={menuLine} alt="menu" className="w-7 h-7" />
-</button>
-      </div>
+      {/* ── MOBILE PROFILE BOTTOM SHEET ── */}
+      {mobileProfileOpen && (
+        <div
+          className="fixed inset-0 z-[1000] sm:hidden"
+          style={{ background: mobileProfileVisible ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0)", transition: "background 0.35s ease" }}
+          onClick={closeMobileProfile}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              position: "absolute", bottom: 0, left: 0, right: 0,
+              background: "white", borderRadius: "20px 20px 0 0",
+              transform: mobileProfileVisible ? "translateY(0)" : "translateY(100%)",
+              transition: "transform 0.35s cubic-bezier(0.32,0.72,0,1)",
+              paddingBottom: "env(safe-area-inset-bottom, 16px)",
+            }}
+          >
+            {/* Drag handle */}
+            <div style={{ width: 40, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "12px auto 0" }} />
+
+            {/* User info */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "20px 24px 16px" }}>
+              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#242D96", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 20, fontWeight: 600, flexShrink: 0 }}>
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <div style={{ fontWeight: 600, color: "#242D96", fontSize: 16, fontFamily: "Teachers, sans-serif" }}>{user?.name}</div>
+                <div style={{ color: "#788CA5", fontSize: 13, fontFamily: "Teachers, sans-serif" }}>{user?.email}</div>
+              </div>
+              {user?.premium && (
+                <div style={{ marginLeft: "auto", background: "#FFF8E0", borderRadius: 20, padding: "3px 10px", fontSize: 12, color: "#FFB800", fontWeight: 600, fontFamily: "Teachers, sans-serif" }}>
+                  ✦ Premium
+                </div>
+              )}
+            </div>
+
+            <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
+
+            {/* Menu items */}
+            {[
+              { icon: accountLogo, label: "My Account", path: "/my-account" },
+              { icon: likes, label: "Favorites", path: "/my-likes" },
+              { icon: vipCrown, label: "Premium", path: "/premium" },
+            ].map(item => (
+              <div key={item.path} onClick={() => handleMobileNav(item.path)}
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}
+              >
+                <img src={item.icon} alt="" style={{ width: 22, height: 22, opacity: 0.7 }} />
+                <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
+              </div>
+            ))}
+
+            <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
+
+            {[
+              { icon: qaa, label: "Help Center", path: "/help-center" },
+              { icon: guide, label: "Guides", path: "/guide" },
+            ].map(item => (
+              <div key={item.path} onClick={() => handleMobileNav(item.path)}
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}
+              >
+                <img src={item.icon} alt="" style={{ width: 22, height: 22, opacity: 0.7 }} />
+                <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
+              </div>
+            ))}
+
+            <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
+
+            {/* Logout */}
+            <div onClick={() => { closeMobileProfile(); apiFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" }).then(() => navigate("/login")); }}
+              style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF786D" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span style={{ fontSize: 16, color: "#FF786D", fontFamily: "Teachers, sans-serif" }}>Logout</span>
+            </div>
+
+            <div style={{ height: 16 }} />
+          </div>
+        </div>
+      )}
+
+      {/* ── LOGIN MODAL ── */}
       {showLoginModal && (
-  <div
-    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-    onClick={() => setShowLoginModal(false)}
-  >
-    <div
-      className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-xl"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="text-4xl mb-4">🍳</div>
-      <h2 className="text-xl font-semibold text-[#242D96] mb-2">
-      Login to see recipes
-      </h2>
-      <p className="text-gray-500 text-sm mb-6">
-      Sign up or Login to account to get access to recipes from YouChef
-      </p>
-      <div className="flex flex-col gap-3">
-        <button
-          onClick={() => navigate("/login")}
-          className="w-full py-2.5 bg-[#242D96] text-white rounded-full font-medium border-none cursor-pointer"
-        >
-          Login
-        </button>
-        <button
-          onClick={() => navigate("/signup")}
-          className="w-full py-2.5 border border-[#242D96] text-[#242D96] rounded-full font-medium bg-transparent cursor-pointer"
-        >
-          Sign up
-        </button>
-        <button
-          onClick={() => setShowLoginModal(false)}
-          className="text-gray-400 text-sm bg-transparent border-none cursor-pointer"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowLoginModal(false)}>
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center shadow-xl" onClick={e => e.stopPropagation()}>
+            <div className="text-4xl mb-4">🍳</div>
+            <h2 className="text-xl font-semibold text-[#242D96] mb-2">Login to see recipes</h2>
+            <p className="text-gray-500 text-sm mb-6">Sign up or Login to account to get access to recipes from YouChef</p>
+            <div className="flex flex-col gap-3">
+              <button onClick={() => navigate("/login")} className="w-full py-2.5 bg-[#242D96] text-white rounded-full font-medium border-none cursor-pointer">Login</button>
+              <button onClick={() => navigate("/signup")} className="w-full py-2.5 border border-[#242D96] text-[#242D96] rounded-full font-medium bg-transparent cursor-pointer">Sign up</button>
+              <button onClick={() => setShowLoginModal(false)} className="text-gray-400 text-sm bg-transparent border-none cursor-pointer">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

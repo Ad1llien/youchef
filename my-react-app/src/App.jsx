@@ -82,7 +82,7 @@ function App() {
           {/* MOBILE SLIDE MENU */}
           {mobileMenuOpen && (
             <div
-              className="absolute left-0 right-0 top-full z-50 flex items-center justify-center gap-8 bg-[#FFFEEB] p-4 font-normal sm:hidden text-[20px]"
+              className="absolute left-0 right-0 top-full z-50 flex flex-wrap items-center justify-center gap-4 bg-[#FFFEEB] p-4 font-normal sm:hidden text-[20px]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
