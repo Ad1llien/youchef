@@ -56,7 +56,12 @@ app.use("/api/contact", contactRouter);
 app.get("/", (req, res) => res.send("API working fine"));
 // Отдаём React фронт
 const __dirnameReact = path.resolve(); // путь до корня проекта
-app.use(express.static(path.join(__dirname, "../my-react-app/dist")));
+app.use(express.static(path.join(__dirname, "../my-react-app/dist"), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith(".css")) res.setHeader("Content-Type", "text/css");
+    if (filePath.endsWith(".js"))  res.setHeader("Content-Type", "application/javascript");
+  }
+}));
 
 app.get("/{*any}", (req, res) => {
   res.sendFile(path.join(__dirname, "../my-react-app/dist/index.html"));
