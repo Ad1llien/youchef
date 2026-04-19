@@ -229,9 +229,14 @@ function Header({ onBurgerClick }) {
       </nav>
 
       <div className="flex sm:hidden gap-3 items-center">
-        {user ? (
-          <div className="text-[#242D96] font-medium">{user.name}</div>
-        ) : (
+      {user ? (
+  <div
+    className="text-[#242D96] font-medium cursor-pointer"
+    onClick={() => setMenuOpen(prev => !prev)}
+  >
+    {user.name}
+  </div>
+) : (
           <button
             onClick={() => navigate("/login")}
             className="flex w-[104px] h-10 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[20px] font-medium border-none"
