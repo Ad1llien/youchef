@@ -6,7 +6,6 @@ import CategoryFilter from "./CategoryFilter.jsx";
 import MealCardGrid from "./MealCardGrid.jsx";
 import Pagination from "./Pagination.jsx";
 import AIAssistant from "./AIAssistant";
-import OnboardingTour from "./OnboardingTour";
 import API_BASE_URL, { apiFetch } from "../config/api";
 
 const STORAGE_KEY = "popularMealFilter";
@@ -176,7 +175,6 @@ function PopularMealContent() {
   
 )}
     <AIAssistant />
-    <OnboardingTour />
     </div>
     
   );
