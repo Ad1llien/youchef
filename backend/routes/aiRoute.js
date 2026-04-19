@@ -1,14 +1,35 @@
 import express from "express";
 import Anthropic from "@anthropic-ai/sdk";
+import userAuth from "../middleware/userAuth.js";
+import User from "../models/userModels.js";
 
 const router = express.Router();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+const FREE_LIMIT = 10; // бесплатных запросов каждого типа
+
 // ─── Анализ фото — КБЖУ ──────────────────────────────────────────────────────
-router.post("/analyze-food", async (req, res) => {
+router.post("/analyze-food", userAuth, async (req, res) => {
   const { imageBase64, mediaType } = req.body;
 
   try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(401).json({ success: false, message: "Unauthorized" });
+
+    const used = user.aiPhotoUsed ?? 0;
+    const isPremium = Boolean(user.premium);
+
+    // Проверка лимита
+    if (!isPremium && used >= FREE_LIMIT) {
+      return res.status(403).json({
+        success: false,
+        limitReached: true,
+        used,
+        limit: FREE_LIMIT,
+        message: "Free limit reached. Upgrade to Premium for unlimited analysis.",
+      });
+    }
+
     const response = await client.messages.create({
       model: "claude-opus-4-5",
       max_tokens: 1024,
@@ -41,7 +62,17 @@ router.post("/analyze-food", async (req, res) => {
     const text = response.content[0].text;
     const clean = text.replace(/```json|```/g, "").trim();
     const data = JSON.parse(clean);
-    res.json({ success: true, data });
+
+    // Увеличиваем счётчик только после успешного ответа
+    await User.findByIdAndUpdate(req.user._id, { $inc: { aiPhotoUsed: 1 } });
+
+    res.json({
+      success: true,
+      data,
+      used: used + 1,
+      limit: FREE_LIMIT,
+      isPremium,
+    });
   } catch (err) {
     console.error("AI analyze error:", err.message);
     res.json({ success: false, message: "Failed to analyze image" });
@@ -49,45 +80,57 @@ router.post("/analyze-food", async (req, res) => {
 });
 
 // ─── Meal plan — динамическое количество дней ────────────────────────────────
-router.post("/meal-plan", async (req, res) => {
+router.post("/meal-plan", userAuth, async (req, res) => {
   const { preferences } = req.body;
 
-  // Определяем количество дней из запроса пользователя
-  const extractDays = (text) => {
-    const lower = text.toLowerCase();
-    // Числа прописью на русском
-    const ruMap = { "один": 1, "одного": 1, "одну": 1, "два": 2, "две": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "неделю": 7, "неделя": 7, "недели": 7 };
-    for (const [word, num] of Object.entries(ruMap)) {
-      if (lower.includes(word)) return Math.min(num, 14);
-    }
-    // Числа цифрами: "3 дня", "5 days", "на 7"
-    const match = lower.match(/(\d+)\s*(дн|day|ден|дней)/);
-    if (match) return Math.min(parseInt(match[1]), 14);
-    // Просто цифра рядом с "план" или "питани"
-    const matchSimple = lower.match(/на\s+(\d+)/);
-    if (matchSimple) return Math.min(parseInt(matchSimple[1]), 14);
-    return 7; // default
-  };
-
-  // Генерируем названия дней
-  const getDayNames = (count) => {
-    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    if (count <= 7) return weekdays.slice(0, count);
-    // Больше 7 — используем даты начиная с понедельника
-    const today = new Date();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - today.getDay() + 1);
-    return Array.from({ length: count }, (_, i) => {
-      const d = new Date(monday);
-      d.setDate(monday.getDate() + i);
-      return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-    });
-  };
-
-  const days = extractDays(preferences);
-  const dayNames = getDayNames(days);
-
   try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(401).json({ success: false, message: "Unauthorized" });
+
+    const used = user.aiPlanUsed ?? 0;
+    const isPremium = Boolean(user.premium);
+
+    // Проверка лимита
+    if (!isPremium && used >= FREE_LIMIT) {
+      return res.status(403).json({
+        success: false,
+        limitReached: true,
+        used,
+        limit: FREE_LIMIT,
+        message: "Free limit reached. Upgrade to Premium for unlimited meal plans.",
+      });
+    }
+
+    // Определяем количество дней из запроса
+    const extractDays = (text) => {
+      const lower = text.toLowerCase();
+      const ruMap = { "один": 1, "одного": 1, "одну": 1, "два": 2, "две": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "неделю": 7, "неделя": 7, "недели": 7 };
+      for (const [word, num] of Object.entries(ruMap)) {
+        if (lower.includes(word)) return Math.min(num, 14);
+      }
+      const match = lower.match(/(\d+)\s*(дн|day|ден|дней)/);
+      if (match) return Math.min(parseInt(match[1]), 14);
+      const matchSimple = lower.match(/на\s+(\d+)/);
+      if (matchSimple) return Math.min(parseInt(matchSimple[1]), 14);
+      return 7;
+    };
+
+    const getDayNames = (count) => {
+      const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+      if (count <= 7) return weekdays.slice(0, count);
+      const today = new Date();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - today.getDay() + 1);
+      return Array.from({ length: count }, (_, i) => {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      });
+    };
+
+    const days = extractDays(preferences);
+    const dayNames = getDayNames(days);
+
     const response = await client.messages.create({
       model: "claude-opus-4-5",
       max_tokens: 4096,
@@ -98,7 +141,7 @@ router.post("/meal-plan", async (req, res) => {
 Important rules:
 - Respect ALL dietary restrictions, allergies, religious requirements (halal, kosher, vegetarian, etc.)
 - If user mentions lactose intolerance — no dairy products
-- If user mentions peanut allergy — no peanuts or peanut products  
+- If user mentions peanut allergy — no peanuts or peanut products
 - If user mentions Muslim/halal — no pork, no alcohol
 - Match the number of days exactly: ${days} days
 - Use these day names exactly: ${dayNames.join(", ")}
@@ -122,10 +165,35 @@ Return ONLY a valid JSON object with no extra text, no markdown:
     const text = response.content[0].text;
     const clean = text.replace(/```json|```/g, "").trim();
     const data = JSON.parse(clean);
-    res.json({ success: true, data });
+
+    // Увеличиваем счётчик только после успешного ответа
+    await User.findByIdAndUpdate(req.user._id, { $inc: { aiPlanUsed: 1 } });
+
+    res.json({
+      success: true,
+      data,
+      used: used + 1,
+      limit: FREE_LIMIT,
+      isPremium,
+    });
   } catch (err) {
     console.error("Meal plan error:", err.message);
     res.json({ success: false, message: "Failed to generate meal plan" });
+  }
+});
+
+// ─── Получить текущие лимиты пользователя ────────────────────────────────────
+router.get("/limits", userAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("aiPhotoUsed aiPlanUsed premium");
+    res.json({
+      success: true,
+      photo: { used: user?.aiPhotoUsed ?? 0, limit: FREE_LIMIT },
+      plan:  { used: user?.aiPlanUsed  ?? 0, limit: FREE_LIMIT },
+      isPremium: Boolean(user?.premium),
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 

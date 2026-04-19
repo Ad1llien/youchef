@@ -269,6 +269,7 @@ function AIAssistant() {
   const fileRef = useRef(null);
   const [user, setUser] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [limits, setLimits] = useState({ photo: { used: 0, limit: 10 }, plan: { used: 0, limit: 10 }, isPremium: false });
 
   useEffect(() => {
     apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET" })
@@ -276,6 +277,14 @@ function AIAssistant() {
       .then(data => { if (data.success) setUser(data.userData); })
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    apiFetch(`${API_BASE_URL}/api/ai/limits`)
+      .then(res => res.json())
+      .then(data => { if (data.success) setLimits(data); })
+      .catch(() => {});
+  }, [user]);
 
   const handleOpen = () => { setIsOpen(true); setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError(""); };
   const handleClose = () => { setIsOpen(false); setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError(""); };
@@ -301,11 +310,13 @@ function AIAssistant() {
         const data = await res.json();
         if (data.success) {
           setResult({ type: "photo", data: data.data });
-          // ✅ Сохраняем в историю
+          setLimits(prev => ({ ...prev, photo: { used: data.used, limit: data.limit } }));
           apiFetch(`${API_BASE_URL}/api/user/history/ai`, {
             method: "POST",
             body: JSON.stringify({ type: "photo", query: data.data.dish, result: data.data }),
           }).catch(() => {});
+        } else if (data.limitReached) {
+          setResult({ type: "limit", mode: "photo" });
         } else {
           setResult({ type: "not_food", message: data.message || "This doesn't look like food. Please try another photo." });
         }
@@ -334,11 +345,13 @@ function AIAssistant() {
       const data = await res.json();
       if (data.success) {
         setResult({ type: "plan", data: data.data });
-        // ✅ Сохраняем в историю
+        setLimits(prev => ({ ...prev, plan: { used: data.used, limit: data.limit } }));
         apiFetch(`${API_BASE_URL}/api/user/history/ai`, {
           method: "POST",
           body: JSON.stringify({ type: "plan", query: trimmed, result: data.data }),
         }).catch(() => {});
+      } else if (data.limitReached) {
+        setResult({ type: "limit", mode: "plan" });
       } else {
         setResult({ type: "error", message: data.message });
       }
@@ -391,26 +404,70 @@ function AIAssistant() {
             </div>
 
             <div className="p-5 sm:p-6">
+              {/* ── Limit reached screen ── */}
+              {result?.type === "limit" && (
+                <div style={{ textAlign: "center", padding: "8px 0" }}>
+                  <div style={{ fontSize: 48, marginBottom: 12 }}>💎</div>
+                  <h3 style={{ color: "#242D96", fontSize: 18, fontWeight: 600, marginBottom: 8, fontFamily: "Teachers, sans-serif" }}>Free limit reached</h3>
+                  <p style={{ color: "#788CA5", fontSize: 13, marginBottom: 20, fontFamily: "Teachers, sans-serif", lineHeight: 1.5 }}>
+                    You've used all {limits[result.mode]?.limit} free {result.mode === "photo" ? "photo analyses" : "meal plans"}.<br/>
+                    Upgrade to Premium for unlimited access.
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+                    {["Unlimited AI photo analysis", "Unlimited meal plan generation", "Unlimited calorie calculations", "Access to exclusive recipes"].map((f, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#E6FAED", display: "flex", alignItems: "center", justifyContent: "center", color: "#029663", fontSize: 11, flexShrink: 0 }}>✓</span>
+                        <span style={{ fontSize: 13, color: "#555", fontFamily: "Teachers, sans-serif" }}>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => { handleClose(); setTimeout(() => window.location.href = "/premium", 100); }}
+                    style={{ width: "100%", padding: "12px", borderRadius: 50, background: "#242D96", color: "white", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", fontFamily: "Teachers, sans-serif", marginBottom: 8 }}>
+                    Get Premium →
+                  </button>
+                  <button onClick={() => setResult(null)}
+                    style={{ width: "100%", padding: "12px", borderRadius: 50, background: "transparent", color: "#aaa", fontSize: 14, border: "1px solid #BBC8D8", cursor: "pointer", fontFamily: "Teachers, sans-serif" }}>
+                    Back
+                  </button>
+                </div>
+              )}
+
               {/* ── Mode select ── */}
-              {!mode && (
+              {!mode && !result && (
                 <div className="flex flex-col gap-3">
                   <button onClick={() => setMode("photo")} className="flex items-center gap-4 p-4 sm:p-5 border border-[#BBC8D8] rounded-2xl bg-white cursor-pointer text-left hover:border-[#242D96] transition">
                     <div className="w-11 h-11 rounded-xl bg-[#EEF0FB] flex items-center justify-center flex-shrink-0">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#242D96" strokeWidth="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div className="font-semibold text-[#242D96] text-[15px] font-['Teachers']">Analyze Food Photo</div>
                       <div className="text-gray-400 text-[13px] mt-0.5 font-['Teachers']">Get calories, protein, carbs & fat</div>
                     </div>
+                    {!limits.isPremium && (
+                      <div style={{ flexShrink: 0, background: limits.photo.used >= limits.photo.limit ? "#FFF0EE" : "#EEF0FB", borderRadius: 20, padding: "3px 10px", fontSize: 12, color: limits.photo.used >= limits.photo.limit ? "#FF786D" : "#242D96", fontFamily: "Teachers, sans-serif", fontWeight: 600 }}>
+                        {limits.photo.limit - limits.photo.used}/{limits.photo.limit}
+                      </div>
+                    )}
+                    {limits.isPremium && (
+                      <div style={{ flexShrink: 0, background: "#E6FAED", borderRadius: 20, padding: "3px 10px", fontSize: 12, color: "#029663", fontFamily: "Teachers, sans-serif", fontWeight: 600 }}>∞</div>
+                    )}
                   </button>
                   <button onClick={() => setMode("plan")} className="flex items-center gap-4 p-4 sm:p-5 border border-[#BBC8D8] rounded-2xl bg-white cursor-pointer text-left hover:border-[#242D96] transition">
                     <div className="w-11 h-11 rounded-xl bg-[#EEF0FB] flex items-center justify-center flex-shrink-0">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#242D96" strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h2M8 18h2M14 14h2M14 18h2"/></svg>
                     </div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div className="font-semibold text-[#242D96] text-[15px] font-['Teachers']">Meal Plan</div>
                       <div className="text-gray-400 text-[13px] mt-0.5 font-['Teachers']">AI creates a personalized plan for you</div>
                     </div>
+                    {!limits.isPremium && (
+                      <div style={{ flexShrink: 0, background: limits.plan.used >= limits.plan.limit ? "#FFF0EE" : "#EEF0FB", borderRadius: 20, padding: "3px 10px", fontSize: 12, color: limits.plan.used >= limits.plan.limit ? "#FF786D" : "#242D96", fontFamily: "Teachers, sans-serif", fontWeight: 600 }}>
+                        {limits.plan.limit - limits.plan.used}/{limits.plan.limit}
+                      </div>
+                    )}
+                    {limits.isPremium && (
+                      <div style={{ flexShrink: 0, background: "#E6FAED", borderRadius: 20, padding: "3px 10px", fontSize: 12, color: "#029663", fontFamily: "Teachers, sans-serif", fontWeight: 600 }}>∞</div>
+                    )}
                   </button>
                 </div>
               )}

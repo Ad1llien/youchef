@@ -18,12 +18,16 @@ const userSchema = new mongoose.Schema({
   verifyToken: { type: String, default: "" },
   verifyTokenExpireAt: { type: Number, default: 0 },
 
+  // ─── AI лимиты ────────────────────────────────────────────────────────────
+  aiPhotoUsed: { type: Number, default: 0 }, // кол-во использованных анализов фото
+  aiPlanUsed:  { type: Number, default: 0 }, // кол-во использованных планов питания
+
   // AI запросы — последние 20
   aiHistory: {
     type: [{
       type: { type: String, enum: ["plan", "photo"], default: "plan" },
-      query: { type: String, default: "" },       // текст запроса или название блюда
-      result: { type: mongoose.Schema.Types.Mixed }, // весь план или КБЖУ
+      query: { type: String, default: "" },
+      result: { type: mongoose.Schema.Types.Mixed },
       createdAt: { type: Date, default: Date.now },
     }],
     default: [],

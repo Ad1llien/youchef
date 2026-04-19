@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+Allow: /MealPlanner
+Allow: /premium
+Allow: /guide
+Allow: /contact
+Allow: /help-center
+Allow: /request-recipe
+Allow: /terms
+Allow: /privacy
+Allow: /refund
+
+# Не индексируем личные страницы
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /verify-account
+Disallow: /setNewPassword
+Disallow: /verify
+Disallow: /check-email
+Disallow: /my-account
+Disallow: /my-likes
+Disallow: /password-manager
+Disallow: /history
+Disallow: /pot
+Disallow: /api/
+
+Sitemap: https://youchef.kz/sitemap.xml
