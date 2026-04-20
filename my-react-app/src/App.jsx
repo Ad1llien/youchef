@@ -35,6 +35,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import MealPlanner from "./components/MealPlanner";
 import HistoryPage from "./components/HistoryPage";
 import SEO from "./components/SEO";
+import PremiumPromoModal from "./components/PremiumPromoModal";
+import API_BASE_URL, { apiFetch } from "./config/api";
+
 
 function AppWrapper() {
   return (
@@ -64,10 +67,31 @@ function App() {
     localStorage.setItem("checkPot", JSON.stringify(checkPot));
   }, [checkPot]);
 
+  useEffect(() => {
+    const handleCopy = (e) => {
+      const selection = window.getSelection();
+      if (!selection || selection.toString().length < 20) return;
+      const attribution = `\n\n— Источник: YouChef (youchef.kz)`;
+      e.clipboardData.setData("text/plain", selection.toString() + attribution);
+      e.preventDefault();
+    };
+    document.addEventListener("copy", handleCopy);
+    return () => document.removeEventListener("copy", handleCopy);
+  }, []);
+
   const [activeTab, setActiveTab] = useState("popular");
   const isAuthPage = [
     "/login", "/signup", "/reset-password", "/verify-account", "/setNewPassword",
   ].includes(location.pathname);
+
+  const [promoUser, setPromoUser] = useState(null);
+
+useEffect(() => {
+  apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET" })
+    .then(res => res.json())
+    .then(data => { if (data.success) setPromoUser(data.userData); })
+    .catch(() => {});
+}, []);
 
   return (
     <div className="App overflow-x-hidden">
@@ -255,7 +279,7 @@ function App() {
           } />
         </Routes>
       </main>
-
+      <PremiumPromoModal user={promoUser} />
       <Footer />
     </div>
   );
