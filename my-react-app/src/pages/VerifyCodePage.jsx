@@ -190,9 +190,7 @@ function VerifyCodePage() {
         </div>
 
         {/* Icon */}
-        <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#EEF0FB", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: 28 }}>
-          📧
-        </div>
+      
 
         <h2>Check your email</h2>
         <p className="subtitle">
