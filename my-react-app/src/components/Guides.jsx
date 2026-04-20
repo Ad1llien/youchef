@@ -95,7 +95,7 @@ const GUIDES = [
       },
       {
         title: "Pay via Kaspi QR",
-        desc: "Scan the QR code in the Kaspi app, confirm payment of 1500 KZT, then send a payment screenshot to youchef.app@gmail.com or via the Contact page. We'll activate Premium within a few hours.",
+        desc: "Scan the QR code in the Kaspi app, confirm payment of 2500 KZT, then send a payment screenshot and your linked to youchef website email to youchef.app@gmail.com or via the Contact page. We'll activate Premium within a few hours.",
       },
     ],
   },

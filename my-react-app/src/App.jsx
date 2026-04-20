@@ -37,7 +37,7 @@ import HistoryPage from "./components/HistoryPage";
 import SEO from "./components/SEO";
 import PremiumPromoModal from "./components/PremiumPromoModal";
 import API_BASE_URL, { apiFetch } from "./config/api";
-
+import AdminPanel from "./components/AdminPanel";
 
 function AppWrapper() {
   return (
@@ -269,6 +269,7 @@ useEffect(() => {
           <Route path="/password-manager" element={<PasswordManager />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/pot" element={<PotPage checkPot={checkPot} setCheckPot={setCheckPot} />} />
+          <Route path="/admin" element={<AdminPanel />} />
 
           {/* ── 404 ── */}
           <Route path="*" element={

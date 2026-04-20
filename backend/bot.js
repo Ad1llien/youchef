@@ -356,7 +356,7 @@ bot.on("callback_query", async (query) => {
           "YouChef Premium",
           "Доступ ко всем премиум рецептам в YouChef",
           `premium_${userId}`,
-          "", // provider_token пустой для Stars
+          "",        // provider_token пустой для Stars
           "XTR",
           [{ label: "Premium подписка", amount: 100 }],
           {
@@ -365,6 +365,8 @@ bot.on("callback_query", async (query) => {
             need_email: false,
             need_shipping_address: false,
             is_flexible: false,
+            // Добавь это:
+            start_parameter: "premium_payment",
           }
         );
       } catch (err) {
@@ -734,7 +736,7 @@ bot.on("web_app_data", async (msg) => {
         "YouChef Premium",
         "Доступ ко всем премиум рецептам в YouChef",
         `premium_${userId}`,
-        "", // provider_token пустой для Stars
+        "",        // provider_token пустой для Stars
         "XTR",
         [{ label: "Premium подписка", amount: 100 }],
         {
@@ -743,8 +745,12 @@ bot.on("web_app_data", async (msg) => {
           need_email: false,
           need_shipping_address: false,
           is_flexible: false,
+          // Добавь это:
+          start_parameter: "premium_payment",
         }
       );
+      
+      
     }
   } catch (error) {
     console.error("Ошибка web_app_data:", error.message);

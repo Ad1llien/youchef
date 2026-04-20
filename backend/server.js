@@ -16,7 +16,7 @@ import aiRouter from "./routes/aiRoute.js";
 import contactRouter from "./routes/contactRoute.js";
 import { isAuthenticated } from "./controllers/authController.js";
 import "./bot.js";
-
+import adminRouter from "./routes/adminRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
@@ -121,7 +121,7 @@ app.use("/api/translate",                      translateRouter);
 app.use("/api/recipe-request",                 recipeRequestRouter);
 app.use("/api/contact",        contactLimiter, contactRouter);
 app.get("/api/auth/is-auth",                   isAuthenticated);
-
+app.use("/api/admin", adminRouter);
 // ─── React фронт — ПОСЛЕ всех API роутов ─────────────────────────────────────
 app.use(express.static(path.join(__dirname, "../my-react-app/dist"), {
   setHeaders: (res, filePath) => {

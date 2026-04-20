@@ -46,7 +46,7 @@ const TG_STEPS = [
 const KASPI_STEPS = [
   "Open the Kaspi app on your phone",
   "Tap Payments - Scan QR",
-  "Scan the code and confirm payment of 1500 KZT",
+  "Scan the code and confirm payment of 2500 KZT",
   "Message us via Contact - we will activate Premium manually",
 ];
 
@@ -366,7 +366,7 @@ function BuyPremium() {
               <div className="rounded-xl p-3 flex gap-2.5 items-start mb-5" style={{ background: "#FFF0EE" }}>
                 <span className="text-sm mt-0.5" style={{ color: "#F14635" }}>i</span>
                 <p className="text-[13px] leading-relaxed m-0" style={{ color: "#C0392B" }}>
-                  After payment write an email to <strong>youchef.app@gmail.com</strong> and attach a screenshot of the payment.
+                  After payment write an email to <strong>youchef.app@gmail.com</strong> and attach a screenshot of the payment  and send payment check with written email linked to YouChef website.
                 </p>
               </div>
 
