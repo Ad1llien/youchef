@@ -87,8 +87,8 @@ function HistoryPage() {
           {/* Tabs */}
           <div style={{ display: "flex", gap: 0, marginBottom: 28, borderBottom: "2px solid #EEF0FB" }}>
             {[
-              { key: "meals", label: "Meal History", icon: "🍽" },
-              { key: "ai", label: "AI Requests", icon: "🤖" },
+              { key: "meals", label: "Meal History" },
+              { key: "ai", label: "AI Requests"},
             ].map(tab => (
               <button
                 key={tab.key}
