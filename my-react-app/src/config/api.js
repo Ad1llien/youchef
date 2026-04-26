@@ -12,7 +12,6 @@ export function getToken() {
 }
 
 // ─── Обёртка fetch — добавляет Authorization header автоматически ─────────────
-// Используй вместо fetch() везде где нужна авторизация
 export async function apiFetch(url, options = {}) {
   const token = getToken();
   const isFormData = options.body instanceof FormData;
