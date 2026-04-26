@@ -18,7 +18,7 @@ import contactRouter from "./routes/contactRoute.js";
 import { isAuthenticated } from "./controllers/authController.js";
 import "./bot.js";
 import adminRouter from "./routes/adminRoutes.js";
-import { initGameSocket } from "./gameSocket.js";
+import { initGameSocket } from "./Gamesocket.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
