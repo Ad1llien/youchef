@@ -11,8 +11,9 @@ export function useGameSocket() {
 
   useEffect(() => {
     const socket = io(API_BASE_URL, {
-      transports: ["websocket"],
+      transports: ["websocket", "polling"],
       autoConnect: true,
+      withCredentials: true, // ← добавь это
     });
     socketRef.current = socket;
     socket.on("connect", () => setConnected(true));

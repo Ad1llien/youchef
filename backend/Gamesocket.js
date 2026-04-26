@@ -2,8 +2,9 @@
 // const { initGameSocket } = require('./gameSocket');
 // initGameSocket(httpServer);
 
-const { Server } = require("socket.io");
-const mongoose = require("mongoose");
+// СТАЛО:
+import { Server } from "socket.io";
+import mongoose from "mongoose";
 
 // ─── MongoDB схемы ───────────────────────────────────────────────────────────
 
@@ -102,9 +103,18 @@ function calcScore(timeLeft, attempt, isFirst) {
 
 // ─── Главная функция инициализации ───────────────────────────────────────────
 function initGameSocket(httpServer) {
-  const io = new Server(httpServer, {
-    cors: { origin: "*", methods: ["GET", "POST"] },
-  });
+    const io = new Server(httpServer, {
+        cors: {
+          origin: [
+            "http://localhost:5174",
+            "https://youchef-front.onrender.com",
+            "https://www.youchef.com",
+            "https://youchef.kz",
+          ],
+          methods: ["GET", "POST"],
+          credentials: true,
+        },
+      });
 
   io.on("connection", (socket) => {
     console.log(`[Game] connected: ${socket.id}`);
@@ -406,4 +416,4 @@ function getHint(name) {
   return words.map((w) => w[0] + "_".repeat(w.length - 1)).join(" ");
 }
 
-module.exports = { initGameSocket, Battle, Leaderboard };
+export { initGameSocket, Battle, Leaderboard };
