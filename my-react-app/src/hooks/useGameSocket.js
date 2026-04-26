@@ -1,19 +1,16 @@
-// hooks/useGameSocket.js
 import { useEffect, useRef, useCallback, useState } from "react";
 import { io } from "socket.io-client";
-import API_BASE_URL from "../config/api";
-
-// npm install socket.io-client
+import { API_ORIGIN } from "../config/api";  // ← API_ORIGIN вместо API_BASE_URL
 
 export function useGameSocket() {
   const socketRef = useRef(null);
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const socket = io(API_BASE_URL, {
+    const socket = io(API_ORIGIN, {  // ← API_ORIGIN всегда реальный URL
       transports: ["websocket", "polling"],
       autoConnect: true,
-      withCredentials: true, // ← добавь это
+      withCredentials: true,
     });
     socketRef.current = socket;
     socket.on("connect", () => setConnected(true));
