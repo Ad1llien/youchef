@@ -145,8 +145,8 @@ function BuyPremium() {
             >
               <img src={telegram} alt="Telegram" className="w-8 h-8 object-contain" />
               <div className="text-left">
-                <div className="text-[#242D96] font-semibold text-[16px]">Telegram Stars</div>
-                <div className="text-gray-400 text-[13px]">Pay using Telegram</div>
+                <div className="text-[#242D96] font-semibold text-[16px] rounded-[10px]">Telegram Stars</div>
+                <div className="text-gray-400 text-[13px] rounded-[10px]">Pay using Telegram</div>
               </div>
             </button>
 

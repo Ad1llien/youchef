@@ -30,6 +30,8 @@ connectDB();
 app.use(helmet({
   contentSecurityPolicy: false, // отключаем CSP чтобы не ломать React
   crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false, // ← добавь это
+
 }));
 
 // ─── 2. CORS ──────────────────────────────────────────────────────────────────
@@ -132,6 +134,8 @@ app.use(express.static(path.join(__dirname, "../my-react-app/dist"), {
     if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) res.setHeader("Content-Type", "image/jpeg");
   }
 }));
+
+
 
 // SPA fallback
 app.get("/{*any}", (req, res) => {
