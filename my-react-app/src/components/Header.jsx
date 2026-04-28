@@ -21,6 +21,7 @@ function Header({ onBurgerClick }) {
 
   const menuRef = useRef(null);
   const langMenuRef = useRef(null);
+  const mobileLangRef = useRef(null);
 
   const changeLanguage = (lang) => {
     const select = document.querySelector(".goog-te-combo");
@@ -47,6 +48,7 @@ function Header({ onBurgerClick }) {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) setMenuOpen(false);
       if (langMenuRef.current && !langMenuRef.current.contains(event.target)) setLangMenuOpen(false);
+      if (mobileLangRef.current && !mobileLangRef.current.contains(event.target)) setLangMenuOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -59,7 +61,6 @@ function Header({ onBurgerClick }) {
       .catch(err => console.error(err));
   }, []);
 
-  // Open mobile profile bottom sheet
   const openMobileProfile = () => {
     setMobileProfileOpen(true);
     setTimeout(() => setMobileProfileVisible(true), 10);
@@ -87,11 +88,11 @@ function Header({ onBurgerClick }) {
 
       {/* ── DESKTOP NAV ── */}
       <nav className="hidden sm:flex gap-8 text-[#242D96] font-teachers text-xl font-normal items-center">
-        <div className="youcart-nav-link cursor-pointer"  onClick={() => { if (!user) setShowLoginModal(true); else navigate("/MealPlanner"); }}>youCart</div>
+        <div className="youcart-nav-link cursor-pointer" onClick={() => { if (!user) setShowLoginModal(true); else navigate("/MealPlanner"); }}>youCart</div>
         <div className="premium-nav-link cursor-pointer" onClick={() => { if (!user) setShowLoginModal(true); else navigate("/premium"); }}>Premium</div>
         <div className="cursor-pointer" onClick={() => navigate("/contact")}>Contact</div>
 
-        {/* Language */}
+        {/* Desktop Language */}
         <div className="relative ml-4 text-sm" ref={langMenuRef}>
           <div onClick={() => setLangMenuOpen(prev => !prev)} className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium">
             <span className="text-[20px] leading-none tracking-tight">{currentLang}</span>
@@ -136,18 +137,18 @@ function Header({ onBurgerClick }) {
                   </div>
                 </div>
                 <hr className="hr"/>
-                <div className="account-modal">account</div>
-                <div className="modal-logo" onClick={() => { navigate("/my-account"); setMenuOpen(false); }}><img className="accLogo" src={accountLogo} alt=""/><div>account</div></div>
+                <div className="account-modal">Account</div>
+                <div className="modal-logo" onClick={() => { navigate("/my-account"); setMenuOpen(false); }}><img className="accLogo" src={accountLogo} alt=""/><div>Account</div></div>
                 <div className="modal-logo" onClick={() => { navigate("/my-likes"); setMenuOpen(false); }}><img className="accLogo" src={likes} alt=""/><div>Favorites</div></div>
                 <div className="modal-logo" onClick={() => { navigate("/premium"); setMenuOpen(false); }}>
                   <img className="accLogo" src={vipCrown} alt=""/>
-                  <div>premium</div>
+                  <div>Premium</div>
                   <div className="pr" style={{ color: user?.premium ? "#FFB800" : undefined }}>{user?.premium ? "Premium" : "Free"}</div>
                 </div>
                 <hr className="hr"/>
-                <div className="account-modal">support</div>
-                <div className="modal-logo" onClick={() => { navigate("/help-center"); setMenuOpen(false); }}><img className="accLogo" src={qaa} alt=""/><div>helpCenter</div></div>
-                <div className="modal-logo" onClick={() => { navigate("/guide"); setMenuOpen(false); }}><img className="accLogo" src={guide} alt=""/><div>guides</div></div>
+                <div className="account-modal">Support</div>
+                <div className="modal-logo" onClick={() => { navigate("/help-center"); setMenuOpen(false); }}><img className="accLogo" src={qaa} alt=""/><div>Help Center</div></div>
+                <div className="modal-logo" onClick={() => { navigate("/guide"); setMenuOpen(false); }}><img className="accLogo" src={guide} alt=""/><div>Guides</div></div>
               </div>
             )}
           </div>
@@ -159,16 +160,85 @@ function Header({ onBurgerClick }) {
       </nav>
 
       {/* ── MOBILE RIGHT SIDE ── */}
-      <div className="flex sm:hidden gap-3 items-center">
+      <div className="flex sm:hidden gap-2 items-center">
+
+        {/* Mobile Language Button */}
+        <div className="relative" ref={mobileLangRef}>
+          <button
+            onClick={() => setLangMenuOpen(prev => !prev)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              background: "transparent",
+              border: "1.5px solid #BBC8D8",
+              borderRadius: 20,
+              padding: "5px 10px",
+              cursor: "pointer",
+              color: "#242D96",
+              fontSize: 13,
+              fontWeight: 500,
+              fontFamily: "Teachers, sans-serif",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M3 12H21" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M12 3C14.5 5.7 15.9 8.8 15.9 12C15.9 15.2 14.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8"/>
+              <path d="M12 3C9.5 5.7 8.1 8.8 8.1 12C8.1 15.2 9.5 18.3 12 21" stroke="#242D96" strokeWidth="1.8"/>
+            </svg>
+            <span>{currentLang.toUpperCase()}</span>
+          </button>
+
+          {langMenuOpen && (
+            <div style={{
+              position: "absolute",
+              top: "calc(100% + 6px)",
+              left: 0,
+              background: "white",
+              border: "1px solid #BBC8D8",
+              borderRadius: 10,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+              zIndex: 100,
+              overflow: "hidden",
+              minWidth: 64,
+            }}>
+              {languageOptions.map(option => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleLanguageChange(option)}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    padding: "8px 14px",
+                    background: currentLang === option.label ? "#EEF0FB" : "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#242D96",
+                    fontSize: 14,
+                    fontFamily: "Teachers, sans-serif",
+                    textAlign: "left",
+                    fontWeight: currentLang === option.label ? 600 : 400,
+                  }}
+                >
+                  {option.label.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         {user ? (
           <div className="text-[#242D96] font-medium cursor-pointer text-[16px]" onClick={openMobileProfile}>
             {user.name}
           </div>
         ) : (
-          <button onClick={() => navigate("/login")} className="flex w-[104px] h-10 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[20px] font-medium border-none">
+          <button onClick={() => navigate("/login")} className="flex w-[90px] h-9 py-2 px-3 justify-center items-center rounded-full bg-[#242D96] text-white font-teachers text-[16px] font-medium border-none">
             login
           </button>
         )}
+
         <button className="bg-transparent border-none cursor-pointer w-7 h-7" onClick={() => { if (!user) setShowLoginModal(true); else onBurgerClick(); }}>
           <img src={menuLine} alt="menu" className="w-7 h-7"/>
         </button>
@@ -191,10 +261,8 @@ function Header({ onBurgerClick }) {
               paddingBottom: "env(safe-area-inset-bottom, 16px)",
             }}
           >
-            {/* Drag handle */}
             <div style={{ width: 40, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "12px auto 0" }} />
 
-            {/* User info */}
             <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "20px 24px 16px" }}>
               <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#242D96", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 20, fontWeight: 600, flexShrink: 0 }}>
                 {user?.name?.charAt(0).toUpperCase()}
@@ -212,16 +280,14 @@ function Header({ onBurgerClick }) {
 
             <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
 
-            {/* Menu items */}
             {[
               { icon: accountLogo, label: "My Account", path: "/my-account" },
               { icon: likes, label: "Favorites", path: "/my-likes" },
               { icon: vipCrown, label: "Premium", path: "/premium" },
             ].map(item => (
               <div key={item.path} onClick={() => handleMobileNav(item.path)}
-                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}
-              >
-                <img src={item.icon} alt="" style={{ width: 22, height: 22, opacity: 0.7 }} />
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
+                <img src={item.icon} alt="" style={{ width: 22, height: 22}} />
                 <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
               </div>
             ))}
@@ -233,16 +299,14 @@ function Header({ onBurgerClick }) {
               { icon: guide, label: "Guides", path: "/guide" },
             ].map(item => (
               <div key={item.path} onClick={() => handleMobileNav(item.path)}
-                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}
-              >
-                <img src={item.icon} alt="" style={{ width: 22, height: 22, opacity: 0.7 }} />
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
+                <img src={item.icon} alt="" style={{ width: 22, height: 22}} />
                 <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
               </div>
             ))}
 
             <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
 
-            {/* Logout */}
             <div onClick={() => { closeMobileProfile(); apiFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" }).then(() => navigate("/login")); }}
               style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF786D" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>

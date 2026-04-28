@@ -87,7 +87,6 @@ function VerifyCodePage() {
     }
   };
 
-  // Handle paste
   const handlePaste = (e) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
@@ -121,8 +120,12 @@ function VerifyCodePage() {
         setTimeout(() => navigate("/setNewPassword", { state: { email, otp } }), 1000);
       } else {
         showToast(data.message || "Invalid code. Please try again.");
-        // Shake inputs
-        inputsRef.current.forEach(i => { if (i) { i.classList.add("otp-shake"); setTimeout(() => i.classList.remove("otp-shake"), 500); } });
+        inputsRef.current.forEach(i => {
+          if (i) {
+            i.classList.add("otp-shake");
+            setTimeout(() => i.classList.remove("otp-shake"), 500);
+          }
+        });
       }
     } catch (err) {
       showToast("Server error. Please try again.");
@@ -137,15 +140,21 @@ function VerifyCodePage() {
 
       <style>{`
         .otp-input {
-          width: 48px; height: 56px;
+          width: clamp(36px, 12vw, 52px);
+          height: clamp(42px, 14vw, 58px);
           border-radius: 12px;
           border: 2px solid #BBC8D8;
           background: white;
-          font-size: 22px; font-weight: 700;
-          color: #242D96; text-align: center;
-          outline: none; caret-color: #242D96;
+          font-size: clamp(18px, 5vw, 24px);
+          font-weight: 700;
+          color: #242D96;
+          text-align: center;
+          outline: none;
+          caret-color: #242D96;
           transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
           font-family: Teachers, sans-serif;
+          box-sizing: border-box;
+          flex-shrink: 1;
         }
         .otp-input:focus {
           border-color: #242D96;
@@ -161,26 +170,60 @@ function VerifyCodePage() {
           20%,60% { transform: translateX(-5px); }
           40%,80% { transform: translateX(5px); }
         }
-        .otp-shake { animation: otpShake 0.4s ease; border-color: #FF786D !important; background: #fff5f5 !important; }
+        .otp-shake {
+          animation: otpShake 0.4s ease;
+          border-color: #FF786D !important;
+          background: #fff5f5 !important;
+        }
         .verify-btn {
-          width: 100%; padding: 13px; border-radius: 50px;
-          background: #242D96; color: white; border: none;
-          font-size: 15px; font-weight: 600; font-family: Teachers, sans-serif;
-          cursor: pointer; transition: background 0.2s, transform 0.1s, opacity 0.2s;
-          display: flex; align-items: center; justify-content: center; gap: 8px;
+          width: 100%;
+          padding: 13px;
+          border-radius: 50px;
+          background: #242D96;
+          color: white;
+          border: none;
+          font-size: 15px;
+          font-weight: 600;
+          font-family: Teachers, sans-serif;
+          cursor: pointer;
+          transition: background 0.2s, transform 0.1s, opacity 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
           margin-top: 8px;
         }
         .verify-btn:hover:not(:disabled) { background: #1e2580; }
         .verify-btn:active:not(:disabled) { transform: scale(0.98); }
         .verify-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         @keyframes spinBtn { to { transform: rotate(360deg); } }
-        .btn-spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; animation: spinBtn 0.7s linear infinite; flex-shrink: 0; }
+        .btn-spinner {
+          width: 16px; height: 16px;
+          border-radius: 50%;
+          border: 2px solid rgba(255,255,255,0.4);
+          border-top-color: white;
+          animation: spinBtn 0.7s linear infinite;
+          flex-shrink: 0;
+        }
         .email-badge {
           display: inline-block;
-          background: #EEF0FB; color: #242D96;
-          border-radius: 20px; padding: 2px 10px;
-          font-size: 13px; font-weight: 600;
+          background: #EEF0FB;
+          color: #242D96;
+          border-radius: 20px;
+          padding: 2px 10px;
+          font-size: 13px;
+          font-weight: 600;
           font-family: Teachers, sans-serif;
+          word-break: break-all;
+        }
+        .otp-container {
+          display: flex;
+          gap: clamp(4px, 2vw, 10px);
+          justify-content: center;
+          margin-bottom: 24px;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 0 4px;
         }
       `}</style>
 
@@ -188,9 +231,6 @@ function VerifyCodePage() {
         <div className="logo">
           <img src={logo} alt="YouChef Logo" className="main-logo" />
         </div>
-
-        {/* Icon */}
-      
 
         <h2>Check your email</h2>
         <p className="subtitle">
@@ -200,7 +240,7 @@ function VerifyCodePage() {
 
         <form onSubmit={handleSubmit} className="p-3">
           {/* OTP inputs */}
-          <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 24 }} onPaste={handlePaste}>
+          <div className="otp-container" onPaste={handlePaste}>
             {[...Array(6)].map((_, index) => (
               <input
                 key={index}

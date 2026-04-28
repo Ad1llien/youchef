@@ -98,7 +98,6 @@ function downloadPlanAsPDF(planData) {
   setTimeout(() => win.print(), 800);
 }
 
-// ─── Copy plan as text ────────────────────────────────────────────────────────
 function copyPlanAsText(planData) {
   const lines = [`🍽 YouChef — Meal Plan`, `~${planData.total_daily_calories} kcal/day`, ``];
   planData.plan.forEach(day => {
@@ -112,10 +111,8 @@ function copyPlanAsText(planData) {
   navigator.clipboard.writeText(lines.join("\n"));
 }
 
-// ─── Animated plan display ────────────────────────────────────────────────────
 function AnimatedPlanResult({ result, onNewPlan, onClose }) {
   const [visibleDays, setVisibleDays] = useState(0);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (visibleDays < result.data.plan.length) {
@@ -129,10 +126,10 @@ function AnimatedPlanResult({ result, onNewPlan, onClose }) {
   return (
     <div>
       <style>{`
-        @keyframes fadeSlideIn { 0%{opacity:0;transform:translateY(16px) scale(0.97)} 60%{opacity:.8;transform:translateY(-2px) scale(1.005)} 100%{opacity:1;transform:translateY(0) scale(1)} }
-        .day-appear { animation: fadeSlideIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
-        @keyframes wave { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
-        .typing-dot { animation:wave 1.1s ease infinite; display:inline-block; width:7px; height:7px; border-radius:50%; background:#242D96; margin:0 3px; }
+        @keyframes fadeSlideIn{0%{opacity:0;transform:translateY(16px) scale(0.97)}60%{opacity:.8;transform:translateY(-2px) scale(1.005)}100%{opacity:1;transform:translateY(0) scale(1)}}
+        .day-appear{animation:fadeSlideIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards}
+        @keyframes wave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+        .typing-dot{animation:wave 1.1s ease infinite;display:inline-block;width:7px;height:7px;border-radius:50%;background:#242D96;margin:0 3px}
         .typing-dot:nth-child(2){animation-delay:.18s;background:#4a57c4}
         .typing-dot:nth-child(3){animation-delay:.36s;background:#7a85d8}
       `}</style>
@@ -171,7 +168,7 @@ function AnimatedPlanResult({ result, onNewPlan, onClose }) {
       {isComplete && (
         <div className="flex flex-col gap-2.5">
           <div className="flex gap-2.5">
-            <button onClick={() => { copyPlanAsText(result.data); }} className="flex-1 py-2.5 rounded-full border border-[#242D96] text-[#242D96] text-[13px] font-medium bg-transparent cursor-pointer font-['Teachers'] flex items-center justify-center gap-1.5">
+            <button onClick={() => copyPlanAsText(result.data)} className="flex-1 py-2.5 rounded-full border border-[#242D96] text-[#242D96] text-[13px] font-medium bg-transparent cursor-pointer font-['Teachers'] flex items-center justify-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               Copy
             </button>
@@ -190,7 +187,6 @@ function AnimatedPlanResult({ result, onNewPlan, onClose }) {
   );
 }
 
-// ─── Voice Textarea ───────────────────────────────────────────────────────────
 function VoiceTextarea({ value, onChange, placeholder, hasError }) {
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(false);
@@ -204,13 +200,11 @@ function VoiceTextarea({ value, onChange, placeholder, hasError }) {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return;
     if (listening) { recognitionRef.current?.stop(); setListening(false); return; }
-
     const r = new SR();
     r.continuous = true;
     r.interimResults = true;
     r.lang = "ru-RU";
     let final = value;
-
     r.onresult = (e) => {
       let interim = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -260,6 +254,7 @@ function VoiceTextarea({ value, onChange, placeholder, hasError }) {
 function AIAssistant() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); // ← анимация
   const [mode, setMode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -286,10 +281,20 @@ function AIAssistant() {
       .catch(() => {});
   }, [user]);
 
-  const handleOpen = () => { setIsOpen(true); setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError(""); };
-  const handleClose = () => { setIsOpen(false); setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError(""); };
+  const handleOpen = () => {
+    setIsOpen(true);
+    setTimeout(() => setIsAnimating(true), 10);
+    setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError("");
+  };
 
-  // ── Анализ фото ──────────────────────────────────────────────────────────────
+  const handleClose = () => {
+    setIsAnimating(false);
+    setTimeout(() => {
+      setIsOpen(false);
+      setMode(null); setResult(null); setPreviewUrl(null); setPlanText(""); setPlanError("");
+    }, 400);
+  };
+
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -297,7 +302,6 @@ function AIAssistant() {
     setPreviewUrl(URL.createObjectURL(file));
     setLoading(true);
     setResult(null);
-
     const reader = new FileReader();
     reader.onload = async (event) => {
       const base64 = event.target.result.split(",")[1];
@@ -329,7 +333,6 @@ function AIAssistant() {
     reader.readAsDataURL(file);
   };
 
-  // ── Генерация плана ──────────────────────────────────────────────────────────
   const handleMealPlan = async () => {
     const trimmed = planText.trim();
     if (!trimmed) { setPlanError("Please describe your preferences first."); return; }
@@ -375,8 +378,10 @@ function AIAssistant() {
       <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[999]">
         <span className="ai-ripple1 absolute inset-0 rounded-full bg-[#242D96]/20"/>
         <span className="ai-ripple2 absolute inset-0 rounded-full bg-[#242D96]/10"/>
-        <button onClick={() => { if (!user) setShowLoginModal(true); else handleOpen(); }}
-          className="ai-assistant-btn relative z-10 w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full bg-[#242D96] border-none cursor-pointer flex items-center justify-center shadow-[0_6px_24px_rgba(36,45,150,0.45)] hover:scale-105 transition-transform">
+        <button
+          onClick={() => { if (!user) setShowLoginModal(true); else handleOpen(); }}
+          className="ai-assistant-btn relative z-10 w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full bg-[#242D96] border-none cursor-pointer flex items-center justify-center shadow-[0_6px_24px_rgba(36,45,150,0.45)] hover:scale-105 transition-transform"
+        >
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2C9.5 2 7.5 3.8 7.5 6c0 .4.1.8.2 1.2A4 4 0 0 0 4 11c0 2.2 1.8 4 4 4h8a4 4 0 0 0 4-4 4 4 0 0 0-3.7-3.8c.1-.4.2-.8.2-1.2C16.5 3.8 14.5 2 12 2z"/>
             <path d="M8 15v2a4 4 0 0 0 8 0v-2"/>
@@ -387,13 +392,31 @@ function AIAssistant() {
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-[1000] p-0 sm:p-4" onClick={handleClose}>
-          <div className="bg-white w-full sm:max-w-[480px] rounded-t-3xl sm:rounded-3xl overflow-hidden max-h-[92vh] overflow-y-auto font-['Teachers']" onClick={e => e.stopPropagation()}>
-            <div className="flex justify-center pt-3 pb-1 sm:hidden"><div className="w-10 h-1 bg-gray-200 rounded-full"/></div>
+        <div
+          className="fixed inset-0 flex items-end sm:items-center justify-center z-[1000] p-0 sm:p-4"
+          style={{
+            background: isAnimating ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0)",
+            transition: "background 0.4s ease",
+            pointerEvents: isAnimating ? "auto" : "none",
+          }}
+          onClick={handleClose}
+        >
+          <div
+            className="bg-white w-full sm:max-w-[480px] rounded-t-3xl sm:rounded-3xl overflow-hidden max-h-[92vh] overflow-y-auto font-['Teachers']"
+            style={{
+              transform: isAnimating ? "translateY(0) scale(1)" : "translateY(110%) scale(0.95)",
+              opacity: isAnimating ? 1 : 0,
+              transition: "transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.35s ease",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-center pt-3 pb-1 sm:hidden">
+              <div className="w-10 h-1 bg-gray-200 rounded-full"/>
+            </div>
 
             <div className="bg-[#242D96] px-6 pt-5 pb-6 text-center">
               <p className="text-white/60 text-[11px] tracking-[2px] uppercase mb-2 font-['Teachers']">AI Assistant</p>
-              <h2 className="text-white text-[20px] font-medium mb-1 font-['Teachers']">
+              <h2 style={{ color: "white" }} className="text-[20px] font-medium mb-1 font-['Teachers']">
                 {mode === "photo" ? "Food Analysis" : mode === "plan" ? "Meal Planner" : "What can I help with?"}
               </h2>
               <p className="text-white/70 text-[13px] font-['Teachers']">
@@ -404,7 +427,7 @@ function AIAssistant() {
             </div>
 
             <div className="p-5 sm:p-6">
-              {/* ── Limit reached screen ── */}
+              {/* ── Limit reached ── */}
               {result?.type === "limit" && (
                 <div style={{ textAlign: "center", padding: "8px 0" }}>
                   <div style={{ fontSize: 48, marginBottom: 12 }}>💎</div>

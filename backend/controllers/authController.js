@@ -20,35 +20,58 @@ const setCookie = (res, token) => {
 };
 
 // ─── Google OAuth ─────────────────────────────────────────────────────────────
+// ─── Google OAuth ─────────────────────────────────────────────────────────────
 export const googleAuth = async (req, res) => {
-  const { credential } = req.body;
-  if (!credential) return res.json({ success: false, message: "No credential" });
+  const { credential, access_token } = req.body;
 
   try {
-    // Верифицируем Google токен
-    const ticket = await googleClient.verifyIdToken({
-      idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
+    let googleId, email, name, picture;
 
-    const { sub: googleId, email, name, picture } = ticket.getPayload();
+    if (credential) {
+      // Старый способ — JWT токен (GoogleLogin компонент)
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      googleId = payload.sub;
+      email = payload.email;
+      name = payload.name;
+      picture = payload.picture;
 
+    } else if (access_token) {
+      // Новый способ — access_token (useGoogleLogin хук)
+      const response = await fetch(
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+      );
+      if (!response.ok) {
+        return res.json({ success: false, message: "Failed to get user info from Google" });
+      }
+      const data = await response.json();
+      googleId = data.sub;
+      email = data.email;
+      name = data.name;
+      picture = data.picture;
+
+    } else {
+      return res.json({ success: false, message: "No credential or access_token provided" });
+    }
+
+    // Ищем или создаём пользователя
     let user = await userModel.findOne({ $or: [{ googleId }, { email }] });
 
     if (user) {
-      // Обновляем googleId если вошёл через email раньше
       if (!user.googleId) {
         user.googleId = googleId;
         await user.save();
       }
     } else {
-      // Создаём нового пользователя без пароля
       user = new userModel({
         name,
         email,
         googleId,
         password: "",
-        isAccountVerified: true, // Google уже верифицировал email
+        isAccountVerified: true,
         avatar: picture || "",
       });
       await user.save();
@@ -62,6 +85,7 @@ export const googleAuth = async (req, res) => {
       token,
       needsPassword: !user.password || user.password === "",
     });
+
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }

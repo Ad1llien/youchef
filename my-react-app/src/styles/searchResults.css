@@ -286,12 +286,12 @@ justify-content: center;
 /* Адаптивка для мобильных */
 @media (max-width: 768px) {
   .searchResultsPageWrapper {
-    padding: 20px 0 28px;
+    padding: 20px 0 40px;
+    align-items: stretch;
   }
 
   .resultsTopBar {
     width: 100%;
-    max-width: 420px;
     display: grid;
     grid-template-columns: 28px 1fr 28px;
     align-items: center;
@@ -308,73 +308,81 @@ justify-content: center;
   .resultsTopBar .resultsTitle {
     margin: 0;
     text-align: center;
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .lineFull img {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .mealsContainer {
     width: calc(100% - 24px);
-    max-width: 420px;
+    max-width: 100%;
+    margin: 0 12px;
     padding: 0;
     border-radius: 16px;
-    overflow: hidden;
+    overflow: visible; /* ← убираем overflow hidden */
   }
 
   .mealsHeader {
     width: 100%;
-    height: 64px;
-    grid-template-columns: 56px 1fr 116px;
-    font-size: 18px;
+    height: 52px;
+    grid-template-columns: 44px 1fr 90px;
+    font-size: 14px;
     border-radius: 16px 16px 0 0;
-    padding: 0 8px;
+    padding: 0 12px;
     box-sizing: border-box;
   }
 
   .mealHeaderNames {
     width: auto;
-    font-size: 16px;
-    justify-content: center;
+    font-size: 14px;
   }
 
   .mealsList {
     width: 100%;
-    max-height: 620px;
+    max-height: none !important; /* ← убираем ограничение высоты */
+    overflow-y: visible !important; /* ← убираем внутренний скролл */
     margin-top: 0;
   }
 
   .mealRow {
     width: 100%;
-    height: 60px;
-    grid-template-columns: 56px 1fr 116px;
+    height: auto;
+    min-height: 52px;
+    grid-template-columns: 44px 1fr 90px;
     align-items: center;
-    padding: 0 8px;
+    padding: 12px;
     box-sizing: border-box;
-    border-bottom: none;
+    border-bottom: 1px solid #f0f0f0;
     border-radius: 0;
-  }
-
-  .mealIndex,
-  .mealName,
-  .mealMatch {
-    font-size: 16px;
   }
 
   .mealIndex {
     width: auto;
+    font-size: 15px;
     color: #9aa3b2;
+    justify-content: center;
   }
 
   .mealName {
     width: auto;
+    font-size: 15px;
     color: #242D96;
+    white-space: normal; /* ← перенос длинных названий */
+    line-height: 1.3;
   }
 
   .mealMatch {
+    font-size: 14px;
     justify-content: center;
     color: #242D96;
+    font-weight: 600;
+  }
+
+  .topMatchedRow {
+    background: #EFF2D4;
+    border-radius: 0;
   }
 
   .lineWrapper,
@@ -382,5 +390,21 @@ justify-content: center;
   .expandTitle,
   .requestRecipe {
     display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .mealsHeader {
+    grid-template-columns: 36px 1fr 76px;
+    padding: 0 8px;
+  }
+
+  .mealRow {
+    grid-template-columns: 36px 1fr 76px;
+    padding: 10px 8px;
+  }
+
+  .mealName {
+    font-size: 14px;
   }
 }

@@ -107,7 +107,7 @@ function Contact() {
       <div className="contact-info-grid">
         <div className="contact-info-block">
           <p className="contact-info-title">Email</p>
-          <p className="contact-info-value">youchef@com</p>
+          <p className="contact-info-value">youchef.app@gmail.com</p>
         </div>
 
         <div className="contact-info-block">

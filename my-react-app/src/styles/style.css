@@ -1489,3 +1489,42 @@ cursor: pointer;
     max-width: 320px;
   }
 }
+
+
+/* ─── Мобильная адаптивка auth страниц ─────────────────── */
+@media (max-width: 768px) {
+  body {
+    margin-right: 0 !important;
+  }
+
+  .auth-wrapper {
+    padding: 20px 16px;
+    box-sizing: border-box;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+
+  .auth-card {
+    width: 100% !important;
+    max-width: 400px;
+    box-sizing: border-box;
+  }
+
+  .otp-container {
+    padding: 0 4px;
+    gap: clamp(4px, 2vw, 10px) !important;
+  }
+
+  .otp-input {
+    width: clamp(36px, 12vw, 52px) !important;
+    height: clamp(42px, 14vw, 58px) !important;
+    font-size: clamp(18px, 5vw, 24px) !important;
+    flex-shrink: 1 !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .auth-wrapper {
+    padding: 20px 12px;
+  }
+}

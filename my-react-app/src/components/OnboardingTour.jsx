@@ -65,6 +65,8 @@ const STEPS = [
 ];
 
 const W = 300;
+const CHAR_W = 70;   // ширина персонажа на мобиле
+const CHAR_H = 120;  // высота персонажа на мобиле
 const GAP = 12;
 
 function OnboardingTour() {
@@ -76,6 +78,13 @@ function OnboardingTour() {
   const [user, setUser] = useState(null);
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
+
+  const isMobile = window.innerWidth <= 768;
+
+  // На мобиле: ширина карточки = ширина экрана - отступы - персонаж
+  const cardWidth = isMobile
+    ? Math.min(window.innerWidth - 32 - CHAR_W, 280)
+    : W;
 
   useEffect(() => {
     apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET" })
@@ -204,25 +213,38 @@ function OnboardingTour() {
     const vh = window.innerHeight;
     const TH = 180;
     const cx = rect.left + rect.width / 2;
+
     if (current.place === "bottom") {
       top = Math.min(rect.bottom + GAP, vh - TH - 8);
     } else {
       top = Math.max(rect.top - TH - GAP, 8);
     }
-    left = Math.max(8, Math.min(cx - W / 2, vw - W - 100));
+
+    if (isMobile) {
+      // На мобиле: весь блок (карточка + персонаж) центрируем
+      const totalWidth = cardWidth + CHAR_W;
+      left = Math.max(8, (vw - totalWidth) / 2);
+    } else {
+      left = Math.max(8, Math.min(cx - W / 2, vw - W - 100));
+    }
   } else {
     top = window.innerHeight / 2 - 90;
-    left = window.innerWidth / 2 - W / 2;
+    if (isMobile) {
+      const totalWidth = cardWidth + CHAR_W;
+      left = Math.max(8, (window.innerWidth - totalWidth) / 2);
+    } else {
+      left = window.innerWidth / 2 - W / 2;
+    }
   }
 
-  // Картинка персонажа
+  // Персонаж — меньше на мобиле
   const charImg = (
     <img
       src={isLeft ? chefLeft : chefRight}
       alt=""
       style={{
-        width: 90,
-        height: 160,
+        width: isMobile ? CHAR_W : 90,
+        height: isMobile ? CHAR_H : 160,
         flexShrink: 0,
         marginBottom: -8,
         marginLeft: isLeft ? 0 : -4,
@@ -276,7 +298,7 @@ function OnboardingTour() {
 
         {/* Карточка */}
         <div style={{
-          width: W,
+          width: cardWidth,
           background: "white",
           borderRadius: 16,
           padding: "18px 20px 16px",
@@ -296,23 +318,37 @@ function OnboardingTour() {
             ))}
           </div>
 
-          <h3 style={{ color: "#242D96", fontSize: 15, fontWeight: 600, margin: "0 0 7px", fontFamily: "Teachers, sans-serif" }}>
+          <h3 style={{
+            color: "#242D96",
+            fontSize: isMobile ? 13 : 15,
+            fontWeight: 600,
+            margin: "0 0 7px",
+            fontFamily: "Teachers, sans-serif",
+          }}>
             {current.title}
           </h3>
-          <p style={{ color: "#555", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px", fontFamily: "Teachers, sans-serif" }}>
+          <p style={{
+            color: "#555",
+            fontSize: isMobile ? 12 : 13,
+            lineHeight: 1.6,
+            margin: "0 0 14px",
+            fontFamily: "Teachers, sans-serif",
+          }}>
             {current.content}
           </p>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <button onClick={finish} style={{
               background: "none", border: "none", color: "#aaa",
-              fontSize: 13, cursor: "pointer", fontFamily: "Teachers, sans-serif",
+              fontSize: 12, cursor: "pointer", fontFamily: "Teachers, sans-serif",
             }}>Skip</button>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ color: "#bbb", fontSize: 12 }}>{step + 1} / {STEPS.length}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: "#bbb", fontSize: 11 }}>{step + 1} / {STEPS.length}</span>
               <button onClick={handleNext} style={{
                 background: "#242D96", color: "white", border: "none",
-                borderRadius: 50, padding: "7px 18px", fontSize: 13,
+                borderRadius: 50,
+                padding: isMobile ? "6px 14px" : "7px 18px",
+                fontSize: isMobile ? 12 : 13,
                 fontWeight: 500, cursor: "pointer", fontFamily: "Teachers, sans-serif",
               }}>
                 {step === STEPS.length - 1 ? "Finish ✓" : "Next →"}

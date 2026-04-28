@@ -119,7 +119,7 @@ function PremiumPromoModal({ user }) {
           <div style={{ background: "#f8f9ff", borderRadius: 12, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <div>
               <p style={{ margin: 0, fontSize: 13, color: "#788CA5", fontFamily: "Teachers, sans-serif" }}>Premium plan</p>
-              <p style={{ margin: "2px 0 0", fontSize: 18, fontWeight: 700, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>1 500 ₸ <span style={{ fontSize: 13, fontWeight: 400, color: "#788CA5" }}>/ month</span></p>
+              <p style={{ margin: "2px 0 0", fontSize: 18, fontWeight: 700, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>2 500 ₸ <span style={{ fontSize: 13, fontWeight: 400, color: "#788CA5" }}>/ month</span></p>
             </div>
             <div style={{ background: "#E6FAED", borderRadius: 20, padding: "4px 12px", fontSize: 12, color: "#029663", fontWeight: 600, fontFamily: "Teachers, sans-serif" }}>
               Best value

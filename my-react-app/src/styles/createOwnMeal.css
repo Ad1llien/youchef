@@ -185,7 +185,7 @@ object-fit: cover;
   height: 120px;
 
   cursor: pointer;
-  z-index: 1000;        /* чтобы была поверх всего */
+  z-index: 100;        /* чтобы была поверх всего */
 }
 
 .potIcon img {
@@ -275,5 +275,116 @@ object-fit: cover;
   .ingredientCard {
     width: 100%;
     max-width: 130px;
+  }
+}
+
+
+/* ─── Мобильная адаптивка ─────────────────────────────────── */
+@media (max-width: 768px) {
+
+  .createOwnMealContent {
+    margin-top: 40px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .categoriesGrid {
+    gap: 16px;
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .categoryCard {
+    width: 60px;
+  }
+
+  .cardTitle {
+    font-size: 12px;
+    height: auto;
+  }
+
+  .iconCircle {
+    width: 46px;
+    height: 46px;
+  }
+
+  .iconCircle img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .fivePerRow {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ingredientCard {
+    width: 100% !important;
+    height: auto !important;
+    padding: 12px 8px;
+    box-sizing: border-box;
+  }
+
+  .ingredientImage {
+    width: 100% !important;
+    height: 100px !important;
+    object-fit: contain;
+  }
+
+  .ingredientTitle {
+    font-size: 14px;
+  }
+
+  .ingredientsGrid {
+    gap: 16px !important;
+    padding: 0;
+    width: 100%;
+  }
+
+  .ingredientsWrapper {
+    margin-top: 32px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .line {
+    width: 100% !important;
+    margin-top: 40px;
+  }
+
+  .potIcon {
+    right: 12px !important;
+    bottom: 80px !important;
+    top: auto !important;
+    width: 70px !important;
+    height: 70px !important;
+    z-index: 100 !important;
+  }
+
+  .ingredientsTitle {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 390px) {
+  .fivePerRow {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .ingredientImage {
+    height: 80px !important;
+  }
+
+  .categoriesGrid {
+    gap: 12px;
+  }
+
+  .categoryCard {
+    width: 50px;
   }
 }
