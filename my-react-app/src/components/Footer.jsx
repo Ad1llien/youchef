@@ -9,8 +9,7 @@ function Footer() {
 
   return (
     <footer>
-      <img className="line5 max-w-full mx-auto" src={footlines} alt="" />
-
+<img src={footlines} alt="" style={{ width: "100%", display: "block" }} />
       <div className="footerContent">
         <div className="footerLeft">
           <div className="makeUs">Make us a part of your lifestyle</div>

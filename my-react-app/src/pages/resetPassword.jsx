@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../logos/logo.svg";
 import "../styles/style.css";
 import API_BASE_URL, { apiFetch } from "../config/api";
+import AuthLangButton from "../components/AuthLangButton";
 
 function Toast({ toast, onClose }) {
   useEffect(() => {
@@ -61,15 +62,12 @@ function ResetPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const res = await apiFetch(`${API_BASE_URL}/api/auth/send-reset-otp`, {
         method: "POST",
         body: JSON.stringify({ email }),
       });
-
       const data = await res.json();
-
       if (res.ok) {
         showToast("Check your inbox for the reset code.", "success");
         setTimeout(() => navigate("/verify-account", { state: { email } }), 1200);
@@ -85,8 +83,9 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className="auth-wrapper">
+    <div className="auth-wrapper" style={{ position: "relative" }}>
       <Toast toast={toast} onClose={() => setToast(null)} />
+      <AuthLangButton />
 
       <style>{`
         .yc-input {
@@ -141,11 +140,7 @@ function ResetPasswordPage() {
           </button>
         </form>
 
-        <div
-          className="btn-secondary"
-          onClick={() => navigate("/login")}
-          style={{ marginTop: "15px" }}
-        >
+        <div className="btn-secondary" onClick={() => navigate("/login")} style={{ marginTop: "15px" }}>
           Remember your password?{" "}
           <span style={{ cursor: "pointer" }}>Log in</span>
         </div>

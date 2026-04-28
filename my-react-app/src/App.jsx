@@ -94,14 +94,15 @@ useEffect(() => {
     .then(data => { if (data.success) setPromoUser(data.userData); })
     .catch(() => {});
 }, []);
+const isAdminPage = location.pathname === "/admin";
 
   return (
     <div className="App overflow-x-hidden">
-      {!isAuthPage && (
+      {!isAuthPage && !isAdminPage &&(
         <div className={mobileMenuOpen ? "relative z-50" : "relative"}>
           <Header onBurgerClick={() => setMobileMenuOpen((prev) => !prev)} />
-          {mobileMenuOpen && (
-            <div className="absolute left-0 right-0 top-full z-50 flex flex-wrap items-center justify-center gap-4 bg-[#FFFEEB] p-4 font-normal sm:hidden text-[20px]" onClick={(e) => e.stopPropagation()}>
+          {mobileMenuOpen && !isAdminPage &&(
+            <div className="fixed inset-0 absolute left-0 right-0 top-full z-50 flex flex-wrap items-center justify-center gap-4 bg-[#FFFEEB] p-4 font-normal sm:hidden text-[20px]" onClick={(e) => e.stopPropagation()}>
               <button type="button" className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers" onClick={() => { navigate("/MealPlanner"); setMobileMenuOpen(false); }}>youCart</button>
               <button type="button" className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers" onClick={() => { navigate("/"); setMobileMenuOpen(false); }}>Recipe</button>
               <button type="button" className="cursor-pointer border-none bg-transparent text-[#242D96] text-[20px] font-teachers" onClick={() => { navigate("/premium"); setMobileMenuOpen(false); }}>Premium</button>
@@ -285,8 +286,8 @@ useEffect(() => {
           } />
         </Routes>
       </main>
-      <PremiumPromoModal user={promoUser} />
-      <Footer />
+      {!isAdminPage && <PremiumPromoModal user={promoUser} />}
+      {!isAdminPage && <Footer />}
     </div>
   );
 }

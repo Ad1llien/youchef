@@ -55,10 +55,20 @@ function MyAccount() {
       await apiFetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
       });
-
+  
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("savedEmail");
+      sessionStorage.removeItem("token");
+  
       navigate("/login");
     } catch (err) {
       console.error(err);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("savedEmail");
+      sessionStorage.removeItem("token");
+      navigate("/login");
     }
   };
 

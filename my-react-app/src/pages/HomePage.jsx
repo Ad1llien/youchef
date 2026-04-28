@@ -7,7 +7,8 @@ import CreateOwnMealContent from "../components/CreateOwnMealContent.jsx";
 
 function HomePage() {
   const [activeTab, setActiveTab] = useState("popular");
-
+  const [currentLang, setCurrentLang] = useState("EN");
+  const [langOpen, setLangOpen] = useState(false);
   return (
     <main>
       <div className="main1stChild">

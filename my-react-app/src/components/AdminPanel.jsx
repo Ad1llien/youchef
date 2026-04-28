@@ -23,6 +23,7 @@ function Heatmap({ data, title }) {
     if (t < 0.75) return "#5566d4";
     return "#242D96";
   };
+  
   return (
     <div style={{ background: "white", borderRadius: 16, padding: 24, border: "1.5px solid #e8ecf8", marginBottom: 20 }}>
       <h3 style={{ margin: "0 0 16px", color: "#242D96", fontSize: 15, fontFamily: "Teachers,sans-serif" }}>{title}</h3>
