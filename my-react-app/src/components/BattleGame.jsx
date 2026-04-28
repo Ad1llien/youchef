@@ -22,6 +22,8 @@ const PHASE = {
 };
 
 export default function BattleGame({ user, onClose }) {
+    console.log("BattleGame user:", user); // ← добавь временно
+
   const navigate = useNavigate();
   const { emit, on, off, connected } = useGameSocket();
 
@@ -49,7 +51,8 @@ export default function BattleGame({ user, onClose }) {
   const inputRef = useRef(null);
   const fbTimerRef = useRef(null);
 
-  const myId = user?.id || user?._id;
+  const myId = user?._id || user?.id || user?.userId || user?.email;
+
 
   // ── Helpers ──────────────────────────────────────────────────────────────
   const showFeedback = useCallback((msg, type = "info") => {

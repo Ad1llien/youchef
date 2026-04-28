@@ -27,7 +27,6 @@ const __dirname = path.dirname(__filename);
 
 connectDB();
 
-// ─── CORS ────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
   "http://localhost:5174",
   "https://youchef-front.onrender.com",
@@ -36,7 +35,6 @@ const allowedOrigins = [
   "https://youchef.kz",
 ].filter(Boolean);
 
-// ─── Helmet ───────────────────────────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
@@ -47,7 +45,6 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json({ limit: "5mb" }));
 app.use(cookieParser());
 
-// ─── Rate Limiters ────────────────────────────────────────────────────────────
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, max: 200,
   standardHeaders: true, legacyHeaders: false,
@@ -72,7 +69,6 @@ const contactLimiter = rateLimit({
 
 app.use(globalLimiter);
 
-// ─── Логирование подозрительных запросов ─────────────────────────────────────
 app.use((req, res, next) => {
   const suspicious = ["../", "..\\", "<script", "javascript:", "SELECT ", "DROP ", "eval("];
   const url = decodeURIComponent(req.url).toLowerCase();
@@ -84,7 +80,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ─── Статика ──────────────────────────────────────────────────────────────────
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   next();
@@ -101,7 +96,64 @@ app.use("/api/contact",        contactLimiter, contactRouter);
 app.get("/api/auth/is-auth",                   isAuthenticated);
 app.use("/api/admin",                          adminRouter);
 
-// ─── React фронт ──────────────────────────────────────────────────────────────
+// ─── OG Helper ───────────────────────────────────────────────────────────────
+const isCrawler = (req) => {
+  const ua = req.headers["user-agent"] || "";
+  console.log(`[OG] UA: ${ua.slice(0, 80)}`);
+  return /telegrambot|whatsapp|discordbot|twitterbot|facebookexternalhit|linkedinbot|vkshare|slackbot/i.test(ua);
+};
+
+const makeOGPage = ({ title, description, image, url }) => `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>${title}</title>
+  <meta property="og:title" content="${title}" />
+  <meta property="og:description" content="${description}" />
+  <meta property="og:image" content="${image}" />
+  <meta property="og:url" content="${url}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="YouChef" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${title}" />
+  <meta name="twitter:description" content="${description}" />
+  <meta name="twitter:image" content="${image}" />
+</head>
+<body></body>
+</html>`;
+
+// ─── OG роуты ДО статики ─────────────────────────────────────────────────────
+app.get("/meal/:id", async (req, res, next) => {
+  if (!isCrawler(req)) return next();
+  try {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${req.params.id}`
+    );
+    const data = await response.json();
+    const meal = data.meals?.[0];
+    if (!meal) return next();
+    res.send(makeOGPage({
+      title: `${meal.strMeal} — YouChef`,
+      description: `${meal.strCategory} • ${meal.strArea} recipe. Get full ingredients and instructions on YouChef!`,
+      image: meal.strMealThumb,
+      url: `https://youchef.kz/meal/${req.params.id}`,
+    }));
+  } catch {
+    return next();
+  }
+});
+
+app.get("/premium", (req, res, next) => {
+  if (!isCrawler(req)) return next();
+  res.send(makeOGPage({
+    title: "YouChef Premium ✨",
+    description: "Upgrade to Premium — unlimited AI nutrition analysis, exclusive recipes and meal plans.",
+    image: "https://youchef.kz/og-image.png",
+    url: "https://youchef.kz/premium",
+  }));
+});
+
+// ─── React статика ────────────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, "../my-react-app/dist"), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith(".css"))  res.setHeader("Content-Type", "text/css");
@@ -116,13 +168,11 @@ app.get("/{*any}", (req, res) => {
   res.sendFile(path.join(__dirname, "../my-react-app/dist/index.html"));
 });
 
-// ─── Глобальный обработчик ошибок ────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error("Server error:", err.message);
   res.status(500).json({ success: false, message: "Internal server error" });
 });
 
-// ─── Запуск сервера с Socket.io ───────────────────────────────────────────────
 const httpServer = createServer(app);
 initGameSocket(httpServer);
 httpServer.listen(port, () => console.log(`Server started on PORT:${port}`));

@@ -121,6 +121,7 @@ function initGameSocket(httpServer) {
 
     // ── 1. Начать поиск ──────────────────────────────────────────────────────
     socket.on("find_match", ({ userId, username, avatar }) => {
+        console.log(`[MM] find_match: userId=${userId}, username=${username}`);
       // убрать из очереди если уже был
       const existing = matchmakingQueue.findIndex((p) => p.userId === userId);
       if (existing !== -1) matchmakingQueue.splice(existing, 1);

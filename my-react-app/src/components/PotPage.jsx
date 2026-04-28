@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/inYourPot.css";
 import Line from "../icons/Line36.svg";
 import pot from "../icons/openPot.svg";
+import chef from "../icons/potFood.svg"
 import deleteIcon from "../icons/deleteIcon.svg";
 import backIcon from "../icons/back.svg";
 import { useState, useEffect } from "react";
@@ -64,7 +65,7 @@ function PotPage({ checkPot = [], setCheckPot = () => {} }) {
       </div>
 
       <div className="PotImage">
-        <img src={pot} alt="pot" />
+        <img src={chef} alt="pot" />
       </div>
 
       {!checkPot || checkPot.length === 0 ? (
