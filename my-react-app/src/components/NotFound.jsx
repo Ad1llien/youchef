@@ -6,8 +6,8 @@ function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFFEEB] px-4 text-center">
       <div className="text-8xl font-['Taviraj'] text-[#242D96] mb-4">404</div>
-      <div><img src={error} alt="" /></div>
-      <h1 className="text-2xl font-semibold text-[#242D96] mb-3">Page not found</h1>
+      <div className="text-6xl mb-6"><img src={error} alt="" srcset="" style={{ width: 200, height: 200 }} /></div>
+      <h1 className="text-2xl font-semibold text-[rgb(36,45,150)] mb-3">Page not found</h1>
       <p className="text-gray-500 mb-8 max-w-sm">
         The page you're looking for doesn't exist or has been moved.
       </p>

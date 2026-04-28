@@ -29,11 +29,7 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Teachers', sans-serif; background: #FDFBE7; padding: 32px 24px; color: #1a1a2e; }
   .page { max-width: 720px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 40px rgba(36,45,150,0.12); }
-
-  /* HEADER */
   .header { background: #242D96; padding: 0; position: relative; overflow: hidden; }
-  .header::before { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.05); }
-  .header::after { content:''; position:absolute; bottom:-40px; left:40%; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,0.04); }
   .header-top { display:flex; align-items:center; justify-content:space-between; padding:24px 32px 20px; }
   .brand-row { display:flex; align-items:center; gap:14px; }
   .logo-box { width:48px; height:48px; border-radius:14px; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; overflow:hidden; }
@@ -43,24 +39,18 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
   .header-badge { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:8px 16px; text-align:center; }
   .badge-tag { font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:2px; }
   .badge-cat { font-size:14px; font-weight:600; color:white; margin-top:2px; }
-
-  /* MEAL HERO */
-  .meal-hero { display:flex; gap:0; }
+  .meal-hero { display:flex; }
   .meal-img { width:220px; height:200px; object-fit:cover; flex-shrink:0; }
   .meal-info { flex:1; padding:20px 24px; display:flex; flex-direction:column; justify-content:center; }
   .meal-title { font-family:'Taviraj',serif; font-size:22px; font-weight:500; color:white; margin-bottom:8px; line-height:1.3; }
   .meal-meta { display:flex; gap:8px; flex-wrap:wrap; }
   .meta-pill { background:rgba(255,255,255,0.12); border-radius:20px; padding:3px 12px; font-size:11px; color:rgba(255,255,255,0.8); }
-
-  /* NUTRITION */
   .nutrition-bar { display:flex; background:#f8f9ff; border-bottom:1px solid #eef0fb; }
   .nut-item { flex:1; text-align:center; padding:16px 8px; border-right:1px solid #eef0fb; }
   .nut-item:last-child { border-right:none; }
   .nut-val { font-size:22px; font-weight:700; color:#242D96; }
   .nut-label { font-size:11px; color:#788CA5; margin-top:2px; text-transform:uppercase; letter-spacing:1px; }
-
-  /* CONTENT */
-  .content { display:flex; gap:0; }
+  .content { display:flex; }
   .left-col { width:260px; border-right:1px solid #f3f4f6; padding:24px; flex-shrink:0; }
   .right-col { flex:1; padding:24px; }
   .section-title { font-family:'Taviraj',serif; font-size:16px; font-weight:500; color:#242D96; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid #eef0fb; display:flex; align-items:center; gap:8px; }
@@ -69,8 +59,6 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
   .ing-name { font-size:12px; font-weight:500; color:#242D96; flex:1; }
   .ing-measure { font-size:11px; color:#788CA5; white-space:nowrap; }
   .instructions { font-size:13px; line-height:1.8; color:#444; }
-
-  /* TEAR + FOOTER */
   .tear { position:relative; height:26px; display:flex; align-items:center; background:#FDFBE7; }
   .tear::before { content:''; position:absolute; left:-14px; width:28px; height:28px; border-radius:50%; background:#FDFBE7; }
   .tear::after { content:''; position:absolute; right:-14px; width:28px; height:28px; border-radius:50%; background:#FDFBE7; }
@@ -78,34 +66,22 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
   .footer { background:#242D96; padding:14px 32px; display:flex; justify-content:space-between; align-items:center; }
   .footer-left { color:rgba(255,255,255,0.6); font-size:12px; }
   .footer-right { color:rgba(255,255,255,0.3); font-size:11px; }
-
-  @media print {
-    body { background:white; padding:0; }
-    .page { box-shadow:none; border-radius:0; }
-  }
+  @media print { body { background:white; padding:0; } .page { box-shadow:none; border-radius:0; } }
 </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- HEADER -->
   <div class="header">
     <div class="header-top">
       <div class="brand-row">
-        <div class="logo-box">
-          <img src="https://youchef.kz/icons/logo-192.png" alt="YouChef" onerror="this.style.display='none'"/>
-        </div>
-        <div>
-          <div class="brand-name">YouChef</div>
-          <div class="brand-sub">Recipe Card</div>
-        </div>
+        <div class="logo-box"><img src="https://youchef.kz/icons/logo-192.png" alt="YouChef" onerror="this.style.display='none'"/></div>
+        <div><div class="brand-name">YouChef</div><div class="brand-sub">Recipe Card</div></div>
       </div>
       <div class="header-badge">
         <div class="badge-tag">Category</div>
         <div class="badge-cat">${meal.strCategory || "Recipe"}</div>
       </div>
     </div>
-
     <div class="meal-hero">
       <img class="meal-img" src="${meal.strMealThumb}" alt="${meal.strMeal}" onerror="this.style.background='#eef0fb'"/>
       <div class="meal-info">
@@ -118,30 +94,17 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
       </div>
     </div>
   </div>
-
-  <!-- NUTRITION -->
   <div class="nutrition-bar">
     ${[
       { label: "Calories", val: cal, unit: "kcal" },
       { label: "Protein", val: protein, unit: "g" },
       { label: "Carbs", val: carbs, unit: "g" },
       { label: "Fat", val: fat, unit: "g" },
-    ].map(n => `
-      <div class="nut-item">
-        <div class="nut-val">${n.val}<span style="font-size:12px;font-weight:400;color:#BBC8D8"> ${n.unit}</span></div>
-        <div class="nut-label">${n.label}</div>
-      </div>
-    `).join("")}
+    ].map(n => `<div class="nut-item"><div class="nut-val">${n.val}<span style="font-size:12px;font-weight:400;color:#BBC8D8"> ${n.unit}</span></div><div class="nut-label">${n.label}</div></div>`).join("")}
   </div>
-
-  <!-- CONTENT -->
   <div class="content">
-    <!-- Ingredients -->
     <div class="left-col">
-      <div class="section-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#242D96" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Ingredients
-      </div>
+      <div class="section-title">Ingredients</div>
       ${ingredients.map(({ ingredient, measure }) => `
         <div class="ing-row">
           <img class="ing-img" src="https://www.themealdb.com/images/ingredients/${ingredient}-small.png" alt="${ingredient}" onerror="this.style.display='none'"/>
@@ -150,24 +113,16 @@ function downloadMealAsPDF(meal, ingredients, nutrition) {
         </div>
       `).join("")}
     </div>
-
-    <!-- Instructions -->
     <div class="right-col">
-      <div class="section-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#242D96" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Instructions
-      </div>
+      <div class="section-title">Instructions</div>
       <div class="instructions">${(meal.strInstructions || "").slice(0, 1200)}${meal.strInstructions?.length > 1200 ? "..." : ""}</div>
     </div>
   </div>
-
-  <!-- TEAR + FOOTER -->
   <div class="tear"><div class="tear-line"></div></div>
   <div class="footer">
     <div class="footer-left">Generated by YouChef AI · ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
     <div class="footer-right">youchef.kz</div>
   </div>
-
 </div>
 </body>
 </html>`;
@@ -202,6 +157,363 @@ function copyMealAsText(meal, ingredients, nutrition) {
   navigator.clipboard.writeText(lines.join("\n"));
 }
 
+// ─── Cooking Timer Modal ──────────────────────────────────────────────────────
+function CookingTimerModal({ onClose }) {
+  const [tab, setTab] = useState("timer");
+
+  // Timer state
+  const [timerTotal, setTimerTotal] = useState(300);
+  const [timerLeft, setTimerLeft] = useState(300);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerDone, setTimerDone] = useState(false);
+  const [tH, setTH] = useState(0);
+  const [tM, setTM] = useState(5);
+  const [tS, setTS] = useState(0);
+  const timerRef = useRef(null);
+
+  // Stopwatch state
+  const [swElapsed, setSwElapsed] = useState(0);
+  const [swRunning, setSwRunning] = useState(false);
+  const [laps, setLaps] = useState([]);
+  const swRef = useRef(null);
+  const swStartRef = useRef(0);
+  const lapBaseRef = useRef(0);
+
+  // Multi timer state
+  const [multiTimers, setMultiTimers] = useState([]);
+  const multiRefs = useRef({});
+
+  const CIRC = 427;
+
+  const pad = (n) => String(Math.floor(n)).padStart(2, "0");
+  const fmt = (s) => {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return h ? `${pad(h)}:${pad(m)}:${pad(sec)}` : `${pad(m)}:${pad(sec)}`;
+  };
+  const swFmt = (ms) => {
+    const m = Math.floor(ms / 60000), s = Math.floor((ms % 60000) / 1000), t = Math.floor((ms % 1000) / 100);
+    return `${pad(m)}:${pad(s)}.${t}`;
+  };
+
+  const beep = (freq = 880) => {
+    try {
+      const a = new AudioContext();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.connect(g); g.connect(a.destination);
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0.3, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.8);
+      o.start(); o.stop(a.currentTime + 0.8);
+    } catch (e) {}
+  };
+
+  // Timer handlers
+  const setPreset = (mins) => {
+    clearInterval(timerRef.current);
+    setTimerRunning(false); setTimerDone(false);
+    const total = mins * 60;
+    setTimerTotal(total); setTimerLeft(total);
+    setTH(0); setTM(mins); setTS(0);
+  };
+
+  const handleInputChange = (h, m, s) => {
+    const total = h * 3600 + m * 60 + s;
+    setTimerTotal(total); setTimerLeft(total);
+    setTimerDone(false); setTimerRunning(false);
+    clearInterval(timerRef.current);
+  };
+
+  const toggleTimer = () => {
+    if (timerDone) { setTimerLeft(timerTotal); setTimerDone(false); return; }
+    if (timerRunning) {
+      clearInterval(timerRef.current); setTimerRunning(false);
+    } else {
+      if (timerLeft === 0) return;
+      setTimerRunning(true);
+      timerRef.current = setInterval(() => {
+        setTimerLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            setTimerRunning(false); setTimerDone(true);
+            beep();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+  };
+
+  const resetTimer = () => {
+    clearInterval(timerRef.current);
+    setTimerRunning(false); setTimerDone(false);
+    setTimerLeft(timerTotal);
+  };
+
+  useEffect(() => () => clearInterval(timerRef.current), []);
+
+  // Stopwatch handlers
+  const toggleSW = () => {
+    if (swRunning) {
+      clearInterval(swRef.current); setSwRunning(false);
+    } else {
+      swStartRef.current = Date.now() - swElapsed;
+      setSwRunning(true);
+      swRef.current = setInterval(() => setSwElapsed(Date.now() - swStartRef.current), 100);
+    }
+  };
+
+  const lapSW = () => {
+    const lapTime = swElapsed - lapBaseRef.current;
+    lapBaseRef.current = swElapsed;
+    setLaps(prev => [{ n: prev.length + 1, t: lapTime }, ...prev]);
+  };
+
+  const resetSW = () => {
+    clearInterval(swRef.current);
+    setSwRunning(false); setSwElapsed(0);
+    setLaps([]); lapBaseRef.current = 0;
+  };
+
+  useEffect(() => () => clearInterval(swRef.current), []);
+
+  // Multi timer handlers
+  const addMultiTimer = (name = "Этап", mins = 5) => {
+    const id = Date.now();
+    setMultiTimers(prev => [...prev, { id, name, total: mins * 60, left: mins * 60, running: false, done: false }]);
+  };
+
+  const toggleMulti = (id) => {
+    setMultiTimers(prev => prev.map(t => {
+      if (t.id !== id) return t;
+      if (t.done) {
+        clearInterval(multiRefs.current[id]);
+        return { ...t, left: t.total, done: false, running: false };
+      }
+      if (t.running) {
+        clearInterval(multiRefs.current[id]);
+        return { ...t, running: false };
+      }
+      multiRefs.current[id] = setInterval(() => {
+        setMultiTimers(p => p.map(mt => {
+          if (mt.id !== id) return mt;
+          if (mt.left <= 1) {
+            clearInterval(multiRefs.current[id]);
+            beep(660);
+            return { ...mt, left: 0, running: false, done: true };
+          }
+          return { ...mt, left: mt.left - 1 };
+        }));
+      }, 1000);
+      return { ...t, running: true };
+    }));
+  };
+
+  const removeMulti = (id) => {
+    clearInterval(multiRefs.current[id]);
+    setMultiTimers(prev => prev.filter(t => t.id !== id));
+  };
+
+  useEffect(() => () => Object.values(multiRefs.current).forEach(clearInterval), []);
+
+  const ringOffset = timerTotal > 0 ? CIRC * (1 - timerLeft / timerTotal) : 0;
+
+  const tabStyle = (active) => ({
+    flex: 1, padding: "8px", border: "0.5px solid #BBC8D8", borderRadius: 8,
+    background: active ? "#242D96" : "transparent", cursor: "pointer", fontSize: 14,
+    color: active ? "white" : "#788CA5", fontFamily: "Teachers, sans-serif",
+  });
+
+  const btnStyle = (primary, danger) => ({
+    padding: "10px 24px", borderRadius: 24, cursor: "pointer",
+    fontFamily: "Teachers, sans-serif", fontSize: 14,
+    border: primary || danger ? "none" : "0.5px solid #BBC8D8",
+    background: danger ? "#E24B4A" : primary ? "#242D96" : "transparent",
+    color: primary || danger ? "white" : "#333",
+  });
+
+  const presets = [1, 3, 5, 10, 15, 30];
+  const multiPresets = [
+    { name: "Варка яиц", mins: 7 },
+    { name: "Кипячение", mins: 10 },
+    { name: "Выпечка", mins: 25 },
+    { name: "Маринование", mins: 30 },
+  ];
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 2000 }}
+      onClick={onClose}
+    >
+      <div
+        style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, padding: "20px 20px 40px", maxHeight: "90vh", overflowY: "auto" }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div style={{ width: 40, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 16px" }} />
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div style={{ fontSize: 16, fontWeight: 500, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>Таймер повара</div>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 22, color: "#788CA5", lineHeight: 1 }}>×</button>
+        </div>
+
+        <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+          <button style={tabStyle(tab === "timer")} onClick={() => setTab("timer")}>Таймер</button>
+          <button style={tabStyle(tab === "stopwatch")} onClick={() => setTab("stopwatch")}>Секундомер</button>
+          <button style={tabStyle(tab === "multi")} onClick={() => setTab("multi")}>Мультитаймер</button>
+        </div>
+
+        {/* ── TIMER ── */}
+        {tab === "timer" && (
+          <div>
+            {timerDone && (
+              <div style={{ textAlign: "center", padding: "10px", background: "#FEE2E2", borderRadius: 10, color: "#E24B4A", fontSize: 14, marginBottom: 16, fontFamily: "Teachers, sans-serif" }}>
+                Время вышло!
+              </div>
+            )}
+
+            <div style={{ position: "relative", width: 160, height: 160, margin: "0 auto 16px" }}>
+              <svg width="160" height="160" viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="80" cy="80" r="68" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+                <circle cx="80" cy="80" r="68" fill="none"
+                  stroke={timerDone ? "#E24B4A" : "#242D96"} strokeWidth="8"
+                  strokeDasharray={CIRC} strokeDashoffset={ringOffset}
+                  strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.9s linear" }} />
+              </svg>
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontSize: 36, fontWeight: 500, color: timerDone ? "#E24B4A" : timerRunning ? "#242D96" : "#333", fontVariantNumeric: "tabular-nums", fontFamily: "Teachers, sans-serif" }}>
+                  {fmt(timerLeft)}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
+              {presets.map(m => (
+                <button key={m} onClick={() => setPreset(m)}
+                  style={{ padding: "6px 14px", borderRadius: 20, border: "0.5px solid #BBC8D8", background: "transparent", cursor: "pointer", fontSize: 13, color: "#788CA5", fontFamily: "Teachers, sans-serif" }}>
+                  {m} мин
+                </button>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 20 }}>
+              {[
+                { label: "часы", val: tH, set: (v) => { setTH(v); handleInputChange(v, tM, tS); } },
+                { label: "мин",  val: tM, set: (v) => { setTM(v); handleInputChange(tH, v, tS); } },
+                { label: "сек",  val: tS, set: (v) => { setTS(v); handleInputChange(tH, tM, v); } },
+              ].map(({ label, val, set }) => (
+                <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                  <label style={{ fontSize: 12, color: "#788CA5", fontFamily: "Teachers, sans-serif" }}>{label}</label>
+                  <input
+                    type="number" min="0" max="59" value={val}
+                    onChange={e => set(Number(e.target.value) || 0)}
+                    style={{ width: 64, textAlign: "center", fontSize: 20, border: "0.5px solid #BBC8D8", borderRadius: 8, background: "#f8f9ff", color: "#242D96", padding: "6px 4px", fontFamily: "Teachers, sans-serif" }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+              <button style={btnStyle(true)} onClick={toggleTimer}>
+                {timerDone ? "Сброс" : timerRunning ? "Пауза" : "Старт"}
+              </button>
+              <button style={btnStyle(false)} onClick={resetTimer}>Сброс</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── STOPWATCH ── */}
+        {tab === "stopwatch" && (
+          <div>
+            <div style={{ textAlign: "center", padding: "1.5rem 0 1rem" }}>
+              <div style={{ fontSize: 52, fontWeight: 500, color: swRunning ? "#242D96" : "#333", fontVariantNumeric: "tabular-nums", fontFamily: "Teachers, sans-serif", lineHeight: 1 }}>
+                {swFmt(swElapsed)}
+              </div>
+              <div style={{ fontSize: 13, color: "#788CA5", marginTop: 8, fontFamily: "Teachers, sans-serif" }}>
+                {swRunning ? "идёт..." : swElapsed > 0 ? "на паузе" : "готов"}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 16 }}>
+              <button style={btnStyle(true)} onClick={toggleSW}>{swRunning ? "Пауза" : "Старт"}</button>
+              <button
+                style={{ ...btnStyle(false), opacity: swRunning ? 1 : 0.4, cursor: swRunning ? "pointer" : "default" }}
+                onClick={swRunning ? lapSW : undefined}
+              >
+                Круг
+              </button>
+              <button style={btnStyle(false)} onClick={resetSW}>Сброс</button>
+            </div>
+
+            {laps.length > 0 && (
+              <div style={{ maxHeight: 160, overflowY: "auto", borderTop: "0.5px solid #e5e7eb" }}>
+                {laps.map(l => (
+                  <div key={l.n} style={{ display: "flex", justifyContent: "space-between", padding: "7px 4px", borderBottom: "0.5px solid #f3f4f6", fontSize: 13, fontFamily: "Teachers, sans-serif" }}>
+                    <span style={{ color: "#788CA5" }}>Круг {l.n}</span>
+                    <span style={{ color: "#242D96", fontVariantNumeric: "tabular-nums" }}>{swFmt(l.t)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── MULTI TIMER ── */}
+        {tab === "multi" && (
+          <div>
+            {multiTimers.length === 0 && (
+              <div style={{ textAlign: "center", color: "#788CA5", fontSize: 13, padding: "1rem 0", fontFamily: "Teachers, sans-serif" }}>
+                Добавьте этапы приготовления
+              </div>
+            )}
+
+            {multiTimers.map(t => {
+              const pct = t.total > 0 ? ((1 - t.left / t.total) * 100).toFixed(1) : 0;
+              return (
+                <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", border: "0.5px solid #e5e7eb", borderRadius: 10, marginBottom: 8, background: "white" }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: "#242D96", fontFamily: "Teachers, sans-serif", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {t.name}
+                    </div>
+                    <div style={{ height: 3, background: "#e5e7eb", borderRadius: 2, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${pct}%`, background: t.done ? "#E24B4A" : "#242D96", transition: "width 0.9s linear" }} />
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 500, minWidth: 52, textAlign: "right", fontVariantNumeric: "tabular-nums", color: t.done ? "#E24B4A" : t.running ? "#242D96" : "#333", fontFamily: "Teachers, sans-serif" }}>
+                    {fmt(t.left)}
+                  </div>
+                  <button onClick={() => toggleMulti(t.id)}
+                    style={{ padding: "6px 12px", borderRadius: 20, border: "0.5px solid #242D96", background: t.running ? "transparent" : "#242D96", color: t.running ? "#242D96" : "white", fontSize: 12, cursor: "pointer", fontFamily: "Teachers, sans-serif" }}>
+                    {t.done ? "Сброс" : t.running ? "Пауза" : "Старт"}
+                  </button>
+                  <button onClick={() => removeMulti(t.id)}
+                    style={{ padding: "6px 10px", borderRadius: 20, border: "0.5px solid #BBC8D8", background: "transparent", color: "#788CA5", fontSize: 12, cursor: "pointer" }}>
+                    ✕
+                  </button>
+                </div>
+              );
+            })}
+
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+              {multiPresets.map(p => (
+                <button key={p.name} onClick={() => addMultiTimer(p.name, p.mins)}
+                  style={{ padding: "6px 14px", borderRadius: 20, border: "0.5px solid #BBC8D8", background: "transparent", cursor: "pointer", fontSize: 13, color: "#788CA5", fontFamily: "Teachers, sans-serif" }}>
+                  {p.name}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ textAlign: "center" }}>
+              <button style={btnStyle(true)} onClick={() => addMultiTimer()}>+ Добавить этап</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── MealPage ─────────────────────────────────────────────────────────────────
 function MealPage() {
   const { id } = useParams();
   const userContext = useUser();
@@ -217,6 +529,7 @@ function MealPage() {
   const [userLoaded, setUserLoaded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
 
   const navigate = useNavigate();
 
@@ -239,13 +552,9 @@ function MealPage() {
   }, [id]);
 
   useEffect(() => {
-    apiFetch(`${API_BASE_URL}/api/user/data`, {
-      method: "GET",
-    })
+    apiFetch(`${API_BASE_URL}/api/user/data`, { method: "GET" })
       .then(res => res.json())
-      .then(data => {
-        if (data.success) setIsPremium(Boolean(data.userData?.premium));
-      })
+      .then(data => { if (data.success) setIsPremium(Boolean(data.userData?.premium)); })
       .catch(() => {})
       .finally(() => setUserLoaded(true));
   }, []);
@@ -274,15 +583,9 @@ function MealPage() {
       try {
         const res = await apiFetch(`${API_BASE_URL}/api/nutrition/${meal.idMeal}`, {
           method: "POST",
-          body: JSON.stringify({
-            ingredients,
-            mealName: meal.strMeal,
-            instructions: meal.strInstructions,
-          }),
+          body: JSON.stringify({ ingredients, mealName: meal.strMeal, instructions: meal.strInstructions }),
         });
-
         const data = await res.json();
-
         if (!res.ok) {
           if (res.status === 403 && data.limitReached) {
             setLimitReached(true);
@@ -299,14 +602,12 @@ function MealPage() {
           }
           throw new Error("Failed to fetch nutrition");
         }
-
         const used = data.freeKbjuViewsUsed ?? 0;
         const limit = data.freeKbjuLimit ?? 10;
         setLimitReached(false);
         setFreeKbjuViewsUsed(used);
         setFreeKbjuLimit(limit);
         setNutrition(data);
-
         if (!data.premium && used >= limit) {
           const lastShown = localStorage.getItem("upgrade_modal_shown");
           const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -323,7 +624,6 @@ function MealPage() {
         setNutritionLoading(false);
       }
     };
-
     fetchNutrition();
   }, [meal, ingredients, userLoaded]);
 
@@ -335,15 +635,9 @@ function MealPage() {
         if (localMeal) {
           setMeal(localMeal);
           if (localMeal.strYoutube) setVideoId(localMeal.strYoutube.split("v=")[1]);
-          // ✅ Сохраняем просмотр в историю
           apiFetch(`${API_BASE_URL}/api/user/history/meal`, {
             method: "POST",
-            body: JSON.stringify({
-              idMeal: localMeal.idMeal,
-              strMeal: localMeal.strMeal,
-              strMealThumb: localMeal.strMealThumb,
-              strCategory: localMeal.strCategory,
-            }),
+            body: JSON.stringify({ idMeal: localMeal.idMeal, strMeal: localMeal.strMeal, strMealThumb: localMeal.strMealThumb, strCategory: localMeal.strCategory }),
           }).catch(() => {});
           setLoading(false);
           return;
@@ -356,12 +650,7 @@ function MealPage() {
         if (currentMeal) {
           apiFetch(`${API_BASE_URL}/api/user/history/meal`, {
             method: "POST",
-            body: JSON.stringify({
-              idMeal: currentMeal.idMeal,
-              strMeal: currentMeal.strMeal,
-              strMealThumb: currentMeal.strMealThumb,
-              strCategory: currentMeal.strCategory,
-            }),
+            body: JSON.stringify({ idMeal: currentMeal.idMeal, strMeal: currentMeal.strMeal, strMealThumb: currentMeal.strMealThumb, strCategory: currentMeal.strCategory }),
           }).catch(() => {});
         }
       } catch (err) {
@@ -376,17 +665,14 @@ function MealPage() {
   const toggleFavorite = () => {
     if (!meal) return;
     const isAlready = favorites.find(f => f.idMeal === meal.idMeal);
-    const updated = isAlready
-      ? favorites.filter(f => f.idMeal !== meal.idMeal)
-      : [...favorites, meal];
+    const updated = isAlready ? favorites.filter(f => f.idMeal !== meal.idMeal) : [...favorites, meal];
     setFavorites(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
   };
 
   const handleCopy = () => {
     copyMealAsText(meal, ingredients, nutrition);
-    setCopied(true);
-    setShowShareMenu(false);
+    setCopied(true); setShowShareMenu(false);
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -396,11 +682,7 @@ function MealPage() {
   };
 
   if (loading || !userLoaded) {
-    return (
-      <div className="loaderContainer">
-        <div className="loader"></div>
-      </div>
-    );
+    return <div className="loaderContainer"><div className="loader"></div></div>;
   }
 
   if (!meal) return <div>Meal not found</div>;
@@ -416,25 +698,21 @@ function MealPage() {
   return (
     <div className="mealPage">
 
+      {/* COOKING TIMER MODAL */}
+      {showTimer && <CookingTimerModal onClose={() => setShowTimer(false)} />}
+
       {/* UPGRADE MODAL */}
       {showUpgradeModal && (
         <div
           style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "16px" }}
           onClick={() => setShowUpgradeModal(false)}
         >
-          <div
-            style={{ background: "white", borderRadius: 20, width: "100%", maxWidth: 380, overflow: "hidden" }}
-            onClick={e => e.stopPropagation()}
-          >
+          <div style={{ background: "white", borderRadius: 20, width: "100%", maxWidth: 380, overflow: "hidden" }} onClick={e => e.stopPropagation()}>
             <div style={{ background: "#242D96", padding: "28px 24px", textAlign: "center" }}>
               <div style={{ fontSize: 40, marginBottom: 8 }}>💎</div>
-              <h2 style={{ color: "white", fontSize: 20, fontWeight: 500, margin: "0 0 6px", fontFamily: "Teachers, sans-serif" }}>
-                Upgrade to Premium
-              </h2>
+              <h2 style={{ color: "white", fontSize: 20, fontWeight: 500, margin: "0 0 6px", fontFamily: "Teachers, sans-serif" }}>Upgrade to Premium</h2>
               <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0, fontFamily: "Teachers, sans-serif" }}>
-                {limitReached
-                  ? "You've used all your free AI calorie calculations."
-                  : `Only ${remainingViews} free views left.`}
+                {limitReached ? "You've used all your free AI calorie calculations." : `Only ${remainingViews} free views left.`}
               </p>
             </div>
             <div style={{ padding: "20px 24px" }}>
@@ -471,26 +749,31 @@ function MealPage() {
         </button>
         <div className="nameFoodTitle">{meal.strMeal}</div>
 
-        {/* Right side actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+
+          {/* Timer button */}
+          <button
+            onClick={() => setShowTimer(true)}
+            style={{
+              background: "white", border: "1.5px solid #242D96", borderRadius: 50,
+              padding: "10px 16px", cursor: "pointer", fontFamily: "Teachers, sans-serif",
+              fontSize: 14, color: "#242D96", display: "flex", alignItems: "center", gap: 6, height: 40,
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#242D96" strokeWidth="2">
+              <circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 3"/><path d="M9 3h6"/><path d="M12 3v2"/>
+            </svg>
+            Таймер
+          </button>
+
           {/* Share button */}
           <div style={{ position: "relative" }}>
             <button
               onClick={() => setShowShareMenu(v => !v)}
               style={{
-                background: "#242D96",
-                border: "none",
-                borderRadius: 50,
-                padding: "10px 20px",
-                cursor: "pointer",
-                fontFamily: "Teachers, sans-serif",
-                fontSize: 14,
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                height: 40,
-                transition: "all 0.2s",
+                background: "#242D96", border: "none", borderRadius: 50,
+                padding: "10px 20px", cursor: "pointer", fontFamily: "Teachers, sans-serif",
+                fontSize: 14, color: "white", display: "flex", alignItems: "center", gap: 6, height: 40,
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
@@ -499,13 +782,11 @@ function MealPage() {
               </svg>
               {copied ? "Copied!" : "Share"}
             </button>
-
             {showShareMenu && (
               <div style={{
                 position: "absolute", top: "calc(100% + 8px)", right: 0,
                 background: "white", borderRadius: 14, boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-                border: "1px solid #e8ecf8", zIndex: 999, minWidth: 180,
-                overflow: "hidden",
+                border: "1px solid #e8ecf8", zIndex: 999, minWidth: 180, overflow: "hidden",
               }}>
                 <button onClick={handleCopy}
                   style={{ width: "100%", padding: "12px 16px", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, fontFamily: "Teachers, sans-serif", fontSize: 14, color: "#242D96", textAlign: "left" }}>
@@ -565,9 +846,7 @@ function MealPage() {
                 ))}
               </div>
               {shouldBlurNutrition && (
-                <div className="nutritionLockNotice">
-                  Upgrade to Premium to unlock nutrition info.
-                </div>
+                <div className="nutritionLockNotice">Upgrade to Premium to unlock nutrition info.</div>
               )}
             </div>
           </div>

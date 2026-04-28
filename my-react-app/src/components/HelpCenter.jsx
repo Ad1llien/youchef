@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/helpCenter.css";
+import error from "../icons/suraq_belgisi.svg"
 
 function HelpCenter() {
   const navigate = useNavigate();
@@ -61,6 +62,9 @@ function HelpCenter() {
         </p>
       </div>
 
+      <div style={{ display: "flex", justifyContent: "center" }}>
+  <img style={{ width: 200, height: 200 }} src={error} alt="" />
+</div>      
       <div className="help-accordion">
         {faqItems.map((item, index) => {
           const isOpen = openIndex === index;
