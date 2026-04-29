@@ -13,8 +13,7 @@ function Toast({ toast, onClose }) {
 
   if (!toast) return null;
   const isError = toast.type === "error";
-  const [currentLang, setCurrentLang] = useState("EN");
-  const [langOpen, setLangOpen] = useState(false);
+ 
   return (
     <div style={{
       position: "fixed", top: 24, left: "50%", transform: "translateX(-50%)",
@@ -54,7 +53,8 @@ function Toast({ toast, onClose }) {
 const CheckEmailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [currentLang, setCurrentLang] = useState("EN");
+  const [langOpen, setLangOpen] = useState(false);
   const userId = location.state?.userId;
   const email = location.state?.email || "";
 

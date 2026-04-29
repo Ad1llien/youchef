@@ -228,6 +228,89 @@ const sendOtpEmail = async (email, name, otp) => {
   });
 };
 
+const sendWelcomeEmail = async (email, name) => {
+  await transporter.sendMail({
+    from: process.env.SENDER_EMAIL,
+    to: email,
+    subject: "Welcome to YouChef! 🍳",
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;">
+        
+        <!-- Header -->
+        <div style="background:#242D96;padding:32px 24px;text-align:center;">
+          <img src="https://youchef.kz/icons/logo-192.png" width="72" height="72" style="border-radius:16px;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;" alt="YouChef"/>
+          <div style="color:white;font-size:24px;font-weight:700;">Welcome to YouChef!</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:14px;margin-top:6px;">Your personal recipe platform 🍽</div>
+        </div>
+
+        <!-- Greeting -->
+        <div style="padding:28px 24px 0;background:#ffffff;">
+          <p style="color:#333;font-size:16px;margin:0 0 8px;">Hello, <strong>${name}</strong>! 👋</p>
+          <p style="color:#555;font-size:14px;margin:0 0 24px;line-height:1.6;">
+            We're thrilled to have you on board. YouChef is your personal cooking companion — 
+            discover thousands of recipes, track nutrition, and plan your meals with AI.
+          </p>
+        </div>
+
+        <!-- Features -->
+        <div style="padding:0 24px;background:#ffffff;">
+          <p style="color:#242D96;font-size:15px;font-weight:600;margin:0 0 16px;">What you can do with YouChef:</p>
+          
+          ${[
+            { emoji: "🔍", title: "Discover Recipes", desc: "Browse thousands of dishes from around the world" },
+            { emoji: "🤖", title: "AI Nutrition Analysis", desc: "Upload a food photo and get instant calorie breakdown" },
+            { emoji: "📅", title: "Meal Planner", desc: "Generate a personalized weekly meal plan with AI" },
+            { emoji: "🥘", title: "Create Own Meal", desc: "Find recipes based on ingredients you already have" },
+            { emoji: "❤️", title: "Save Favorites", desc: "Build your personal recipe collection" },
+            { emoji: "💎", title: "Premium Access", desc: "Unlock unlimited AI features and exclusive recipes" },
+          ].map(f => `
+            <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:#EEF0FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${f.emoji}</div>
+              <div>
+                <div style="color:#242D96;font-size:14px;font-weight:600;margin-bottom:2px;">${f.title}</div>
+                <div style="color:#788CA5;font-size:13px;">${f.desc}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+
+        <!-- Telegram Bot -->
+        <div style="margin:24px 24px;background:#f0f4ff;border-radius:12px;padding:20px;border-left:4px solid #242D96;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:22px;">✈️</span>
+            <span style="color:#242D96;font-size:15px;font-weight:600;">YouChef Telegram Bot</span>
+          </div>
+          <p style="color:#555;font-size:13px;margin:0 0 12px;line-height:1.6;">
+            Get recipe recommendations, quick nutrition tips and updates directly in Telegram!
+          </p>
+          <a href="https://t.me/youchefBot" 
+            style="display:inline-block;background:#242D96;color:white;text-decoration:none;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;">
+            Open @youchefBot →
+          </a>
+        </div>
+
+        <!-- CTA Button -->
+        <div style="padding:0 24px 28px;text-align:center;background:#ffffff;">
+          <a href="https://youchef.kz" 
+            style="display:inline-block;background:#242D96;color:white;text-decoration:none;padding:14px 40px;border-radius:50px;font-size:15px;font-weight:600;">
+            Start Cooking 🍳
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <div style="background:#f9f9f9;padding:16px 24px;text-align:center;border-top:1px solid #eee;">
+          <p style="color:#aaa;font-size:12px;margin:0;">
+            © ${new Date().getFullYear()} YouChef · 
+            <a href="https://youchef.kz" style="color:#aaa;text-decoration:none;">youchef.kz</a> · 
+            <a href="https://t.me/youchefBot" style="color:#aaa;text-decoration:none;">Telegram Bot</a>
+          </p>
+        </div>
+
+      </div>
+    `
+  });
+};
+
 export const sendVerifyOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -258,6 +341,9 @@ export const verifyEmail = async (req, res) => {
     user.verifyOtp = "";
     user.verifyOtpExpireAt = 0;
     await user.save();
+    sendWelcomeEmail(user.email, user.name).catch(err =>
+      console.warn("[Welcome email] Failed:", err.message)
+    );
     return res.json({ success: true, message: "Email verified successfully" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
@@ -275,15 +361,38 @@ export const sendResetOtp = async (req, res) => {
   try {
     const user = await userModel.findOne({ email });
     if (!user) return res.json({ success: false, message: "User not found" });
+
     const otp = String(Math.floor(100000 + Math.random() * 900000));
     user.resetOtp = otp;
     user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
     await user.save();
+
     await transporter.sendMail({
-      from: process.env.SENDER_EMAIL, to: user.email,
+      from: process.env.SENDER_EMAIL,
+      to: user.email,
       subject: "Reset your YouChef password",
-      html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:24px;border:1px solid #eee;border-radius:12px;"><h2 style="color:#242D96;">Reset Password</h2><p>Your OTP: <strong style="font-size:24px;letter-spacing:6px;color:#242D96;">${otp}</strong></p><p style="color:#888;font-size:13px;">Expires in 24 hours.</p></div>`
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;border:1px solid #eee;border-radius:12px;overflow:hidden;">
+          <div style="background:#242D96;padding:28px 24px;text-align:center;">
+            <img src="https://youchef.kz/icons/logo-192.png" width="64" height="64" style="border-radius:14px;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;" alt="YouChef"/>
+            <div style="color:white;font-size:22px;font-weight:600;">YouChef</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;">Password Reset</div>
+          </div>
+          <div style="padding:28px 24px;background:#ffffff;">
+            <p style="color:#333;font-size:15px;margin:0 0 8px;">Hello, <strong>${user.name}</strong>!</p>
+            <p style="color:#555;font-size:14px;margin:0 0 24px;">Use the code below to reset your password.</p>
+            <div style="background:#f5f7ff;border-radius:12px;padding:24px;text-align:center;margin-bottom:24px;">
+              <div style="font-size:36px;font-weight:700;letter-spacing:10px;color:#242D96;">${otp}</div>
+            </div>
+            <p style="color:#888;font-size:13px;margin:0;text-align:center;">This code expires in 24 hours.</p>
+          </div>
+          <div style="background:#f9f9f9;padding:16px 24px;text-align:center;border-top:1px solid #eee;">
+            <p style="color:#aaa;font-size:12px;margin:0;">© ${new Date().getFullYear()} YouChef · <a href="https://youchef.kz" style="color:#aaa;text-decoration:none;">youchef.kz</a></p>
+          </div>
+        </div>
+      `
     });
+
     return res.json({ success: true, message: "OTP sent to your email." });
   } catch (error) {
     return res.json({ success: false, message: error.message });
