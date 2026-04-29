@@ -29,8 +29,8 @@ const TG_STEPS = [
   },
   {
     title: "Buy Premium with Stars",
-    desc: "Tap Buy Premium - 100 Stars in the bot menu",
-    tip: "100 Stars = KZT 989. You can buy Stars directly in Telegram",
+    desc: "Tap Buy Premium - 250 Stars in the bot menu",
+    tip: "250 Stars = KZT 2500. You can buy Stars directly in Telegram",
     step: "Step 3 of 4",
     img: step3,
   },

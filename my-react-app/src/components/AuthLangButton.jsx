@@ -13,9 +13,19 @@ function AuthLangButton() {
 
   const changeLanguage = (opt) => {
     setCurrentLang(opt.label);
-    const s = document.querySelector(".goog-te-combo");
-    if (s) { s.value = opt.value; s.dispatchEvent(new Event("change")); }
     setLangOpen(false);
+
+    const tryChange = (attempts = 0) => {
+      const select = document.querySelector(".goog-te-combo");
+      if (select) {
+        select.value = opt.value;
+        select.dispatchEvent(new Event("change"));
+      } else if (attempts < 15) {
+        setTimeout(() => tryChange(attempts + 1), 300);
+      }
+    };
+
+    tryChange();
   };
 
   return (

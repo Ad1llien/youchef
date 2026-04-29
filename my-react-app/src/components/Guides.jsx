@@ -91,7 +91,7 @@ const GUIDES = [
       },
       {
         title: "Pay via Telegram Stars",
-        desc: "Follow the 4-step guide in the modal: open @youchefBot, link your account with /login, tap 'Buy Premium — 100 Stars', and confirm payment. Premium activates automatically.",
+        desc: "Follow the 4-step guide in the modal: open @youchefBot, link your account with /login, tap 'Buy Premium — 250 Stars', and confirm payment. Premium activates automatically.",
       },
       {
         title: "Pay via Kaspi QR",

@@ -9,6 +9,9 @@ import guide from "../icons/news-line.svg";
 import menuLine from "../icons/menu-line.svg";
 import API_BASE_URL, { apiFetch } from "../config/api";
 
+const BLUE_ICON_FILTER =
+  "invert(16%) sepia(94%) saturate(2600%) hue-rotate(225deg) brightness(70%) contrast(120%)";
+
 function Header({ onBurgerClick }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -25,10 +28,9 @@ function Header({ onBurgerClick }) {
 
   const changeLanguage = (lang) => {
     const select = document.querySelector(".goog-te-combo");
-    if (select) {
-      select.value = lang;
-      select.dispatchEvent(new Event("change"));
-    }
+    if (!select) return;
+    select.value = lang;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
   };
 
   const languageOptions = [
@@ -38,7 +40,8 @@ function Header({ onBurgerClick }) {
     { label: "es", value: "es" },
   ];
 
-  const handleLanguageChange = (option) => {
+  const handleLanguageChange = (option, e) => {
+    if (e) e.stopPropagation();
     setCurrentLang(option.label);
     changeLanguage(option.value);
     setLangMenuOpen(false);
@@ -94,7 +97,11 @@ function Header({ onBurgerClick }) {
 
         {/* Desktop Language */}
         <div className="relative ml-4 text-sm" ref={langMenuRef}>
-          <div onClick={() => setLangMenuOpen(prev => !prev)} className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium">
+          <div
+            onMouseDown={e => e.stopPropagation()}
+            onClick={() => setLangMenuOpen(prev => !prev)}
+            className="flex items-center gap-1.5 cursor-pointer text-[30px] leading-none text-[#242D96] font-medium"
+          >
             <span className="text-[20px] leading-none tracking-tight">{currentLang}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none">
               <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#242D96" strokeWidth="1.8"/>
@@ -106,7 +113,13 @@ function Header({ onBurgerClick }) {
           {langMenuOpen && (
             <div className="absolute top-full mt-2 w-[60px] flex flex-col bg-white border border-[#BBC8D8] rounded-[8px] shadow-md z-50">
               {languageOptions.map(option => (
-                <button key={option.value} type="button" className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-[#242D96] text-[20px] text-left border-none bg-transparent" onClick={() => handleLanguageChange(option)}>
+                <button
+                  key={option.value}
+                  type="button"
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-[#242D96] text-[20px] text-left border-none bg-transparent"
+                  onMouseDown={e => e.stopPropagation()}
+                  onClick={(e) => handleLanguageChange(option, e)}
+                >
                   {option.label}
                 </button>
               ))}
@@ -165,19 +178,13 @@ function Header({ onBurgerClick }) {
         {/* Mobile Language Button */}
         <div className="relative" ref={mobileLangRef}>
           <button
+            onMouseDown={e => e.stopPropagation()}
             onClick={() => setLangMenuOpen(prev => !prev)}
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              background: "transparent",
-              border: "1.5px solid #BBC8D8",
-              borderRadius: 20,
-              padding: "5px 10px",
-              cursor: "pointer",
-              color: "#242D96",
-              fontSize: 13,
-              fontWeight: 500,
+              display: "flex", alignItems: "center", gap: 4,
+              background: "transparent", border: "1.5px solid #BBC8D8",
+              borderRadius: 20, padding: "5px 10px", cursor: "pointer",
+              color: "#242D96", fontSize: 13, fontWeight: 500,
               fontFamily: "Teachers, sans-serif",
             }}
           >
@@ -192,33 +199,22 @@ function Header({ onBurgerClick }) {
 
           {langMenuOpen && (
             <div style={{
-              position: "absolute",
-              top: "calc(100% + 6px)",
-              left: 0,
-              background: "white",
-              border: "1px solid #BBC8D8",
-              borderRadius: 10,
-              boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
-              zIndex: 100,
-              overflow: "hidden",
-              minWidth: 64,
+              position: "absolute", top: "calc(100% + 6px)", left: 0,
+              background: "white", border: "1px solid #BBC8D8",
+              borderRadius: 10, boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+              zIndex: 100, overflow: "hidden", minWidth: 64,
             }}>
               {languageOptions.map(option => (
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() => handleLanguageChange(option)}
+                  onMouseDown={e => e.stopPropagation()}
+                  onClick={(e) => handleLanguageChange(option, e)}
                   style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "8px 14px",
+                    display: "block", width: "100%", padding: "8px 14px",
                     background: currentLang === option.label ? "#EEF0FB" : "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#242D96",
-                    fontSize: 14,
-                    fontFamily: "Teachers, sans-serif",
-                    textAlign: "left",
+                    border: "none", cursor: "pointer", color: "#242D96",
+                    fontSize: 14, fontFamily: "Teachers, sans-serif", textAlign: "left",
                     fontWeight: currentLang === option.label ? 600 : 400,
                   }}
                 >
@@ -287,7 +283,7 @@ function Header({ onBurgerClick }) {
             ].map(item => (
               <div key={item.path} onClick={() => handleMobileNav(item.path)}
                 style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
-                <img src={item.icon} alt="" style={{ width: 22, height: 22}} />
+                <img src={item.icon} alt="" style={{ width: 22, height: 22, filter: BLUE_ICON_FILTER }} />
                 <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
               </div>
             ))}
@@ -300,14 +296,21 @@ function Header({ onBurgerClick }) {
             ].map(item => (
               <div key={item.path} onClick={() => handleMobileNav(item.path)}
                 style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
-                <img src={item.icon} alt="" style={{ width: 22, height: 22}} />
+                <img src={item.icon} alt="" style={{ width: 22, height: 22, filter: BLUE_ICON_FILTER }} />
                 <span style={{ fontSize: 16, color: "#242D96", fontFamily: "Teachers, sans-serif" }}>{item.label}</span>
               </div>
             ))}
 
             <div style={{ height: 1, background: "#f3f4f6", margin: "0 24px" }} />
 
-            <div onClick={() => { closeMobileProfile(); apiFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" }).then(() => navigate("/login")); }}
+            <div onClick={() => {
+              closeMobileProfile();
+              localStorage.removeItem("user");
+              localStorage.removeItem("token");
+              localStorage.removeItem("savedEmail");
+              sessionStorage.removeItem("token");
+              apiFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" }).then(() => navigate("/login"));
+            }}
               style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 24px", cursor: "pointer" }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF786D" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
               <span style={{ fontSize: 16, color: "#FF786D", fontFamily: "Teachers, sans-serif" }}>Logout</span>
