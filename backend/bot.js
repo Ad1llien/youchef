@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 import RecipeRequest from "./models/recipeRequest.js";
-import transporter from "./config/nodemailer.js";
+import sendEmail from "./config/nodemailer.js";
 import User from "./models/userModels.js";
 dotenv.config();
 
@@ -549,8 +549,7 @@ bot.on("callback_query", async (query) => {
       await RecipeRequest.findByIdAndUpdate(id, { status });
 
       try {
-        await transporter.sendMail({
-          from: process.env.SENDER_EMAIL,
+        await sendEmail({
           to: request.userEmail,
           subject: action === "accept"
             ? "✅ Ваш рецепт принят — YouChef"
@@ -667,8 +666,7 @@ bot.on("successful_payment", async (msg) => {
     const paymentInfo = msg.successful_payment;
   const date = new Date().toLocaleString("ru-RU", { timeZone: "Asia/Almaty" });
 
-  await transporter.sendMail({
-    from: process.env.SENDER_EMAIL,
+  await sendEmail({
     to: updatedUser.email,
     subject: "✅ Чек об оплате YouChef Premium",
     html: `
@@ -832,8 +830,7 @@ bot.on("message", async (msg) => {
   const { email } = adminReplyMode[userId];
 
   try {
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
+    await sendEmail({
       to: email,
       subject: "📩 Message from YouChef Support",
       html: `

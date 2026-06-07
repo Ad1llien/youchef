@@ -1,5 +1,5 @@
 import express from "express";
-import transporter from "../config/nodemailer.js";
+import sendEmail from "../config/nodemailer.js";
 import { bot, MODERATORS } from "../bot.js";
 
 const router = express.Router();
@@ -40,8 +40,7 @@ router.post("/", async (req, res) => {
 
   // Подтверждение пользователю на email
   try {
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
+    await sendEmail({
       to: email,
       subject: "📩 We received your message — YouChef",
       html: `

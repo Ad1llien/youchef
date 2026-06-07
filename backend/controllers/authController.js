@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import userModel from "../models/userModels.js";
-import transporter from '../config/nodemailer.js';
+import sendEmail from '../config/nodemailer.js';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -202,8 +202,7 @@ export const logout = async (req, res) => {
 
 // ─── OTP helpers ──────────────────────────────────────────────────────────────
 const sendOtpEmail = async (email, name, otp) => {
-  await transporter.sendMail({
-    from: process.env.SENDER_EMAIL,
+  await sendEmail({
     to: email,
     subject: "Verify your YouChef account",
     html: `
@@ -229,8 +228,7 @@ const sendOtpEmail = async (email, name, otp) => {
 };
 
 const sendWelcomeEmail = async (email, name) => {
-  await transporter.sendMail({
-    from: process.env.SENDER_EMAIL,
+  await sendEmail({
     to: email,
     subject: "Welcome to YouChef! 🍳",
     html: `
@@ -367,8 +365,7 @@ export const sendResetOtp = async (req, res) => {
     user.resetOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
     await user.save();
 
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
+    await sendEmail({
       to: user.email,
       subject: "Reset your YouChef password",
       html: `
@@ -446,10 +443,10 @@ export const changePassword = async (req, res) => {
     if (isSame) return res.json({ success: false, message: "New password cannot be the same" });
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL, to: user.email,
+    await sendEmail({
+      to: user.email,
       subject: "Password changed",
-      text: `Hello ${user.name}, your password has been successfully changed.`
+      text: `Hello ${user.name}, your password has been successfully changed.`,
     });
     return res.json({ success: true, message: "Password updated successfully" });
   } catch (error) {
