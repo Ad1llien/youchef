@@ -326,7 +326,7 @@ function MealPlanner() {
     const detectLocation = async () => {
       try {
         // Попытка через IP геолокацию
-        const res = await fetch("https://ipapi.co/json/");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/geoip`);
         const data = await res.json();
         const countryCode = data.country_code || "KZ";
         const detectedCurrency = COUNTRY_CURRENCY[countryCode] || "USD";

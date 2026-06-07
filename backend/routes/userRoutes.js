@@ -33,6 +33,17 @@ const upload = multer({
   },
 });
 
+// ─── Геолокация (proxy для ipapi.co) ─────────────────────────────────────────
+userRouter.get("/geoip", async (req, res) => {
+  try {
+    const response = await fetch("https://ipapi.co/json/");
+    const data = await response.json();
+    res.json({ country_code: data.country_code || "KZ" });
+  } catch {
+    res.json({ country_code: "KZ" });
+  }
+});
+
 // ─── Основные роуты ───────────────────────────────────────────────────────────
 userRouter.get("/data", userAuth, getUserData);
 userRouter.post("/avatar", userAuth, upload.single("avatar"), uploadAvatar);
