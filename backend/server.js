@@ -86,6 +86,17 @@ app.use("/uploads", (req, res, next) => {
   next();
 }, express.static(path.resolve("backend/uploads")));
 
+// ─── Task #3: LCM ────────────────────────────────────────────────────────────
+app.get("/akadilzh2004kz_gmail_com", (req, res) => {
+  const { x, y } = req.query;
+  const isNatural = v => /^\d+$/.test(v) && BigInt(v) > 0n;
+  if (!isNatural(x) || !isNatural(y)) return res.send("NaN");
+  const gcd = (a, b) => b === 0n ? a : gcd(b, a % b);
+  const bx = BigInt(x), by = BigInt(y);
+  const lcm = (bx / gcd(bx, by)) * by;
+  res.send(lcm.toString());
+});
+
 // ─── API роуты ────────────────────────────────────────────────────────────────
 app.use("/api/ai",             aiLimiter,      aiRouter);
 app.use("/api/auth",           authLimiter,    authRouter);
